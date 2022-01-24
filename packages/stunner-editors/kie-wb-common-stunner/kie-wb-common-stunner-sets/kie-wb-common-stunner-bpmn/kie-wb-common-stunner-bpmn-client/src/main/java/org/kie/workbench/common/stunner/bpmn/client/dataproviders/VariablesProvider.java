@@ -27,8 +27,8 @@ import javax.inject.Inject;
 
 import org.kie.workbench.common.stunner.bpmn.client.forms.util.StringUtils;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
-import org.kie.workbench.common.stunner.bpmn.definition.DataObject;
 import org.kie.workbench.common.stunner.bpmn.definition.FlowElement;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectReference;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseFileVariables;
 import org.kie.workbench.common.stunner.core.client.api.SessionManager;
 import org.kie.workbench.common.stunner.core.graph.Edge;
@@ -92,8 +92,8 @@ public class VariablesProvider
     }
 
     private void processNode(Node<View<FlowElement>, Edge> elm, Collection<Pair<Object, String>> result) {
-        if (elm.getContent().getDefinition() instanceof DataObject) {
-            DataObject dataObject = (DataObject) elm.getContent().getDefinition();
+        if (elm.getContent().getDefinition() instanceof DataObjectReference) {
+            DataObjectReference dataObject = (DataObjectReference) elm.getContent().getDefinition();
             String name = dataObject.getDataObjectName().getValue();
             result.add(new Pair(name, name));
         }

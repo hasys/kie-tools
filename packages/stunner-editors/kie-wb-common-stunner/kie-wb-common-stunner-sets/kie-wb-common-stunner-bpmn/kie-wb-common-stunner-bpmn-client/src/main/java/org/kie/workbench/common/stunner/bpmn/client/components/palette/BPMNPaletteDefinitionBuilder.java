@@ -37,8 +37,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.errai.ioc.client.api.ManagedInstance;
-import org.kie.workbench.common.stunner.bpmn.definition.Association;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Association;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.NoneTask;
@@ -91,7 +91,7 @@ public class BPMNPaletteDefinitionBuilder
             .collect(Collectors.toList());
 
     private static final Map<String, String> CUSTOM_GROUPS = Stream.of(
-                    new AbstractMap.SimpleEntry<>(Lane.class.getName(), "org.kie.workbench.common.stunner.bpmn.definition.customGroup.Containers"))
+            new AbstractMap.SimpleEntry<>(Lane.class.getName(), "org.kie.workbench.common.stunner.bpmn.definition.customGroup.Containers"))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     private final DefinitionManager definitionManager;
