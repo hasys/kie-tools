@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package org.kie.workbench.common.stunner.bpmn.definition;
+package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
+
+import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -26,9 +29,11 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.events.CorrelationModel;
+import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.events.CorrelationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.event.signal.CancellingSignalEventExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.CancellingMessageEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
@@ -48,14 +53,22 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
-public class IntermediateSignalEventCatching extends BaseCatchingIntermediateEvent {
+@XmlRootElement(name = "intermediateCatchEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+public class IntermediateMessageEventCatching
+        extends BaseCatchingIntermediateEvent
+        implements CorrelationModel {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
-    protected CancellingSignalEventExecutionSet executionSet;
+    protected CancellingMessageEventExecutionSet executionSet;
 
-    public IntermediateSignalEventCatching() {
+    @Property
+    @FormField(afterElement = "advancedData")
+    @Valid
+    protected CorrelationSet correlationSet;
+
+    public IntermediateMessageEventCatching() {
         this("",
              "",
              new BackgroundSet(),
@@ -63,17 +76,19 @@ public class IntermediateSignalEventCatching extends BaseCatchingIntermediateEve
              new CircleDimensionSet(),
              new DataIOSet(),
              new AdvancedData(),
-             new CancellingSignalEventExecutionSet());
+             new CorrelationSet(),
+             new CancellingMessageEventExecutionSet());
     }
 
-    public IntermediateSignalEventCatching(final @MapsTo("name") String name,
-                                           final @MapsTo("documentation") String documentation,
-                                           final @MapsTo("backgroundSet") BackgroundSet backgroundSet,
-                                           final @MapsTo("fontSet") FontSet fontSet,
-                                           final @MapsTo("dimensionsSet") CircleDimensionSet dimensionsSet,
-                                           final @MapsTo("dataIOSet") DataIOSet dataIOSet,
-                                           final @MapsTo("advancedData") AdvancedData advancedData,
-                                           final @MapsTo("executionSet") CancellingSignalEventExecutionSet executionSet) {
+    public IntermediateMessageEventCatching(final @MapsTo("name") String name,
+                                            final @MapsTo("documentation") String documentation,
+                                            final @MapsTo("backgroundSet") BackgroundSet backgroundSet,
+                                            final @MapsTo("fontSet") FontSet fontSet,
+                                            final @MapsTo("dimensionsSet") CircleDimensionSet dimensionsSet,
+                                            final @MapsTo("dataIOSet") DataIOSet dataIOSet,
+                                            final @MapsTo("advancedData") AdvancedData advancedData,
+                                            final @MapsTo("correlationSet") CorrelationSet correlationSet,
+                                            final @MapsTo("executionSet") CancellingMessageEventExecutionSet executionSet) {
         super(name,
               documentation,
               backgroundSet,
@@ -81,35 +96,47 @@ public class IntermediateSignalEventCatching extends BaseCatchingIntermediateEve
               dimensionsSet,
               dataIOSet,
               advancedData);
+        this.correlationSet = correlationSet;
         this.executionSet = executionSet;
+    }
+
+    public CancellingMessageEventExecutionSet getExecutionSet() {
+        return executionSet;
+    }
+
+    public void setExecutionSet(CancellingMessageEventExecutionSet executionSet) {
+        this.executionSet = executionSet;
+    }
+
+    public CorrelationSet getCorrelationSet() {
+        return correlationSet;
+    }
+
+    public void setCorrelationSet(CorrelationSet correlationSet) {
+        this.correlationSet = correlationSet;
     }
 
     @Override
     protected void initLabels() {
         super.initLabels();
+        labels.add("messageflow_end");
         labels.add("FromEventbasedGateway");
-    }
-
-    public CancellingSignalEventExecutionSet getExecutionSet() {
-        return executionSet;
-    }
-
-    public void setExecutionSet(CancellingSignalEventExecutionSet executionSet) {
-        this.executionSet = executionSet;
     }
 
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
-                                         executionSet.hashCode());
+                                         executionSet.hashCode(),
+                                         correlationSet.hashCode());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof IntermediateSignalEventCatching) {
-            IntermediateSignalEventCatching other = (IntermediateSignalEventCatching) o;
+        if (o instanceof IntermediateMessageEventCatching) {
+            IntermediateMessageEventCatching other = (IntermediateMessageEventCatching) o;
             return super.equals(other) &&
-                    executionSet.equals(other.executionSet);
+                    Objects.equals(executionSet, other.executionSet) &&
+                    Objects.equals(correlationSet, other.correlationSet);
         }
         return false;
     }
