@@ -24,13 +24,16 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataInputRe
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataOutput;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataOutputAssociation;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataOutputRefs;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.From;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InputSet;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ItemDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.OutputSet;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.SourceRef;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.TargetRef;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.To;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 
 /*
  Example string for parsing:
@@ -127,6 +130,13 @@ public class AssignmentParser {
             String type = (var.length > 1 && var[1] != null && !var[1].isEmpty()) ? var[1] : "Object";
             itemDefinitions.add(new ItemDefinition("_" + id + "_" + name + "OutputXItem", type));
         }
+        return itemDefinitions;
+    }
+
+    public static List<ItemDefinition> getAllItemDefinitions(String id, String assignments) {
+        List<ItemDefinition> itemDefinitions = new ArrayList<>();
+        itemDefinitions.addAll(getInputItemDefinitions(id, assignments));
+        itemDefinitions.addAll(getOutputItemDefinitions(id, assignments));
         return itemDefinitions;
     }
 
@@ -247,5 +257,34 @@ public class AssignmentParser {
         }
 
         return "";
+    }
+
+    public static List<Property> parseProcessVariables(String assignments) {
+        List<Property> properties = new ArrayList<>();
+        // String format of process variables created by forms:
+        // varName1:varType1:varTag1;varTag2,varName2:varType2:varTag3;varTag4
+        String[] variables = assignments.split(",");
+        for (String variable : variables) {
+            if (variable.isEmpty()) {
+                continue;
+            }
+
+            String[] parts = variable.split(":");
+            String varName = (parts.length >= 1 ? parts[0] : "");
+            String itemId = "_" + varName + "Item";
+            String varType = (parts.length >= 2 ? parts[1] : "Object");
+            String varTags = (parts.length >= 3 ? parts[2].replace(';', ',') : null);
+
+            Property property = new Property(varName, varName, itemId);
+            if (varTags != null && !varTags.isEmpty()) {
+                ExtensionElements extensionElements = new ExtensionElements();
+                extensionElements.addMetaData(new MetaData("customTags", varTags));
+                property.setExtensionElements(extensionElements);
+            }
+            properties.add(property);
+            property.setVariableType(varType);
+        }
+
+        return properties;
     }
 }

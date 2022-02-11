@@ -22,6 +22,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.Rect
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
+import org.kie.workbench.common.stunner.bpmn.definition.property.variables.ProcessData;
 import org.kie.workbench.common.stunner.core.definition.annotation.definition.Category;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.MorphBase;
 
@@ -38,6 +39,6 @@ public abstract class BaseNonContainerSubprocess extends BaseSubprocess {
                                       RectangleDimensionsSet dimensionsSet,
                                       SimulationSet simulationSet,
                                       AdvancedData advancedData) {
-        super(name, documentation, backgroundSet, fontSet, dimensionsSet, simulationSet, advancedData);
+        super(name, documentation, backgroundSet, fontSet, dimensionsSet, simulationSet, advancedData, new ProcessData());
     }
 }

@@ -30,6 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
+import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
+import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
+import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.TaskType;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.TaskTypes;
@@ -44,7 +48,9 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = NoneTask.class, targets = {BaseNonContainerSubprocess.class})
-public abstract class BaseTask extends FlowNode implements BPMNViewDefinition {
+public abstract class BaseTask extends FlowNode implements BPMNViewDefinition,
+                                                           HasIncoming,
+                                                           HasOutgoing {
 
     public static final Set<String> TASK_LABELS = Stream.of("all",
                                                             "lane_child",

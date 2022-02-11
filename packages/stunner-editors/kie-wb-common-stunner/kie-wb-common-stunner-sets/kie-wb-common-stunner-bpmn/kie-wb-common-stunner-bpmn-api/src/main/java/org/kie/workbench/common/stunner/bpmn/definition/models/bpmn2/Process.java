@@ -44,7 +44,8 @@ import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.l
 import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.type.TextAreaFieldType;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
+import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
+import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.DiagramSet;
@@ -76,7 +77,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "process", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcessAdvancedData> {
+public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcessAdvancedData>,
+                                BpmnContainer {
 
     @Category
     public static final transient String category = BPMNCategories.CONTAINERS;
@@ -297,8 +299,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlElement(name = "task")
     @XmlUnwrappedCollection
     @XmlElements({
-            @XmlElement(name = "_NoneTask", type = NoneTask.class),
-            @XmlElement(name = "_UserTask", type = UserTask.class)
+            @XmlElement(name = "_NoneTask", type = NoneTask.class)
     })
     private List<BaseTask> tasks = new ArrayList<>();
 
@@ -307,14 +308,14 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlElements({
             @XmlElement(name = "_ScriptTask", type = ScriptTask.class)
     })
-    private List<BaseTask> scriptTasks = new ArrayList<>();
+    private List<ScriptTask> scriptTasks = new ArrayList<>();
 
     @XmlElement(name = "userTask")
     @XmlUnwrappedCollection
     @XmlElements({
             @XmlElement(name = "_UserTask", type = UserTask.class)
     })
-    private List<BaseTask> userTasks = new ArrayList<>();
+    private List<UserTask> userTasks = new ArrayList<>();
 
     @XmlElement(name = "eventBasedGateway")
     @XmlUnwrappedCollection
@@ -339,6 +340,15 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlElement(name = "dataObjectReference")
     @XmlUnwrappedCollection
     private List<DataObjectReference> dataObjectsReference = new ArrayList<>();
+
+    @XmlElement(name = "subProcess")
+    @XmlUnwrappedCollection
+    @XmlElements({
+            @XmlElement(name = "_EventSubProcess", type = EventSubprocess.class),
+            @XmlElement(name = "_EmbeddedSubProcess", type = EmbeddedSubprocess.class),
+            @XmlElement(name = "_MISubProcess", type = MultipleInstanceSubprocess.class)
+    })
+    private List<BaseSubprocess> subProcesses = new ArrayList<>();
 
     @XmlElement(name = "property")
     @XmlUnwrappedCollection
@@ -598,19 +608,19 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
         this.tasks = tasks;
     }
 
-    public List<BaseTask> getScriptTasks() {
+    public List<ScriptTask> getScriptTasks() {
         return scriptTasks;
     }
 
-    public void setScriptTasks(List<BaseTask> scriptTasks) {
+    public void setScriptTasks(List<ScriptTask> scriptTasks) {
         this.scriptTasks = scriptTasks;
     }
 
-    public List<BaseTask> getUserTasks() {
+    public List<UserTask> getUserTasks() {
         return userTasks;
     }
 
-    public void setUserTasks(List<BaseTask> userTasks) {
+    public void setUserTasks(List<UserTask> userTasks) {
         this.userTasks = userTasks;
     }
 
@@ -624,41 +634,26 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
 
     public List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> getProperties() {
         String value = getProcessData().getProcessVariables();
-        properties = new ArrayList<>();
-
         if (value == null || value.isEmpty()) {
-            return properties;
+            return null;
         }
 
-        // String format of process variables created by forms:
-        // varName1:varType1:varTag1;varTag2,varName2:varType2:varTag3;varTag4
-        String[] variables = value.split(",");
-        for (String variable : variables) {
-            if (variable.isEmpty()) {
-                continue;
-            }
-
-            String[] parts = variable.split(":");
-            String varName = (parts.length >= 1 ? parts[0] : "");
-            String itemId = "_" + varName + "Item";
-            String varType = (parts.length >= 2 ? parts[1] : "Object");
-            String varTags = (parts.length >= 3 ? parts[2].replace(';', ',') : null);
-
-            org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property property = new org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property(varName, varName, itemId);
-            if (varTags != null && !varTags.isEmpty()) {
-                ExtensionElements extensionElements = new ExtensionElements();
-                extensionElements.addMetaData(new MetaData("customTags", varTags));
-                property.setExtensionElements(extensionElements);
-            }
-            properties.add(property);
-            property.setVariableType(varType);
-        }
+        properties.clear();
+        properties.addAll(AssignmentParser.parseProcessVariables(value));
 
         return properties;
     }
 
     public void setProperties(List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> properties) {
         this.properties = properties;
+    }
+
+    public List<BaseSubprocess> getSubProcesses() {
+        return subProcesses;
+    }
+
+    public void setSubProcesses(List<BaseSubprocess> subProcesses) {
+        this.subProcesses = subProcesses;
     }
 
     public List<Lane> getLanes() {
@@ -765,6 +760,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                                          Objects.hashCode(scriptTasks),
                                          Objects.hashCode(sequenceFlows),
                                          Objects.hashCode(lanes),
+                                         Objects.hashCode(subProcesses),
                                          Objects.hashCode(textAnnotations),
                                          Objects.hashCode(associations),
                                          Objects.hashCode(properties));
@@ -788,6 +784,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                     && Objects.equals(scriptTasks, other.scriptTasks)
                     && Objects.equals(sequenceFlows, other.sequenceFlows)
                     && Objects.equals(lanes, other.lanes)
+                    && Objects.equals(subProcesses, other.subProcesses)
                     && Objects.equals(textAnnotations, other.textAnnotations)
                     && Objects.equals(associations, other.associations)
                     && Objects.equals(properties, other.properties);

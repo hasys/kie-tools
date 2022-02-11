@@ -18,6 +18,7 @@ package org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.exe
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -25,6 +26,9 @@ import org.jboss.errai.databinding.client.api.Bindable;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnEntryScript;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnExitScript;
 import org.kie.workbench.common.stunner.bpmn.definition.property.general.SLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.IsAsync;
@@ -43,12 +47,14 @@ public class EmbeddedSubprocessExecutionSet extends BaseSubprocessTaskExecutionS
     @Property
     @FormField(settings = {@FieldParam(name = "mode", value = "ACTION_SCRIPT")})
     @Valid
+    @XmlTransient
     private OnEntryAction onEntryAction;
 
     @Property
     @FormField(settings = {@FieldParam(name = "mode", value = "ACTION_SCRIPT")},
             afterElement = "onEntryAction")
     @Valid
+    @XmlTransient
     private OnExitAction onExitAction;
 
     public EmbeddedSubprocessExecutionSet() {
@@ -83,6 +89,24 @@ public class EmbeddedSubprocessExecutionSet extends BaseSubprocessTaskExecutionS
 
     public void setOnExitAction(OnExitAction onExitAction) {
         this.onExitAction = onExitAction;
+    }
+
+    public void setOnEntryOnExitMetadata(ExtensionElements elements) {
+        if (!onEntryAction.getValue().isEmpty()
+                && !onEntryAction.getValue().getValues().isEmpty()
+                && !onEntryAction.getValue().getValues().get(0).getScript().isEmpty()) {
+            ScriptTypeValue value = onEntryAction.getValue().getValues().get(0);
+            OnEntryScript entryScript = new OnEntryScript(value.getLanguage(), value.getScript());
+            elements.setOnEntryScript(entryScript);
+        }
+
+        if (!onEntryAction.getValue().isEmpty()
+                && !onEntryAction.getValue().getValues().isEmpty()
+                && !onEntryAction.getValue().getValues().get(0).getScript().isEmpty()) {
+            ScriptTypeValue value = onEntryAction.getValue().getValues().get(0);
+            OnExitScript exitScript = new OnExitScript(value.getLanguage(), value.getScript());
+            elements.setOnExitScript(exitScript);
+        }
     }
 
     @Override

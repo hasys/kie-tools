@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.kie.workbench.common.stunner.bpmn.definition.models.dc.Bounds;
+import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 public class BpmnShape {
 
@@ -30,13 +31,17 @@ public class BpmnShape {
     @XmlAttribute
     private String bpmnElement;
 
+    @XmlAttribute(name = "isExpanded")
+    private Boolean expanded = null;
+
     @XmlElement(name = "Bounds")
     private Bounds bounds;
 
     @XmlElement(name = "BPMNLabel")
     private BpmnLabel bpmnLabel;
 
-    public BpmnShape() {}
+    public BpmnShape() {
+    }
 
     public BpmnShape(String id, String bpmnElement) {
         this.id = id;
@@ -78,6 +83,14 @@ public class BpmnShape {
         this.bpmnLabel = bpmnLabel;
     }
 
+    public Boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(Boolean expanded) {
+        this.expanded = expanded;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,11 +100,20 @@ public class BpmnShape {
             return false;
         }
         BpmnShape bpmnShape = (BpmnShape) o;
-        return Objects.equals(getId(), bpmnShape.getId()) && Objects.equals(getBpmnElement(), bpmnShape.getBpmnElement()) && Objects.equals(getBounds(), bpmnShape.getBounds()) && Objects.equals(getBpmnLabel(), bpmnShape.getBpmnLabel());
+        return Objects.equals(getId(), bpmnShape.getId())
+                && Objects.equals(getBpmnElement(), bpmnShape.getBpmnElement())
+                && Objects.equals(getBounds(), bpmnShape.getBounds())
+                && Objects.equals(getBpmnLabel(), bpmnShape.getBpmnLabel())
+                && Objects.equals(isExpanded(), bpmnShape.isExpanded());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getBpmnElement(), getBounds(), getBpmnLabel());
+        return HashUtil.combineHashCodes(super.hashCode(),
+                                         Objects.hashCode(getId()),
+                                         Objects.hashCode(getBpmnElement()),
+                                         Objects.hashCode(getBounds()),
+                                         Objects.hashCode(getBpmnLabel()),
+                                         Objects.hashCode(isExpanded()));
     }
 }

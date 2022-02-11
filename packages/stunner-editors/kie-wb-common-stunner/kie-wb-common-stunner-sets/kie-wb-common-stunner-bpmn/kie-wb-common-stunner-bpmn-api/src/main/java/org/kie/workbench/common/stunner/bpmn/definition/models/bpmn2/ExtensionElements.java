@@ -86,6 +86,12 @@ public class ExtensionElements {
         this.onExitScript = onExitScript;
     }
 
+    public boolean isEmtpy() {
+        return (getMetaData() == null || getMetaData().isEmpty())
+                &&  getOnEntryScript() == null
+                &&  getOnExitScript() == null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

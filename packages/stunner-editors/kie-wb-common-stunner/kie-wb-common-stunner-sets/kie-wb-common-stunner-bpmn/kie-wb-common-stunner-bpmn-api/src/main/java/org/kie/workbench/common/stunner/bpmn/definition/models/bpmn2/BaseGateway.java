@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
+import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
@@ -40,7 +42,9 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = ParallelGateway.class)
-public abstract class BaseGateway extends FlowNode implements BPMNViewDefinition {
+public abstract class BaseGateway extends FlowNode implements BPMNViewDefinition,
+                                                              HasIncoming,
+                                                              HasOutgoing {
 
     @Category
     @XmlTransient

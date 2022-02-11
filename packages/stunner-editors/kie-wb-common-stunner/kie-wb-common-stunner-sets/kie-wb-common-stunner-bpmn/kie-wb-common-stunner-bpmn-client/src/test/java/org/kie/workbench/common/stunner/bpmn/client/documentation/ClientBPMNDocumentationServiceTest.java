@@ -443,7 +443,7 @@ public class ClientBPMNDocumentationServiceTest {
         when(decorators.getDecorator(taskExecutionSet.getAssignmentsinfo())).thenReturn(Optional.of(() -> ASSIGNEMNTS));
 
         //adapters mock for subprocess
-        final EmbeddedSubprocessExecutionSet subprocessExecutionSet = embeddedSubprocess.getExecutionSet();
+        final EmbeddedSubprocessExecutionSet subprocessExecutionSet = (EmbeddedSubprocessExecutionSet) embeddedSubprocess.getExecutionSet();
         when(definitionAdapter.getCategory(eq(embeddedSubprocess))).thenReturn(BPMNCategories.SUB_PROCESSES);
         when(definitionAdapter.getPropertyFields(eq(embeddedSubprocess))).thenReturn(new String[]{"subprocessGeneral.documentation", "subprocessGeneral.name", "subprocessExecutionSet.onEntryAction", "subprocessExecutionSet.onExitAction", "subprocessExecutionSet.isAsync"});
         when(definitionAdapter.getProperty(eq(embeddedSubprocess), eq("subprocessGeneral.documentation"))).thenReturn((Optional) Optional.of(embeddedSubprocess.getDocumentation()));
@@ -607,10 +607,11 @@ public class ClientBPMNDocumentationServiceTest {
                        embeddedSubprocess.getDocumentation());
         assertProperty(subprocessProperties[1], "false", ISASYNC_CAPTION,
                        embeddedSubprocess.getExecutionSet().getIsAsync());
+        EmbeddedSubprocessExecutionSet executionSet = (EmbeddedSubprocessExecutionSet) embeddedSubprocess.getExecutionSet();
         assertProperty(subprocessProperties[2], ON_ENTRY_ACTION, ON_ENTRY_CAPTION,
-                       embeddedSubprocess.getExecutionSet().getOnEntryAction());
+                       executionSet.getOnEntryAction());
         assertProperty(subprocessProperties[3], ON_EXIT_ACTION, ON_EXIT_CAPTION,
-                       embeddedSubprocess.getExecutionSet().getOnEntryAction());
+                       executionSet.getOnEntryAction());
     }
 
     private void assertProperty(KeyValue taskProperty, String value, String caption, Object property) {

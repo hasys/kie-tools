@@ -107,7 +107,6 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.notification.No
 import org.kie.workbench.common.stunner.bpmn.definition.property.reassignment.ReassignmentsInfo;
 import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.IsCase;
 import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EmbeddedSubprocessExecutionSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EventSubprocessExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.AbortParent;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.AdHocActivationCondition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.AdHocAutostart;
@@ -798,18 +797,6 @@ public class HashCodeAndEqualityTest {
         EventSubprocess b = new EventSubprocess();
         assertEquals(a.hashCode(),
                      b.hashCode());
-    }
-
-    @Test
-    public void testEventSubprocessTaskExecutionSetEqualsAndHashCode() {
-        TestCaseBuilder.newTestCase()
-                .addTrueCase(new EventSubprocessExecutionSet(),
-                             new EventSubprocessExecutionSet())
-                .addTrueCase(new EventSubprocessExecutionSet(new IsAsync(),
-                                                             new SLADueDate()),
-                             new EventSubprocessExecutionSet(new IsAsync(),
-                                                             new SLADueDate()))
-                .test();
     }
 
     @Test

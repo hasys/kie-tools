@@ -23,6 +23,7 @@ import javax.enterprise.event.Event;
 import org.kie.workbench.common.forms.adf.engine.shared.FormElementFilter;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseReusableSubprocessTaskExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.core.client.api.SessionManager;
 import org.kie.workbench.common.stunner.forms.client.event.FormFieldChanged;
 import org.kie.workbench.common.stunner.forms.client.event.RefreshFormPropertiesEvent;
@@ -49,14 +50,15 @@ public abstract class BaseReusableSubProcessFilterProvider<T extends BaseReusabl
     @SuppressWarnings("unchecked")
     public boolean isMultipleInstance(final Object definition) {
         final T subProcess = (T) definition;
-        return subProcess.getExecutionSet().getIsMultipleInstance().getValue();
+        MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subProcess.getExecutionSet();
+        return executionSet.getIsMultipleInstance().getValue();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Collection<FormElementFilter> provideFilters(String elementUUID, Object definition) {
         Collection<FormElementFilter> filters = super.provideFilters(elementUUID, definition);
-        BaseReusableSubprocessTaskExecutionSet executionSet = ((T) definition).getExecutionSet();
+        BaseReusableSubprocessTaskExecutionSet executionSet = (BaseReusableSubprocessTaskExecutionSet) ((T) definition).getExecutionSet();
         filters.add(new FormElementFilter(ABORT_PARENT, p -> Boolean.FALSE.equals(executionSet.getIndependent().getValue())));
         return filters;
     }

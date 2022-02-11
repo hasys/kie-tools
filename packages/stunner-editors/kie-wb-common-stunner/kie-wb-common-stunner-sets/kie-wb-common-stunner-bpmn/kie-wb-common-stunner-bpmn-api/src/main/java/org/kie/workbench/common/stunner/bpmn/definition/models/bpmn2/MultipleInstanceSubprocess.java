@@ -19,6 +19,7 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -31,6 +32,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.background.Back
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.HasProcessData;
@@ -60,18 +62,10 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
 public class MultipleInstanceSubprocess extends BaseSubprocess implements HasProcessData<ProcessData> {
 
     @Property
-    @FormField(
-            afterElement = "documentation"
-    )
+    @FormField(afterElement = "documentation")
     @Valid
-    protected MultipleInstanceSubprocessTaskExecutionSet executionSet;
-
-    @Property
-    @FormField(
-            afterElement = "executionSet"
-    )
-    @Valid
-    private ProcessData processData;
+    @XmlTransient
+    private MultipleInstanceSubprocessTaskExecutionSet executionSet;
 
     public MultipleInstanceSubprocess() {
         this("Multiple Instance Sub-process",
@@ -100,44 +94,35 @@ public class MultipleInstanceSubprocess extends BaseSubprocess implements HasPro
               fontSet,
               dimensionsSet,
               simulationSet,
-              advancedData);
-        this.executionSet = executionSet;
-        this.processData = processData;
-    }
-
-    public MultipleInstanceSubprocessTaskExecutionSet getExecutionSet() {
-        return executionSet;
-    }
-
-    public void setExecutionSet(MultipleInstanceSubprocessTaskExecutionSet executionSet) {
+              advancedData,
+              processData);
         this.executionSet = executionSet;
     }
 
     @Override
-    public ProcessData getProcessData() {
-        return processData;
+    public MultipleInstanceSubprocessTaskExecutionSet getExecutionSet() {
+        return executionSet;
     }
 
-    public void setProcessData(final ProcessData processData) {
-        this.processData = processData;
+    @Override
+    public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
+        this.executionSet = (MultipleInstanceSubprocessTaskExecutionSet) executionSet;
     }
 
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
-                                         Objects.hashCode(executionSet),
-                                         Objects.hashCode(processData),
-                                         Objects.hashCode(labels));
+                                         Objects.hashCode(labels),
+                                         Objects.hashCode(executionSet));
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof MultipleInstanceSubprocess) {
             MultipleInstanceSubprocess other = (MultipleInstanceSubprocess) o;
-            return super.equals(other) &&
-                    Objects.equals(executionSet, other.executionSet) &&
-                    Objects.equals(processData, other.processData) &&
-                    Objects.equals(labels, other.labels);
+            return super.equals(other)
+                    && Objects.equals(this.labels, other.labels)
+                    && Objects.equals(this.executionSet, other.executionSet);
         }
         return false;
     }

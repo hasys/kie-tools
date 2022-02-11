@@ -56,17 +56,12 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 public class AdHocSubprocess
-        extends BaseAdHocSubprocess<ProcessData, AdHocSubprocessTaskExecutionSet> {
+        extends EmbeddedSubprocess {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
     protected AdHocSubprocessTaskExecutionSet executionSet;
-
-    @Property
-    @FormField(afterElement = "executionSet")
-    @Valid
-    private ProcessData processData;
 
     public AdHocSubprocess() {
         this("Sub-process");
@@ -92,43 +87,22 @@ public class AdHocSubprocess
                            final @MapsTo("simulationSet") SimulationSet simulationSet,
                            final @MapsTo("executionSet") AdHocSubprocessTaskExecutionSet executionSet,
                            final @MapsTo("processData") ProcessData processData,
-                           final @MapsTo("advancedData")AdvancedData advancedData) {
+                           final @MapsTo("advancedData") AdvancedData advancedData) {
         super(name,
               documentation,
               backgroundSet,
               fontSet,
               dimensionsSet,
               simulationSet,
+              executionSet,
+              processData,
               advancedData);
-        this.executionSet = executionSet;
-        this.processData = processData;
-    }
-
-    @Override
-    public AdHocSubprocessTaskExecutionSet getExecutionSet() {
-        return executionSet;
-    }
-
-    @Override
-    public void setExecutionSet(final AdHocSubprocessTaskExecutionSet executionSet) {
-        this.executionSet = executionSet;
-    }
-
-    @Override
-    public ProcessData getProcessData() {
-        return processData;
-    }
-
-    @Override
-    public void setProcessData(final ProcessData processData) {
-        this.processData = processData;
     }
 
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
-                                         Objects.hashCode(executionSet),
-                                         Objects.hashCode(processData));
+                                         Objects.hashCode(executionSet));
     }
 
     @Override
@@ -136,8 +110,7 @@ public class AdHocSubprocess
         if (o instanceof AdHocSubprocess) {
             AdHocSubprocess other = (AdHocSubprocess) o;
             return super.equals(other) &&
-                    Objects.equals(executionSet, other.executionSet) &&
-                    Objects.equals(processData, other.processData);
+                    Objects.equals(executionSet, other.executionSet);
         }
         return false;
     }

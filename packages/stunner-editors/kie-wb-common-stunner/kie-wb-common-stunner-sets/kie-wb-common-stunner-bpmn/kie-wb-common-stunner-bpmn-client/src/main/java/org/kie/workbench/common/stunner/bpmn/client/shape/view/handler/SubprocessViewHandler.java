@@ -19,6 +19,7 @@ package org.kie.workbench.common.stunner.bpmn.client.shape.view.handler;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MultipleInstanceSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.ReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.core.client.shape.view.ShapeViewHandler;
 import org.kie.workbench.common.stunner.svg.client.shape.view.SVGShapeView;
 import org.kie.workbench.common.stunner.svg.client.shape.view.SVGViewUtils;
@@ -39,15 +40,16 @@ public class SubprocessViewHandler implements ShapeViewHandler<BaseSubprocess, S
     public void handle(BaseSubprocess subprocess, SVGShapeView<?> view) {
         if (subprocess instanceof ReusableSubprocess) {
             final ReusableSubprocess reusableSubprocess = (ReusableSubprocess) subprocess;
-            final boolean multipleInstance = reusableSubprocess.getExecutionSet().getIsMultipleInstance().getValue();
-            final boolean sequential = reusableSubprocess.getExecutionSet().getMultipleInstanceExecutionMode().isSequential();
-            final double normalFillApha = multipleInstance ? 0 : 1;
+            ReusableSubprocessTaskExecutionSet executionSet = (ReusableSubprocessTaskExecutionSet) reusableSubprocess.getExecutionSet();
+            final boolean multipleInstance = executionSet.getIsMultipleInstance().getValue();
+            final boolean sequential = executionSet.getMultipleInstanceExecutionMode().isSequential();
+            final double normalFillAlpha = multipleInstance ? 0 : 1;
             final double normalFillStroke = multipleInstance ? 0 : 1;
             final double miFillAlpha = multipleInstance ? 1 : 0;
             final double miFillStroke = multipleInstance ? 1 : 0;
 
-            SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_NORMAL_BOUNDING_BOX, normalFillApha, normalFillStroke);
-            SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_NORMAL_REUSABLE_ICON, normalFillApha, normalFillStroke);
+            SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_NORMAL_BOUNDING_BOX, normalFillAlpha, normalFillStroke);
+            SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_NORMAL_REUSABLE_ICON, normalFillAlpha, normalFillStroke);
 
             SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_MI_BOUNDING_BOX, miFillAlpha, miFillStroke);
             SVGViewUtils.setFillAndStroke(view, REUSABLE_SUB_PROCESS_MI_REUSABLE_ICON, miFillAlpha, miFillStroke);

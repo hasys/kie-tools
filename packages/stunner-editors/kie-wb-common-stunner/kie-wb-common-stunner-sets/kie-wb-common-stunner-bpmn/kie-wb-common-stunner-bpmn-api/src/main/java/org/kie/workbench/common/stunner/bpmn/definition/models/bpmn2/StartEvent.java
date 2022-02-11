@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ElementParameters;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.NormalDistribution;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ProcessingTime;
@@ -40,7 +41,8 @@ import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = StartNoneEvent.class)
 public abstract class StartEvent extends FlowNode implements BPMNViewDefinition,
-                                                             DataIOModel {
+                                                             DataIOModel,
+                                                             HasOutgoing {
 
     @Category
     @XmlTransient

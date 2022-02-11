@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
+import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ElementParameters;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.NormalDistribution;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ProcessingTime;
@@ -45,7 +47,9 @@ import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 public abstract class BaseIntermediateEvent extends FlowNode
         implements BPMNViewDefinition,
-                   DataIOModel {
+                   DataIOModel,
+                   HasIncoming,
+                   HasOutgoing {
 
     @Labels
     @XmlTransient

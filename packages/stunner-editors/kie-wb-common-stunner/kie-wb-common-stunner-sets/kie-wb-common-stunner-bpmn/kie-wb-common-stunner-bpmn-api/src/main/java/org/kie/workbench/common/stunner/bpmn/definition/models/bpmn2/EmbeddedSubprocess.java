@@ -16,9 +16,12 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -27,12 +30,15 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
+import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOModel;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EmbeddedSubprocessExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.HasProcessData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.ProcessData;
@@ -42,6 +48,7 @@ import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanContain;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanDock;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
+import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.FIELD_CONTAINER_PARAM;
@@ -58,29 +65,32 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
-                                                                  HasProcessData<ProcessData> {
+                                                                  HasProcessData<ProcessData>,
+                                                                  HasOutgoing,
+                                                                  HasIncoming {
+
+    @XmlUnwrappedCollection
+    private List<Incoming> incoming = new ArrayList<>();
+
+    @XmlUnwrappedCollection
+    private List<Outgoing> outgoing = new ArrayList<>();
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private EmbeddedSubprocessExecutionSet executionSet;
 
-    @Property
-    @FormField(afterElement = "executionSet")
-    @Valid
-    private ProcessData processData;
-
     public EmbeddedSubprocess() {
-        this(
-                "Sub-process",
-                "",
-                new BackgroundSet(),
-                new FontSet(),
-                new RectangleDimensionsSet(),
-                new SimulationSet(),
-                new EmbeddedSubprocessExecutionSet(),
-                new ProcessData(),
-                new AdvancedData());
+        this("Sub-process",
+             "",
+             new BackgroundSet(),
+             new FontSet(),
+             new RectangleDimensionsSet(),
+             new SimulationSet(),
+             new EmbeddedSubprocessExecutionSet(),
+             new ProcessData(),
+             new AdvancedData());
     }
 
     public EmbeddedSubprocess(final @MapsTo("name") String name,
@@ -98,9 +108,9 @@ public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
               fontSet,
               dimensionsSet,
               simulationSet,
-              advancedData);
+              advancedData,
+              processData);
         this.executionSet = executionSet;
-        this.processData = processData;
     }
 
     @Override
@@ -124,36 +134,55 @@ public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
     }
 
     @Override
-    public ProcessData getProcessData() {
-        return processData;
+    public ExtensionElements getExtensionElements() {
+        ExtensionElements elements = super.getExtensionElements();
+
+        if (elements == null) {
+            elements = new ExtensionElements();
+        }
+        getExecutionSet().setOnEntryOnExitMetadata(elements);
+
+        return elements.isEmtpy() ? null : elements;
     }
 
-    public void setProcessData(final ProcessData processData) {
-        this.processData = processData;
+    public List<Incoming> getIncoming() {
+        return incoming;
     }
 
+    public void setIncoming(List<Incoming> incoming) {
+        this.incoming = incoming;
+    }
+
+    public List<Outgoing> getOutgoing() {
+        return outgoing;
+    }
+
+    public void setOutgoing(List<Outgoing> outgoing) {
+        this.outgoing = outgoing;
+    }
+
+    @Override
     public EmbeddedSubprocessExecutionSet getExecutionSet() {
         return executionSet;
     }
 
-    public void setExecutionSet(EmbeddedSubprocessExecutionSet executionSet) {
-        this.executionSet = executionSet;
+    @Override
+    public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
+        this.executionSet = (EmbeddedSubprocessExecutionSet) executionSet;
     }
 
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
-                                         Objects.hashCode(executionSet),
-                                         Objects.hashCode(processData));
+                                         Objects.hashCode(executionSet));
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof EmbeddedSubprocess) {
             EmbeddedSubprocess other = (EmbeddedSubprocess) o;
-            return super.equals(other) &&
-                    Objects.equals(executionSet, other.executionSet) &&
-                    Objects.equals(processData, other.processData);
+            return super.equals(other)
+                    && Objects.equals(this.executionSet, other.executionSet);
         }
         return false;
     }

@@ -28,6 +28,7 @@ import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ElementParameters;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.NormalDistribution;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ProcessingTime;
@@ -42,7 +43,8 @@ import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = EndNoneEvent.class)
 public abstract class EndEvent extends FlowNode implements BPMNViewDefinition,
-                                                           DataIOModel {
+                                                           DataIOModel,
+                                                           HasIncoming {
 
     @Category
     @XmlTransient

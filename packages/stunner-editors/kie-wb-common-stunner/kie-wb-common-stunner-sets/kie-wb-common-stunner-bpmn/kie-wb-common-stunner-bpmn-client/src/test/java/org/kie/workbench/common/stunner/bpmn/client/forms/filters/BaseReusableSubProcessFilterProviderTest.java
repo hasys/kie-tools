@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.forms.adf.engine.shared.FormElementFilter;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.ReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.forms.client.event.FormFieldChanged;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -43,14 +45,16 @@ public abstract class BaseReusableSubProcessFilterProviderTest<T extends BaseReu
     @Override
     protected Object newNonMultipleInstanceDefinition() {
         T subprocess = newReusableSubProcess();
-        subprocess.getExecutionSet().getIsMultipleInstance().setValue(false);
+        MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subprocess.getExecutionSet();
+        executionSet.getIsMultipleInstance().setValue(false);
         return subprocess;
     }
 
     @Override
     protected Object newMultipleInstanceDefinition() {
         T subprocess = newReusableSubProcess();
-        subprocess.getExecutionSet().getIsMultipleInstance().setValue(true);
+        MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subprocess.getExecutionSet();
+        executionSet.getIsMultipleInstance().setValue(true);
         return subprocess;
     }
 
@@ -86,8 +90,9 @@ public abstract class BaseReusableSubProcessFilterProviderTest<T extends BaseReu
 
     private void testProvideFilterForAbortParent(boolean isMultipleInstance, boolean isIndependent) {
         T definition = newReusableSubProcess();
-        definition.getExecutionSet().getIsMultipleInstance().setValue(isMultipleInstance);
-        definition.getExecutionSet().getIndependent().setValue(isIndependent);
+        ReusableSubprocessTaskExecutionSet executionSet = (ReusableSubprocessTaskExecutionSet) definition.getExecutionSet();
+        executionSet.getIsMultipleInstance().setValue(isMultipleInstance);
+        executionSet.getIndependent().setValue(isIndependent);
         List<FormElementFilter> filters = testProvideFilters(UUID, definition, isMultipleInstance, 7);
         assertExpectedFilter(ABORT_PARENT, !isIndependent, definition, filters.get(6));
     }

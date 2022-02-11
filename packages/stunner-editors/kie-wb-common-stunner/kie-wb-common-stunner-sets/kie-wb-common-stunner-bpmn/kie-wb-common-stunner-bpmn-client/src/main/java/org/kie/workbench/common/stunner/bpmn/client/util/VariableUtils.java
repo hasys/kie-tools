@@ -34,16 +34,14 @@ import java.util.stream.StreamSupport;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.FlowElement;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseAdHocSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseUserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EmbeddedSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndErrorEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EventSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEventThrowing;
@@ -59,6 +57,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartSignal
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseFileVariables;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.workitem.CustomTask;
 import org.kie.workbench.common.stunner.core.diagram.Diagram;
 import org.kie.workbench.common.stunner.core.graph.Edge;
@@ -156,9 +155,10 @@ public class VariableUtils {
     private static Collection<VariableUsage> findVariableUsages(String variableName, BaseReusableSubprocess subprocess, Node<View<FlowElement>, Edge> node) {
         final String displayName = subprocess.getName();
         final Collection<VariableUsage> result = findVariableUsages(variableName, subprocess.getDataIOSet().getAssignmentsinfo(), displayName, node);
+        MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subprocess.getExecutionSet();
         addVariableUsages(result, variableName,
-                          subprocess.getExecutionSet().getMultipleInstanceCollectionInput().getValue(), subprocess.getExecutionSet().getMultipleInstanceDataInput().getValue(),
-                          subprocess.getExecutionSet().getMultipleInstanceCollectionOutput().getValue(), subprocess.getExecutionSet().getMultipleInstanceDataOutput().getValue(),
+                          executionSet.getMultipleInstanceCollectionInput().getValue(), executionSet.getMultipleInstanceDataInput().getValue(),
+                          executionSet.getMultipleInstanceCollectionOutput().getValue(), executionSet.getMultipleInstanceDataOutput().getValue(),
                           displayName, node);
         return result;
     }
@@ -277,17 +277,8 @@ public class VariableUtils {
                 }
                 if ((Objects.nonNull(parent) && Objects.equals(parent, element)) || Objects.isNull(selectedElement)) {
                     String subprocessVariables = null;
-                    if (oDefinition instanceof EventSubprocess) {
-                        EventSubprocess subprocess = (EventSubprocess) oDefinition;
-                        subprocessVariables = subprocess.getProcessData().getProcessVariables();
-                    } else if (oDefinition instanceof BaseAdHocSubprocess) {
-                        BaseAdHocSubprocess subprocess = (BaseAdHocSubprocess) oDefinition;
-                        subprocessVariables = subprocess.getProcessData().getProcessVariables();
-                    } else if (oDefinition instanceof MultipleInstanceSubprocess) {
-                        MultipleInstanceSubprocess subprocess = (MultipleInstanceSubprocess) oDefinition;
-                        subprocessVariables = subprocess.getProcessData().getProcessVariables();
-                    } else if (oDefinition instanceof EmbeddedSubprocess) {
-                        EmbeddedSubprocess subprocess = (EmbeddedSubprocess) oDefinition;
+                    if (oDefinition instanceof BaseSubprocess) {
+                        BaseSubprocess subprocess = (BaseSubprocess) oDefinition;
                         subprocessVariables = subprocess.getProcessData().getProcessVariables();
                     }
                     if (subprocessVariables != null && !subprocessVariables.isEmpty()) {

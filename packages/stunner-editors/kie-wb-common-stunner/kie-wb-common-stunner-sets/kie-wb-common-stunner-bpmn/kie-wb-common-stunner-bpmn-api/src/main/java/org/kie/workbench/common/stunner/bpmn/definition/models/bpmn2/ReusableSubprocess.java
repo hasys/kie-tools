@@ -31,6 +31,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSe
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.ReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
@@ -81,6 +82,16 @@ public class ReusableSubprocess
              new AdvancedData());
     }
 
+    @Override
+    public BaseSubprocessTaskExecutionSet getExecutionSet() {
+        return executionSet;
+    }
+
+    @Override
+    public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
+        this.executionSet = (ReusableSubprocessTaskExecutionSet) executionSet;
+    }
+
     public ReusableSubprocess(final @MapsTo("name") String name,
                               final @MapsTo("documentation") String documentation,
                               final @MapsTo("executionSet") ReusableSubprocessTaskExecutionSet executionSet,
@@ -120,20 +131,9 @@ public class ReusableSubprocess
     public boolean isSingleOutputVar() {
         return false;
     }
-
-    @Override
-    public ReusableSubprocessTaskExecutionSet getExecutionSet() {
-        return executionSet;
-    }
-
     @Override
     public DataIOSet getDataIOSet() {
         return dataIOSet;
-    }
-
-    @Override
-    public void setExecutionSet(final ReusableSubprocessTaskExecutionSet executionSet) {
-        this.executionSet = executionSet;
     }
 
     @Override

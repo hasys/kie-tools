@@ -22,6 +22,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Association;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseGateway;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseThrowingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectReference;
@@ -67,6 +68,8 @@ public class IdGenerator {
 
     private static int throwEventCounter = 1;
 
+    private static int subprocessCounter = 1;
+
     // key is old ID and value is new ID
     private static Map<String, String> oldNewId = new HashMap<>();
 
@@ -85,6 +88,7 @@ public class IdGenerator {
         dataObjectCounter = 1;
         catchEventCounter = 1;
         throwEventCounter = 1;
+        subprocessCounter = 1;
         oldNewId = new HashMap<>();
     }
 
@@ -145,6 +149,10 @@ public class IdGenerator {
 
         if (flowElement instanceof BaseThrowingIntermediateEvent) {
             return "throwEvent_" + throwEventCounter;
+        }
+
+        if (flowElement instanceof BaseSubprocess) {
+            return "subProcess_" + subprocessCounter;
         }
         return null;
     }

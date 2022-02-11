@@ -39,8 +39,4 @@ public abstract class BaseReusableSubprocess<E extends BaseReusableSubprocessTas
     public abstract DataIOSet getDataIOSet();
 
     public abstract void setDataIOSet(DataIOSet dataIOSet);
-
-    public abstract E getExecutionSet();
-
-    public abstract void setExecutionSet(E executionSet);
 }

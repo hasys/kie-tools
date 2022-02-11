@@ -19,6 +19,8 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -31,7 +33,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.background.Back
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EventSubprocessExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.HasProcessData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.ProcessData;
@@ -56,18 +58,19 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
-
 public class EventSubprocess extends BaseSubprocess implements HasProcessData<ProcessData> {
+
+    /**
+     * For marshallers, always should be true
+     */
+    @XmlAttribute(name = "triggeredByEvent")
+    private Boolean triggeredByEvent = true;
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
-    private EventSubprocessExecutionSet executionSet;
-
-    @Property
-    @FormField(afterElement = "executionSet")
-    @Valid
-    private ProcessData processData;
+    @XmlTransient
+    private BaseSubprocessTaskExecutionSet executionSet;
 
     public EventSubprocess() {
         this("Event Sub-process",
@@ -76,7 +79,7 @@ public class EventSubprocess extends BaseSubprocess implements HasProcessData<Pr
              new FontSet(),
              new RectangleDimensionsSet(),
              new SimulationSet(),
-             new EventSubprocessExecutionSet(),
+             new BaseSubprocessTaskExecutionSet(),
              new ProcessData(),
              new AdvancedData());
     }
@@ -87,7 +90,7 @@ public class EventSubprocess extends BaseSubprocess implements HasProcessData<Pr
                            final @MapsTo("fontSet") FontSet fontSet,
                            final @MapsTo("dimensionsSet") RectangleDimensionsSet dimensionsSet,
                            final @MapsTo("simulationSet") SimulationSet simulationSet,
-                           final @MapsTo("executionSet") EventSubprocessExecutionSet executionSet,
+                           final @MapsTo("executionSet") BaseSubprocessTaskExecutionSet executionSet,
                            final @MapsTo("processData") ProcessData processData,
                            final @MapsTo("advancedData") AdvancedData advancedData) {
         super(name,
@@ -96,10 +99,9 @@ public class EventSubprocess extends BaseSubprocess implements HasProcessData<Pr
               fontSet,
               dimensionsSet,
               simulationSet,
-              advancedData);
-
+              advancedData,
+              processData);
         this.executionSet = executionSet;
-        this.processData = processData;
     }
 
     @Override
@@ -110,39 +112,38 @@ public class EventSubprocess extends BaseSubprocess implements HasProcessData<Pr
         labels.remove("sequence_end");
     }
 
+    public Boolean getTriggeredByEvent() {
+        return triggeredByEvent;
+    }
+
+    public void setTriggeredByEvent(Boolean triggeredByEvent) {
+        this.triggeredByEvent = triggeredByEvent;
+    }
+
     @Override
-    public ProcessData getProcessData() {
-        return processData;
-    }
-
-    public void setProcessData(final ProcessData processData) {
-        this.processData = processData;
-    }
-
-    public EventSubprocessExecutionSet getExecutionSet() {
+    public BaseSubprocessTaskExecutionSet getExecutionSet() {
         return executionSet;
     }
 
-    public void setExecutionSet(EventSubprocessExecutionSet executionSet) {
+    @Override
+    public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
         this.executionSet = executionSet;
     }
 
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
-                                         executionSet.hashCode(),
-                                         processData.hashCode(),
-                                         labels.hashCode());
+                                         Objects.hashCode(labels),
+                                         Objects.hashCode(executionSet));
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof EventSubprocess) {
             EventSubprocess other = (EventSubprocess) o;
-            return super.equals(other) &&
-                    Objects.equals(executionSet, other.executionSet) &&
-                    Objects.equals(processData, other.processData) &&
-                    Objects.equals(labels, other.labels);
+            return super.equals(other)
+                    && Objects.equals(this.labels, other.labels)
+                    && Objects.equals(this.executionSet, other.executionSet);
         }
         return false;
     }

@@ -24,6 +24,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EmbeddedSub
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.SequenceFlow;
 import org.kie.workbench.common.stunner.bpmn.definition.property.common.ConditionExpression;
 import org.kie.workbench.common.stunner.bpmn.definition.property.connectors.SequenceFlowExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EmbeddedSubprocessExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.OnEntryAction;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.OnExitAction;
 import org.kie.workbench.common.stunner.bpmn.forms.model.ConditionalComboBoxFieldDefinition;
@@ -98,8 +99,9 @@ public class ConditionalComboBoxFieldRendererTest {
         resetMocks();
 
         EmbeddedSubprocess embeddedSubprocess = new EmbeddedSubprocess();
-        OnEntryAction onEntryAction = embeddedSubprocess.getExecutionSet().getOnEntryAction();
-        OnExitAction onExitAction = embeddedSubprocess.getExecutionSet().getOnExitAction();
+        EmbeddedSubprocessExecutionSet executionSet = (EmbeddedSubprocessExecutionSet) embeddedSubprocess.getExecutionSet();
+        OnEntryAction onEntryAction = executionSet.getOnEntryAction();
+        OnExitAction onExitAction = executionSet.getOnExitAction();
 
         //static mock
         PowerMockito.mockStatic(ClientBindingUtils.class);

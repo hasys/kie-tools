@@ -31,6 +31,7 @@ import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.l
 import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.type.TextAreaFieldType;
 import org.kie.workbench.common.stunner.bpmn.definition.property.general.SLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.IsCase;
+import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EmbeddedSubprocessExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.forms.model.ComboBoxFieldType;
 import org.kie.workbench.common.stunner.bpmn.forms.model.MultipleInstanceVariableFieldType;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
@@ -41,7 +42,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 @FormDefinition(
         startElement = "calledElement"
 )
-public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecutionSet implements BaseReusableSubprocessTaskExecutionSet {
+public class ReusableSubprocessTaskExecutionSet extends EmbeddedSubprocessExecutionSet implements BaseReusableSubprocessTaskExecutionSet {
 
     @Property
     @SelectorDataProvider(
@@ -144,20 +145,6 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
     @Valid
     private MultipleInstanceCompletionCondition multipleInstanceCompletionCondition;
 
-    @Property
-    @FormField(afterElement = "multipleInstanceCompletionCondition",
-            settings = {@FieldParam(name = "mode", value = "ACTION_SCRIPT")}
-    )
-    @Valid
-    private OnEntryAction onEntryAction;
-
-    @Property
-    @FormField(afterElement = "onEntryAction",
-            settings = {@FieldParam(name = "mode", value = "ACTION_SCRIPT")}
-    )
-    @Valid
-    private OnExitAction onExitAction;
-
     public ReusableSubprocessTaskExecutionSet() {
         this(new CalledElement(),
              new IsCase(),
@@ -197,7 +184,7 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
                                               final @MapsTo("onEntryAction") OnEntryAction onEntryAction,
                                               final @MapsTo("onExitAction") OnExitAction onExitAction,
                                               final @MapsTo("slaDueDate") SLADueDate slaDueDate) {
-        super(isAsync, slaDueDate);
+        super(onEntryAction, onExitAction, isAsync, slaDueDate);
         this.calledElement = calledElement;
         this.isCase = isCase;
         this.independent = independent;
@@ -211,8 +198,6 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
         this.multipleInstanceCollectionOutput = multipleInstanceCollectionOutput;
         this.multipleInstanceDataOutput = multipleInstanceDataOutput;
         this.multipleInstanceCompletionCondition = multipleInstanceCompletionCondition;
-        this.onEntryAction = onEntryAction;
-        this.onExitAction = onExitAction;
     }
 
     @Override
@@ -346,26 +331,6 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
     }
 
     @Override
-    public OnEntryAction getOnEntryAction() {
-        return onEntryAction;
-    }
-
-    @Override
-    public void setOnEntryAction(final OnEntryAction onEntryAction) {
-        this.onEntryAction = onEntryAction;
-    }
-
-    @Override
-    public OnExitAction getOnExitAction() {
-        return onExitAction;
-    }
-
-    @Override
-    public void setOnExitAction(final OnExitAction onExitAction) {
-        this.onExitAction = onExitAction;
-    }
-
-    @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(super.hashCode(),
                                          Objects.hashCode(calledElement),
@@ -380,9 +345,7 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
                                          Objects.hashCode(multipleInstanceDataInput),
                                          Objects.hashCode(multipleInstanceCollectionOutput),
                                          Objects.hashCode(multipleInstanceDataOutput),
-                                         Objects.hashCode(multipleInstanceCompletionCondition),
-                                         Objects.hashCode(onEntryAction),
-                                         Objects.hashCode(onExitAction));
+                                         Objects.hashCode(multipleInstanceCompletionCondition));
     }
 
     @Override
@@ -405,9 +368,7 @@ public class ReusableSubprocessTaskExecutionSet extends BaseSubprocessTaskExecut
                     Objects.equals(multipleInstanceDataInput, other.multipleInstanceDataInput) &&
                     Objects.equals(multipleInstanceCollectionOutput, other.multipleInstanceCollectionOutput) &&
                     Objects.equals(multipleInstanceDataOutput, other.multipleInstanceDataOutput) &&
-                    Objects.equals(multipleInstanceCompletionCondition, other.multipleInstanceCompletionCondition) &&
-                    Objects.equals(onEntryAction, other.onEntryAction) &&
-                    Objects.equals(onExitAction, other.onExitAction);
+                    Objects.equals(multipleInstanceCompletionCondition, other.multipleInstanceCompletionCondition);
         }
         return false;
     }

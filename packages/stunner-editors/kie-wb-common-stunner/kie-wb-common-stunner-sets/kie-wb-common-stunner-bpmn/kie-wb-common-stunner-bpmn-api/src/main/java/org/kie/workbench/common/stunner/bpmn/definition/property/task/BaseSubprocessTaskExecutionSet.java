@@ -19,6 +19,7 @@ package org.kie.workbench.common.stunner.bpmn.definition.property.task;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -38,11 +39,13 @@ public class BaseSubprocessTaskExecutionSet implements BPMNPropertySet {
     @Property
     @FormField
     @Valid
+    @XmlTransient
     private IsAsync isAsync;
 
     @Property
     @FormField(afterElement = "isAsync")
     @Valid
+    @XmlTransient
     protected SLADueDate slaDueDate;
 
     public BaseSubprocessTaskExecutionSet() {
