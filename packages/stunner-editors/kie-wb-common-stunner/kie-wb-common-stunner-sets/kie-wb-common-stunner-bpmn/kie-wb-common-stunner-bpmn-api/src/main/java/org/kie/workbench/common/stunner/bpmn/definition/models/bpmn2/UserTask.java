@@ -31,6 +31,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.IsMultipleInstance;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnEntryScript;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnExitScript;
@@ -64,7 +65,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "task", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
+public class UserTask extends BaseUserTask<UserTaskExecutionSet> implements IsMultipleInstance {
 
     @Property
     @FormField(
@@ -89,12 +90,12 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
     @XmlUnwrappedCollection
     private List<DataOutputAssociation> dataOutputAssociation = new ArrayList<>();
 
+    @XmlElement(name = "multiInstanceLoopCharacteristics")
+    private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
+
     @XmlElement(name = "potentialOwner")
     @XmlUnwrappedCollection
     private List<PotentialOwner> potentialOwners = new ArrayList<>();
-
-    @XmlElement(name = "multiInstanceLoopCharacteristics")
-    private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
 
     public UserTask() {
         this("Task",
@@ -214,11 +215,37 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
         this.itemDefinitions = itemDefinitions;
     }
 
+    @Override
+    public boolean isMultipleInstance() {
+        return executionSet.getIsMultipleInstance().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceCollectionInputName() {
+        return executionSet.getMultipleInstanceCollectionInput().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceDataInputName() {
+        return executionSet.getMultipleInstanceDataInput().getValue().split(":")[0];
+    }
+
+    @Override
+    public String getMultipleInstanceCollectionOutputName() {
+        return executionSet.getMultipleInstanceCollectionOutput().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceDataOutputName() {
+        return executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0];
+    }
+
+    @Override
     public IoSpecification getIoSpecification() {
         if (getId() == null) {
             return null;
         }
-        ioSpecification = new IoSpecification();
+        ioSpecification = IsMultipleInstance.super.getIoSpecification();
 
         DataInput inputTaskName = createDataInput("TaskName");
         ioSpecification.getDataInput().add(inputTaskName);
@@ -320,36 +347,6 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
             }
         }
 
-        if (executionSet.getIsMultipleInstance().getValue()) {
-            DataInput inputCollection = new DataInput();
-            inputCollection.setName("IN_COLLECTION");
-            inputCollection.setId(getId() + "_IN_COLLECTIONInputX");
-            inputCollection.setItemSubjectRef("_" + executionSet.getMultipleInstanceCollectionInput().getValue() + "Item");
-            ioSpecification.getDataInput().add(inputCollection);
-            ioSpecification.getInputSet().getDataInputRefs().add(new DataInputRefs(inputCollection.getId()));
-
-            DataInput inputItem = new DataInput();
-            inputItem.setName(executionSet.getMultipleInstanceDataInput().getValue().split(":")[0]);
-            inputItem.setId(getId() + "_" + executionSet.getMultipleInstanceDataInput().getValue().split(":")[0] + "InputX");
-            inputItem.setItemSubjectRef(getId() + "_multiInstanceItemType_" + executionSet.getMultipleInstanceDataInput().getValue().split(":")[0]);
-            ioSpecification.getDataInput().add(inputItem);
-            ioSpecification.getInputSet().getDataInputRefs().add(new DataInputRefs(inputItem.getId()));
-
-            DataOutput outputCollection = new DataOutput();
-            outputCollection.setName("OUT_COLLECTION");
-            outputCollection.setId(getId() + "_OUT_COLLECTIONInputX");
-            outputCollection.setItemSubjectRef("_" + executionSet.getMultipleInstanceCollectionOutput().getValue() + "Item");
-            ioSpecification.getDataOutput().add(outputCollection);
-            ioSpecification.getOutputSet().getDataOutputRefs().add(new DataOutputRefs(outputCollection.getId()));
-
-            DataOutput outputItem = new DataOutput();
-            outputItem.setName(executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0]);
-            outputItem.setId(getId() + "_" + executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0] + "OutputX");
-            outputItem.setItemSubjectRef(getId() + "_multiInstanceItemType_" + executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0]);
-            ioSpecification.getDataOutput().add(outputItem);
-            ioSpecification.getOutputSet().getDataOutputRefs().add(new DataOutputRefs(outputItem.getId()));
-        }
-
         return ioSpecification;
     }
 
@@ -371,8 +368,9 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
         this.ioSpecification = ioSpecification;
     }
 
+    @Override
     public List<DataInputAssociation> getDataInputAssociation() {
-        dataInputAssociation = new ArrayList<>();
+        dataInputAssociation = IsMultipleInstance.super.getDataInputAssociation();
 
         // Can happen on designer startup during CDI proxies creation phase
         if (getId() != null) {
@@ -500,15 +498,6 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
                 dataInputAssociation.addAll(AssignmentParser.parseDataInputAssociation(getId(),
                                                                                        executionSet.getAssignmentsinfo().getValue()));
             }
-
-            if (executionSet.getIsMultipleInstance().getValue()) {
-                DataInputAssociation miInputCollection = new DataInputAssociation(getId() + "_IN_COLLECTIONInputX", executionSet.getMultipleInstanceCollectionInput().getValue());
-                dataInputAssociation.add(miInputCollection);
-
-                DataInputAssociation miInputAssociation = new DataInputAssociation(getId() + "_" + executionSet.getMultipleInstanceDataInput().getValue().split(":")[0] + "InputX",
-                                                                                   executionSet.getMultipleInstanceDataInput().getValue().split(":")[0]);
-                dataInputAssociation.add(miInputAssociation);
-            }
         }
 
         return dataInputAssociation;
@@ -518,17 +507,9 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
         this.dataInputAssociation = dataInputAssociation;
     }
 
+    @Override
     public List<DataOutputAssociation> getDataOutputAssociation() {
-        dataOutputAssociation = new ArrayList<>();
-
-        if (executionSet.getIsMultipleInstance().getValue()) {
-            DataOutputAssociation miOutCollection = new DataOutputAssociation(getId() + "_OUT_COLLECTIONOutputX", executionSet.getMultipleInstanceCollectionOutput().getValue());
-            dataOutputAssociation.add(miOutCollection);
-
-            DataOutputAssociation miOutputAssociation = new DataOutputAssociation(getId() + "_" + executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0] + "OutputX",
-                                                                                  executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0]);
-            dataOutputAssociation.add(miOutputAssociation);
-        }
+        dataOutputAssociation = IsMultipleInstance.super.getDataOutputAssociation();
 
         if (!executionSet.getAssignmentsinfo().getValue().isEmpty()) {
             dataOutputAssociation.addAll(AssignmentParser.parseDataOutputAssociation(getId(),
@@ -562,31 +543,18 @@ public class UserTask extends BaseUserTask<UserTaskExecutionSet> {
         this.potentialOwners = potentialOwners;
     }
 
-    public MultiInstanceLoopCharacteristics getMultiInstanceLoopCharacteristics() {
-        if (getId() == null || !executionSet.getIsMultipleInstance().getValue()) {
-            return null;
-        }
-
-        multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
-        multiInstanceLoopCharacteristics.setLoopDataInputRef(getId() + "_IN_COLLECTIONInputX");
-        multiInstanceLoopCharacteristics.setLoopDataOutputRef(getId() + "_OUT_COLLECTIONOutputX");
-        multiInstanceLoopCharacteristics.getCompletionCondition().setValue(executionSet.getMultipleInstanceCompletionCondition().getValue());
-        multiInstanceLoopCharacteristics.setInputDataItem(new InputDataItem(
-                executionSet.getMultipleInstanceDataInput().getValue().split(":")[0],
-                getId() + "_multiInstanceItemType_" + executionSet.getMultipleInstanceDataInput().getValue().split(":")[0],
-                executionSet.getMultipleInstanceDataInput().getValue().split(":")[0]
-        ));
-        multiInstanceLoopCharacteristics.setOutputDataItem(new OutputDataItem(
-                executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0],
-                getId() + "_multiInstanceItemType_" + executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0],
-                executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0]
-        ));
-
-        return null;
-    }
-
     public void setMultiInstanceLoopCharacteristics(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
         this.multiInstanceLoopCharacteristics = multiInstanceLoopCharacteristics;
+    }
+
+    @Override
+    public String getMultipleInstanceCompletionCondition() {
+        return executionSet.getMultipleInstanceCompletionCondition().getValue();
+    }
+
+    @Override
+    public MultiInstanceLoopCharacteristics getMultiInstanceLoopCharacteristics() {
+        return IsMultipleInstance.super.getMultiInstanceLoopCharacteristics();
     }
 
     @Override

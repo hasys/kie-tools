@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
@@ -58,6 +59,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
+@XmlRootElement(name = "subProcess", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class EventSubprocess extends BaseSubprocess implements HasProcessData<ProcessData> {
 
     /**

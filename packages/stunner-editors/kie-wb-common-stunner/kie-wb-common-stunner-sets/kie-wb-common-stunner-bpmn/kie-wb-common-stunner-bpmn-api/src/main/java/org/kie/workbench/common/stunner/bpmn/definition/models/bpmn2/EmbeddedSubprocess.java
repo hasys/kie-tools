@@ -16,11 +16,10 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
@@ -30,8 +29,6 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
-import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
-import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOModel;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
@@ -48,7 +45,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanContain;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanDock;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.FIELD_CONTAINER_PARAM;
@@ -64,16 +60,9 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
-public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
-                                                                  HasProcessData<ProcessData>,
-                                                                  HasOutgoing,
-                                                                  HasIncoming {
-
-    @XmlUnwrappedCollection
-    private List<Incoming> incoming = new ArrayList<>();
-
-    @XmlUnwrappedCollection
-    private List<Outgoing> outgoing = new ArrayList<>();
+@XmlRootElement(name = "subProcess", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+public class EmbeddedSubprocess extends ConnectedBaseSubprocess implements DataIOModel,
+                                                                           HasProcessData<ProcessData> {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -108,29 +97,9 @@ public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
               fontSet,
               dimensionsSet,
               simulationSet,
-              advancedData,
-              processData);
+              processData,
+              advancedData);
         this.executionSet = executionSet;
-    }
-
-    @Override
-    public boolean hasInputVars() {
-        return true;
-    }
-
-    @Override
-    public boolean isSingleInputVar() {
-        return false;
-    }
-
-    @Override
-    public boolean hasOutputVars() {
-        return true;
-    }
-
-    @Override
-    public boolean isSingleOutputVar() {
-        return false;
     }
 
     @Override
@@ -143,22 +112,6 @@ public class EmbeddedSubprocess extends BaseSubprocess implements DataIOModel,
         getExecutionSet().setOnEntryOnExitMetadata(elements);
 
         return elements.isEmtpy() ? null : elements;
-    }
-
-    public List<Incoming> getIncoming() {
-        return incoming;
-    }
-
-    public void setIncoming(List<Incoming> incoming) {
-        this.incoming = incoming;
-    }
-
-    public List<Outgoing> getOutgoing() {
-        return outgoing;
-    }
-
-    public void setOutgoing(List<Outgoing> outgoing) {
-        this.outgoing = outgoing;
     }
 
     @Override

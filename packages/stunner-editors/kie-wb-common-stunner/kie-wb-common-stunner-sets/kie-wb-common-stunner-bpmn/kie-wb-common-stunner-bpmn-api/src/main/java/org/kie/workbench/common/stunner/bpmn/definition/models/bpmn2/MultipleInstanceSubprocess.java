@@ -16,9 +16,13 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
@@ -28,6 +32,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.IsMultipleInstance;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
@@ -43,6 +48,7 @@ import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanContain;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanDock;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
+import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.FIELD_CONTAINER_PARAM;
@@ -59,13 +65,29 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
-public class MultipleInstanceSubprocess extends BaseSubprocess implements HasProcessData<ProcessData> {
+@XmlRootElement(name = "subProcess", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+public class MultipleInstanceSubprocess extends ConnectedBaseSubprocess implements HasProcessData<ProcessData>,
+                                                                                   IsMultipleInstance {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
     @XmlTransient
     private MultipleInstanceSubprocessTaskExecutionSet executionSet;
+
+    @XmlElement
+    private IoSpecification ioSpecification;
+
+    @XmlElement(name = "dataInputAssociation")
+    @XmlUnwrappedCollection
+    private List<DataInputAssociation> dataInputAssociation = new ArrayList<>();
+
+    @XmlElement(name = "dataOutputAssociation")
+    @XmlUnwrappedCollection
+    private List<DataOutputAssociation> dataOutputAssociation = new ArrayList<>();
+
+    @XmlElement(name = "multiInstanceLoopCharacteristics")
+    private MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics;
 
     public MultipleInstanceSubprocess() {
         this("Multiple Instance Sub-process",
@@ -94,8 +116,8 @@ public class MultipleInstanceSubprocess extends BaseSubprocess implements HasPro
               fontSet,
               dimensionsSet,
               simulationSet,
-              advancedData,
-              processData);
+              processData,
+              advancedData);
         this.executionSet = executionSet;
     }
 
@@ -107,6 +129,72 @@ public class MultipleInstanceSubprocess extends BaseSubprocess implements HasPro
     @Override
     public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
         this.executionSet = (MultipleInstanceSubprocessTaskExecutionSet) executionSet;
+    }
+
+    public void setIoSpecification(IoSpecification ioSpecification) {
+
+    }
+
+    public void setDataInputAssociation(List<DataInputAssociation> associations) {
+
+    }
+
+    public void setDataOutputAssociation(List<DataOutputAssociation> associations) {
+
+    }
+
+    public void setMultiInstanceLoopCharacteristics(MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
+        this.multiInstanceLoopCharacteristics = multiInstanceLoopCharacteristics;
+    }
+
+    @Override
+    public boolean isMultipleInstance() {
+        return executionSet.getIsMultipleInstance().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceCollectionInputName() {
+        return executionSet.getMultipleInstanceCollectionInput().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceDataInputName() {
+        return executionSet.getMultipleInstanceDataInput().getValue().split(":")[0];
+    }
+
+    @Override
+    public String getMultipleInstanceCollectionOutputName() {
+        return executionSet.getMultipleInstanceCollectionOutput().getValue();
+    }
+
+    @Override
+    public String getMultipleInstanceDataOutputName() {
+        return executionSet.getMultipleInstanceDataOutput().getValue().split(":")[0];
+    }
+
+    @Override
+    public String getMultipleInstanceCompletionCondition() {
+        return executionSet.getMultipleInstanceCompletionCondition().getValue();
+    }
+
+    @Override
+    public MultiInstanceLoopCharacteristics getMultiInstanceLoopCharacteristics() {
+        return IsMultipleInstance.super.getMultiInstanceLoopCharacteristics();
+    }
+
+    @Override
+    public IoSpecification getIoSpecification() {
+        return IsMultipleInstance.super.getIoSpecification();
+    }
+
+    @Override
+    public List<DataInputAssociation> getDataInputAssociation() {
+        return IsMultipleInstance.super.getDataInputAssociation();
+    }
+
+    @Override
+    public List<DataOutputAssociation> getDataOutputAssociation() {
+        return IsMultipleInstance.super.getDataOutputAssociation();
     }
 
     @Override
