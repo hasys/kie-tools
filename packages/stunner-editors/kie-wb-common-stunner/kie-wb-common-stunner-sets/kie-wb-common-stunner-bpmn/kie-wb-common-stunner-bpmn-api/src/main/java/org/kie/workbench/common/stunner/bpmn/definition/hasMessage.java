@@ -24,6 +24,8 @@ public interface hasMessage {
 
     String getMessageId();
 
+    void setMessageEventDefinition(MessageEventDefinition messageEventDefinition);
+
     default MessageEventDefinition getMessageEventDefinition() {
         return new MessageEventDefinition(getExecutionSet().getMessageRef().getValue(), getMessageId());
     }

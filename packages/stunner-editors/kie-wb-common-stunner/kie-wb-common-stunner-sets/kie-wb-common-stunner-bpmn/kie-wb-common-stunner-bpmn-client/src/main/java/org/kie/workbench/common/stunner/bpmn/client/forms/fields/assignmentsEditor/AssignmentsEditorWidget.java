@@ -242,7 +242,7 @@ public class AssignmentsEditorWidget extends Composite implements HasValue<Strin
 
         if (selectedElement != null) {
             final String mainDiagramId = canvasSessionManager.getCurrentSession().getCanvasHandler().getDiagram().getMetadata().getCanvasRootUUID();
-            if (parent != null) {
+            if (parent != null) { // Temporary Fix to be able to import Nodes
                 parentIds.add(parent.getUUID());
             }
             while (parent != null && !parent.getUUID().equals(mainDiagramId)) {

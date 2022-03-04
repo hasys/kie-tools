@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.google.gwt.core.client.GWT;
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.jboss.errai.databinding.client.api.Bindable;
@@ -32,6 +31,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.hasMessage;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
@@ -56,7 +56,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndMessageEvent extends EndEvent implements hasMessage {
+public class EndMessageEvent extends EndEvent implements hasMessage,
+                                                         hasInputAssignments {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -127,7 +128,6 @@ public class EndMessageEvent extends EndEvent implements hasMessage {
     }
 
     public List<DataInput> getDataInputs() {
-        GWT.log("EndMessageEvent:::getDataInputs: " + AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue()));
         return AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
@@ -135,18 +135,8 @@ public class EndMessageEvent extends EndEvent implements hasMessage {
         this.dataInputs = dataInputs;
     }
 
-    public List<DataInputAssociation> getDataInputAssociation() {
-        GWT.log("EndMessageEvent:::getDataInputAssociation: " + AssignmentParser.parseDataInputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue()));
-        return AssignmentParser.parseDataInputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue());
-    }
-
     public void setDataInputAssociation(List<DataInputAssociation> dataInputAssociation) {
         this.dataInputAssociation = dataInputAssociation;
-    }
-
-    public List<InputSet> getInputSet() {
-        GWT.log("EndMessageEvent:::getDataInputSet: " + AssignmentParser.getInputSet(getId(), dataIOSet.getAssignmentsinfo().getValue()));
-        return AssignmentParser.getInputSet(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
     public void setInputSet(List<InputSet> inputSet) {
