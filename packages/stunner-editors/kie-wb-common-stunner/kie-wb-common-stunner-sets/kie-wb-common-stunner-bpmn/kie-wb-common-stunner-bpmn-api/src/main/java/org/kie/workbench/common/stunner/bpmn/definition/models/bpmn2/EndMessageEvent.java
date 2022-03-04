@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.gwt.core.client.GWT;
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.jboss.errai.databinding.client.api.Bindable;
@@ -126,6 +127,7 @@ public class EndMessageEvent extends EndEvent implements hasMessage {
     }
 
     public List<DataInput> getDataInputs() {
+        GWT.log("EndMessageEvent:::getDataInputs: " + AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue()));
         return AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
@@ -134,6 +136,7 @@ public class EndMessageEvent extends EndEvent implements hasMessage {
     }
 
     public List<DataInputAssociation> getDataInputAssociation() {
+        GWT.log("EndMessageEvent:::getDataInputAssociation: " + AssignmentParser.parseDataInputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue()));
         return AssignmentParser.parseDataInputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
@@ -142,6 +145,7 @@ public class EndMessageEvent extends EndEvent implements hasMessage {
     }
 
     public List<InputSet> getInputSet() {
+        GWT.log("EndMessageEvent:::getDataInputSet: " + AssignmentParser.getInputSet(getId(), dataIOSet.getAssignmentsinfo().getValue()));
         return AssignmentParser.getInputSet(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 

@@ -29,6 +29,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -236,12 +237,15 @@ public class AssignmentsEditorWidget extends Composite implements HasValue<Strin
         Set<String> parentIds = new HashSet<>();
         final Node selectedElement = getSelectedElement();
         Element parent = GraphUtils.getParent(selectedElement);
+        GWT.log("Selected Element: " + selectedElement.getUUID());
+        GWT.log("Selected Element Parent: " + parent);
 
         if (selectedElement != null) {
             final String mainDiagramId = canvasSessionManager.getCurrentSession().getCanvasHandler().getDiagram().getMetadata().getCanvasRootUUID();
-            parentIds.add(parent.getUUID());
-
-            while (!parent.getUUID().equals(mainDiagramId)) {
+            if (parent != null) {
+                parentIds.add(parent.getUUID());
+            }
+            while (parent != null && !parent.getUUID().equals(mainDiagramId)) {
                 parent = graphUtils.getParent(parent.asNode());
                 parentIds.add(parent.getUUID());
             }
