@@ -20,10 +20,8 @@ import java.util.List;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataInput;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataInputAssociation;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InputSet;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
 
 public interface hasInputAssignments {
 

@@ -32,7 +32,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.hasMessage;
+import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
@@ -56,7 +56,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndMessageEvent extends EndEvent implements hasMessage,
+public class EndMessageEvent extends EndEvent implements hasMessageEventDefinition,
                                                          hasInputAssignments {
 
     @Property

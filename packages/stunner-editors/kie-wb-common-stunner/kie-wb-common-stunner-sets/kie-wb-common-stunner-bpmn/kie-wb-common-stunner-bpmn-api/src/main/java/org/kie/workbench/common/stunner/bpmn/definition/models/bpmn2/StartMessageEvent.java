@@ -31,8 +31,8 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
-import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOModel;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.InterruptingMessageEventExecutionSet;
@@ -57,7 +57,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class StartMessageEvent extends StartEvent implements DataIOModel {
+public class StartMessageEvent extends StartEvent implements DataIOModel,
+                                                             hasOutputAssignments {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -159,24 +160,12 @@ public class StartMessageEvent extends StartEvent implements DataIOModel {
         this.messageId = messageId;
     }
 
-    public List<DataOutput> getDataOutputs() {
-        return AssignmentParser.parseDataOutputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
-    }
-
     public void setDataOutputs(List<DataOutput> dataOutputs) {
         this.dataOutputs = dataOutputs;
     }
 
-    public List<DataOutputAssociation> getDataOutputAssociation() {
-        return AssignmentParser.parseDataOutputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue());
-    }
-
     public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
         this.dataOutputAssociation = dataOutputAssociation;
-    }
-
-    public List<OutputSet> getOutputSet() {
-        return AssignmentParser.getOutputSet(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
     public void setOutputSet(List<OutputSet> outputSet) {

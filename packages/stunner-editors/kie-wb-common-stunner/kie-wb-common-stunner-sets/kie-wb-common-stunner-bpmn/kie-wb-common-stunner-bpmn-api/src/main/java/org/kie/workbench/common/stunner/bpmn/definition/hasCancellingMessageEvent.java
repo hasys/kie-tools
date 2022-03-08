@@ -16,11 +16,11 @@
 package org.kie.workbench.common.stunner.bpmn.definition;
 
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MessageEventDefinition;
-import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.CancellingMessageEventExecutionSet;
 
-public interface hasMessage {
+public interface hasCancellingMessageEvent {
 
-    MessageEventExecutionSet getExecutionSet();
+    CancellingMessageEventExecutionSet getExecutionSet();
 
     String getMessageId();
 

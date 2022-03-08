@@ -22,6 +22,7 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
+import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
@@ -34,7 +35,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = IntermediateSignalEventThrowing.class)
-public abstract class BaseThrowingIntermediateEvent extends BaseIntermediateEvent {
+public abstract class BaseThrowingIntermediateEvent extends BaseIntermediateEvent implements hasInputAssignments {
 
     @Category
     public static final transient String category = BPMNCategories.INTERMEDIATE_EVENTS;

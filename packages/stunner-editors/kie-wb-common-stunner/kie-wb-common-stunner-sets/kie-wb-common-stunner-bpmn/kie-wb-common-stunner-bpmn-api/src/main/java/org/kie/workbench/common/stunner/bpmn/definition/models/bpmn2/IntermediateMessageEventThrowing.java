@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -28,6 +29,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
@@ -52,12 +54,18 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateThrowEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateMessageEventThrowing extends BaseThrowingIntermediateEvent {
+public class IntermediateMessageEventThrowing extends BaseThrowingIntermediateEvent implements hasMessageEventDefinition {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private MessageEventExecutionSet executionSet;
+
+    @XmlTransient
+    private String messageId;
+
+    public MessageEventDefinition messageEventDefinition;
 
     public IntermediateMessageEventThrowing() {
         this("",
@@ -86,6 +94,24 @@ public class IntermediateMessageEventThrowing extends BaseThrowingIntermediateEv
               dataIOSet,
               advancedData);
         this.executionSet = executionSet;
+    }
+
+    public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {
+        this.messageEventDefinition = messageEventDefinition;
+    }
+
+    public Message getMessage() {
+        return new Message(getMessageId(),
+                           executionSet.getMessageRef().getValue(),
+                           executionSet.getMessageRef().getValue() + "Type");
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     @Override
