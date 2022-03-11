@@ -25,6 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 
+import com.google.gwt.core.client.GWT;
 import org.kie.workbench.common.stunner.bpmn.BPMNDefinitionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
@@ -39,11 +40,18 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectR
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions_XMLMapperImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EmbeddedSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNodeRef;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Incoming;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEventThrowing;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateMessageEventCatching;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateMessageEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ItemDefinition;
@@ -55,6 +63,8 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Relationship;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.SequenceFlow;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Signal;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartErrorEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartSignalEvent;
@@ -157,7 +167,22 @@ public class BPMNClientMarshalling {
                 if (startEvent instanceof StartMessageEvent) {
                     StartMessageEvent startMessage = (StartMessageEvent) startEvent;
                     startMessage.setMessageId(IdGenerator.getTypeId(startMessage));
+                    GWT.log("Setting Message Id:" + startMessage.getMessageId());
+
                     definitions.getMessages().add(startMessage.getMessage());
+                }
+
+                if (startEvent instanceof StartErrorEvent) {
+                    StartErrorEvent startErrorEvent = (StartErrorEvent) startEvent;
+                    startErrorEvent.setErrorId(IdGenerator.getTypeId(startErrorEvent));
+                    GWT.log("Setting Error Id:" + startErrorEvent.getErrorId());
+                    definitions.getErrors().add(startErrorEvent.getError());
+                }
+
+                if (startEvent instanceof StartEscalationEvent) {
+                    StartEscalationEvent startEscalationEvent = (StartEscalationEvent) startEvent;
+                    startEscalationEvent.setEscalationId(IdGenerator.getTypeId(startEscalationEvent));
+                    definitions.getEscalations().add(startEscalationEvent.getEscalation());
                 }
 
                 if (startEvent instanceof StartSignalEvent) {
@@ -176,6 +201,18 @@ public class BPMNClientMarshalling {
 
             if (definition instanceof EndEvent) {
                 EndEvent endEvent = (EndEvent) definition;
+
+                if (endEvent instanceof EndMessageEvent) {
+                    EndMessageEvent endMessage = (EndMessageEvent) endEvent;
+                    endMessage.setMessageId(IdGenerator.getTypeId(endMessage));
+                    definitions.getMessages().add(endMessage.getMessage());
+                }
+
+                if (endEvent instanceof EndEscalationEvent) {
+                    EndEscalationEvent endEscalationEvent = (EndEscalationEvent) endEvent;
+                    endEscalationEvent.setEscalationId(IdGenerator.getTypeId(endEscalationEvent));
+                    definitions.getEscalations().add(endEscalationEvent.getEscalation());
+                }
 
                 if (endEvent instanceof EndSignalEvent) {
                     EndSignalEvent endSignal = (EndSignalEvent) endEvent;
@@ -212,6 +249,36 @@ public class BPMNClientMarshalling {
                         definitions.getSignals().add(signal);
                     }
                     definitions.getItemDefinitions().addAll(catchingSignal.getItemDefinition());
+                }
+
+                if (intermediateEvent instanceof IntermediateMessageEventCatching) {
+                    IntermediateMessageEventCatching intermediateMessageEventCatching = (IntermediateMessageEventCatching) intermediateEvent;
+                    intermediateMessageEventCatching.setMessageId(IdGenerator.getTypeId(intermediateMessageEventCatching));
+                    definitions.getMessages().add(intermediateMessageEventCatching.getMessage());
+                }
+
+                if (intermediateEvent instanceof IntermediateMessageEventThrowing) {
+                    IntermediateMessageEventThrowing intermediateMessageEventThrowing = (IntermediateMessageEventThrowing) intermediateEvent;
+                    intermediateMessageEventThrowing.setMessageId(IdGenerator.getTypeId(intermediateMessageEventThrowing));
+                    definitions.getMessages().add(intermediateMessageEventThrowing.getMessage());
+                }
+
+                if (intermediateEvent instanceof IntermediateErrorEventCatching) {
+                    IntermediateErrorEventCatching intermediateErrorEventCatching = (IntermediateErrorEventCatching) intermediateEvent;
+                    intermediateErrorEventCatching.setErrorId(IdGenerator.getTypeId(intermediateErrorEventCatching));
+                    definitions.getErrors().add(intermediateErrorEventCatching.getError());
+                }
+
+                if (intermediateEvent instanceof IntermediateEscalationEvent) {
+                    IntermediateEscalationEvent intermediateEscalationEvent = (IntermediateEscalationEvent) intermediateEvent;
+                    intermediateEscalationEvent.setEscalationId(IdGenerator.getTypeId(intermediateEscalationEvent));
+                    definitions.getEscalations().add(intermediateEscalationEvent.getEscalation());
+                }
+
+                if (intermediateEvent instanceof IntermediateEscalationEventThrowing) {
+                    IntermediateEscalationEventThrowing intermediateEscalationEventThrowing = (IntermediateEscalationEventThrowing) intermediateEvent;
+                    intermediateEscalationEventThrowing.setEscalationId(IdGenerator.getTypeId(intermediateEscalationEventThrowing));
+                    definitions.getEscalations().add(intermediateEscalationEventThrowing.getEscalation());
                 }
 
                 // Adding simulation properties

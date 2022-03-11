@@ -26,12 +26,18 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubproc
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseThrowingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectReference;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ScriptTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartErrorEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartSignalEvent;
@@ -53,6 +59,10 @@ public class IdGenerator {
     private static int messageCounter = 1;
 
     private static int signalCounter = 1;
+
+    private static int errorCounter = 1;
+
+    private static int escalationCounter = 1;
 
     private static int laneCounter = 1;
 
@@ -167,6 +177,18 @@ public class IdGenerator {
                 || event instanceof IntermediateSignalEventThrowing
                 || event instanceof IntermediateSignalEventCatching) {
             return "Signal_" + signalCounter++;
+        }
+
+        if (event instanceof StartErrorEvent
+                || event instanceof IntermediateErrorEventCatching) {
+            return "Error_" + errorCounter++;
+        }
+
+        if (event instanceof StartEscalationEvent
+                || event instanceof EndEscalationEvent
+                || event instanceof IntermediateEscalationEvent
+                || event instanceof IntermediateEscalationEventThrowing) {
+            return "Escalation_" + escalationCounter++;
         }
 
         return "";

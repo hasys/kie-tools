@@ -126,10 +126,9 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
         this.errorEventDefinition = errorEventDefinition;
     }
 
-    public Message getError() {
-        return new Message(getErrorId(),
-                           executionSet.getErrorRef().getValue(),
-                           executionSet.getErrorRef().getValue() + "Type");
+    public ErrorRef getError() {
+        return new ErrorRef(getErrorId(),
+                            executionSet.getErrorRef().getValue());
     }
 
     public String getErrorId() {

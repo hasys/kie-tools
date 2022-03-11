@@ -32,7 +32,6 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -55,8 +54,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndMessageEvent extends EndEvent implements hasMessageEventDefinition,
-                                                         hasInputAssignments {
+public class EndMessageEvent extends EndEvent implements hasInputAssignments {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -106,6 +104,10 @@ public class EndMessageEvent extends EndEvent implements hasMessageEventDefiniti
         this.dataIOSet = dataIOSet;
 
         labels.add("messageflow_start");
+    }
+
+    public MessageEventDefinition getMessageEventDefinition() {
+        return new MessageEventDefinition(getExecutionSet().getMessageRef().getValue(), getMessageId());
     }
 
     public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {

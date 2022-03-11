@@ -30,7 +30,6 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
-import org.kie.workbench.common.stunner.bpmn.definition.hasErrorEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
@@ -56,8 +55,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class StartErrorEvent extends StartEvent implements hasOutputAssignments,
-                                                           hasErrorEvent {
+public class StartErrorEvent extends StartEvent implements hasOutputAssignments {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -108,14 +106,17 @@ public class StartErrorEvent extends StartEvent implements hasOutputAssignments,
         this.executionSet = executionSet;
     }
 
+    public ErrorEventDefinition getErrorEventDefinition() {
+        return new ErrorEventDefinition(executionSet.getErrorRef().getValue(), getErrorId());
+    }
+
     public void setErrorEventDefinition(ErrorEventDefinition errorEventDefinition) {
         this.errorEventDefinition = errorEventDefinition;
     }
 
-    public Message getError() {
-        return new Message(getErrorId(),
-                           executionSet.getErrorRef().getValue(),
-                           executionSet.getErrorRef().getValue() + "Type");
+    public ErrorRef getError() {
+        return new ErrorRef(getErrorId(),
+                         executionSet.getErrorRef().getValue());
     }
 
     public String getErrorId() {

@@ -112,10 +112,9 @@ public class EndEscalationEvent extends EndEvent implements hasInputAssignments 
         this.escalationEventDefinition = escalationEventDefinition;
     }
 
-    public Message getEscalation() {
-        return new Message(getEscalationId(),
-                           executionSet.getEscalationRef().getValue(),
-                           executionSet.getEscalationRef().getValue() + "Type");
+    public Escalation getEscalation() {
+        return new Escalation(getEscalationId(),
+                           executionSet.getEscalationRef().getValue());
     }
 
     public String getEscalationId() {
