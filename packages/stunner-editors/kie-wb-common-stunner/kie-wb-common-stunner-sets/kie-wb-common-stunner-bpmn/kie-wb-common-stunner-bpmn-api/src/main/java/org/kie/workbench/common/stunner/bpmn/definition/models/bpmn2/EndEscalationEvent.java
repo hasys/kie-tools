@@ -16,10 +16,13 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -28,6 +31,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.escalation.EscalationEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -35,6 +39,7 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
+import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.AbstractEmbeddedFormsInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.AbstractEmbeddedFormsInitializer.FIELD_CONTAINER_PARAM;
@@ -49,16 +54,35 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndEscalationEvent extends EndEvent {
+public class EndEscalationEvent extends EndEvent implements hasInputAssignments {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private EscalationEventExecutionSet executionSet;
 
     @Property
     @FormField(afterElement = "executionSet")
+    @XmlTransient
     private DataIOSet dataIOSet;
+
+    @XmlTransient
+    private String escalationId;
+
+    public EscalationEventDefinition escalationEventDefinition;
+
+    @XmlElement(name = "dataInput")
+    @XmlUnwrappedCollection
+    public List<DataInput> dataInputs;
+
+    @XmlElement(name = "dataInputAssociation")
+    @XmlUnwrappedCollection
+    public List<DataInputAssociation> dataInputAssociation;
+
+    @XmlElement(name = "inputSet")
+    @XmlUnwrappedCollection
+    public List<InputSet> inputSet;
 
     public EndEscalationEvent() {
         this("",
@@ -78,6 +102,40 @@ public class EndEscalationEvent extends EndEvent {
               advancedData);
         this.executionSet = executionSet;
         this.dataIOSet = dataIOSet;
+    }
+
+    public EscalationEventDefinition getEscalationEventDefinition() {
+        return new EscalationEventDefinition(getExecutionSet().getEscalationRef().getValue(), getEscalationId());
+    }
+
+    public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
+        this.escalationEventDefinition = escalationEventDefinition;
+    }
+
+    public Message getEscalation() {
+        return new Message(getEscalationId(),
+                           executionSet.getEscalationRef().getValue(),
+                           executionSet.getEscalationRef().getValue() + "Type");
+    }
+
+    public String getEscalationId() {
+        return escalationId;
+    }
+
+    public void setEscalationId(String escalationId) {
+        this.escalationId = escalationId;
+    }
+
+    public void setDataInputs(List<DataInput> dataInputs) {
+        this.dataInputs = dataInputs;
+    }
+
+    public void setDataInputAssociation(List<DataInputAssociation> dataInputAssociation) {
+        this.dataInputAssociation = dataInputAssociation;
+    }
+
+    public void setInputSet(List<InputSet> inputSet) {
+        this.inputSet = inputSet;
     }
 
     @Override

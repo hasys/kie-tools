@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -57,7 +58,13 @@ public class IntermediateEscalationEventThrowing extends BaseThrowingIntermediat
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private EscalationEventExecutionSet executionSet;
+
+    @XmlTransient
+    private String escalationId;
+
+    public EscalationEventDefinition escalationEventDefinition;
 
     public IntermediateEscalationEventThrowing() {
         this("",
@@ -86,6 +93,29 @@ public class IntermediateEscalationEventThrowing extends BaseThrowingIntermediat
               dataIOSet,
               advancedData);
         this.executionSet = executionSet;
+    }
+
+
+    public EscalationEventDefinition getEscalationEventDefinition() {
+        return new EscalationEventDefinition(getExecutionSet().getEscalationRef().getValue(), getEscalationId());
+    }
+
+    public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
+        this.escalationEventDefinition = escalationEventDefinition;
+    }
+
+    public Message getEscalation() {
+        return new Message(getEscalationId(),
+                           executionSet.getEscalationRef().getValue(),
+                           executionSet.getEscalationRef().getValue() + "Type");
+    }
+
+    public String getEscalationId() {
+        return escalationId;
+    }
+
+    public void setEscalationId(String escalationId) {
+        this.escalationId = escalationId;
     }
 
     public EscalationEventExecutionSet getExecutionSet() {

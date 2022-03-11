@@ -33,7 +33,6 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
 import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
-import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -125,10 +124,6 @@ public class EndMessageEvent extends EndEvent implements hasMessageEventDefiniti
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
-    }
-
-    public List<DataInput> getDataInputs() {
-        return AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
     }
 
     public void setDataInputs(List<DataInput> dataInputs) {
