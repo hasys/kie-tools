@@ -31,8 +31,9 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasEscalationEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.escalation.InterruptingEscalationEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -40,7 +41,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.AbstractEmbeddedFormsInitializer.COLLAPSIBLE_CONTAINER;
@@ -56,7 +56,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class StartEscalationEvent extends StartEvent implements hasOutputAssignments {
+public class StartEscalationEvent extends StartEvent implements hasOutputAssignments,
+                                                                hasEscalationEventDefinition, hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -107,8 +108,12 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
         this.dataIOSet = dataIOSet;
     }
 
+    public String getEscalationRefValue() {
+        return getExecutionSet().getEscalationRef().getValue();
+    }
+
     public EscalationEventDefinition getEscalationEventDefinition() {
-        return new EscalationEventDefinition(getExecutionSet().getEscalationRef().getValue(), getEscalationId());
+        return hasEscalationEventDefinition.super.getEscalationEventDefinition();
     }
 
     public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
@@ -116,8 +121,7 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
     }
 
     public Escalation getEscalation() {
-        return new Escalation(getEscalationId(),
-                           executionSet.getEscalationRef().getValue());
+        return hasEscalationEventDefinition.super.getEscalation();
     }
 
     public String getEscalationId() {
@@ -128,16 +132,36 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
         this.escalationId = escalationId;
     }
 
+    public List<DataOutput> getDataOutputs() {
+        return hasOutputAssignments.super.getDataOutputs();
+    }
+
     public void setDataOutputs(List<DataOutput> dataOutputs) {
         this.dataOutputs = dataOutputs;
+    }
+
+    public List<DataOutputAssociation> getDataOutputAssociation() {
+        return hasOutputAssignments.super.getDataOutputAssociation();
     }
 
     public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
         this.dataOutputAssociation = dataOutputAssociation;
     }
 
-    public void setOutputSet(List<OutputSet> outputSet) {
-        this.outputSet = outputSet;
+    public List<OutputSet> getOutputSet() {
+        return hasOutputAssignments.super.getOutputSet();
+    }
+
+    public void setOutputSet(List<OutputSet> outputSets) {
+        this.outputSet = outputSets;
+    }
+
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate();
     }
 
     /*
@@ -148,13 +172,7 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*

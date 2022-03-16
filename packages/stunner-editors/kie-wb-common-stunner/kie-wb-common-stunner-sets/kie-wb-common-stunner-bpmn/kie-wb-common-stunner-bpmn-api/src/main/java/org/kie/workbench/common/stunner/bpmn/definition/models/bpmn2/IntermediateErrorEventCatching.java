@@ -16,10 +16,7 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
-import java.util.List;
-
 import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,8 +27,8 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
-import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasErrorEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
@@ -42,8 +39,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
-import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.FIELD_CONTAINER_PARAM;
@@ -58,7 +53,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateCatchEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEvent implements hasOutputAssignments {
+public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEvent implements hasErrorEventDefinition, hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -70,18 +65,6 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
     private String errorId;
 
     public ErrorEventDefinition errorEventDefinition;
-
-    @XmlElement(name = "dataOutput")
-    @XmlUnwrappedCollection
-    public List<DataOutput> dataOutputs;
-
-    @XmlElement(name = "dataOutputAssociation")
-    @XmlUnwrappedCollection
-    public List<DataOutputAssociation> dataOutputAssociation;
-
-    @XmlElement(name = "outputSet")
-    @XmlUnwrappedCollection
-    public List<OutputSet> outputSet;
 
     public IntermediateErrorEventCatching() {
         this("",
@@ -118,8 +101,11 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
         labels.remove("sequence_end");
     }
 
+    public String getErrorRefValue() {
+        return executionSet.getErrorRef().getValue();
+    }
     public ErrorEventDefinition getErrorEventDefinition() {
-        return new ErrorEventDefinition(executionSet.getErrorRef().getValue(), errorId);
+        return hasErrorEventDefinition.super.getErrorEventDefinition();
     }
 
     public void setErrorEventDefinition(ErrorEventDefinition errorEventDefinition) {
@@ -127,8 +113,7 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
     }
 
     public ErrorRef getError() {
-        return new ErrorRef(getErrorId(),
-                            executionSet.getErrorRef().getValue());
+        return hasErrorEventDefinition.super.getError();
     }
 
     public String getErrorId() {
@@ -139,16 +124,12 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
         this.errorId = errorId;
     }
 
-    public void setDataOutputs(List<DataOutput> dataOutputs) {
-        this.dataOutputs = dataOutputs;
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
     }
 
-    public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
-        this.dataOutputAssociation = dataOutputAssociation;
-    }
-
-    public void setOutputSet(List<OutputSet> outputSet) {
-        this.outputSet = outputSet;
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate().getValue();
     }
 
     /*
@@ -159,13 +140,7 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate().getValue())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate().getValue());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*

@@ -31,8 +31,9 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOModel;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.InterruptingMessageEventExecutionSet;
@@ -41,7 +42,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
@@ -58,7 +58,9 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class StartMessageEvent extends StartEvent implements DataIOModel,
-                                                             hasOutputAssignments {
+                                                             hasOutputAssignments,
+                                                             hasMessageEventDefinition,
+                                                             hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -138,8 +140,12 @@ public class StartMessageEvent extends StartEvent implements DataIOModel,
         return true;
     }
 
+    public String getMessageRefValue() {
+        return executionSet.getMessageRef().getValue();
+    }
+
     public MessageEventDefinition getMessageEventDefinition() {
-        return new MessageEventDefinition(executionSet.getMessageRef().getValue(), messageId);
+        return hasMessageEventDefinition.super.getMessageEventDefinition();
     }
 
     public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {
@@ -147,9 +153,7 @@ public class StartMessageEvent extends StartEvent implements DataIOModel,
     }
 
     public Message getMessage() {
-        return new Message(getMessageId(),
-                           executionSet.getMessageRef().getValue(),
-                           executionSet.getMessageRef().getValue() + "Type");
+        return hasMessageEventDefinition.super.getMessage();
     }
 
     public String getMessageId() {
@@ -160,16 +164,36 @@ public class StartMessageEvent extends StartEvent implements DataIOModel,
         this.messageId = messageId;
     }
 
+    public List<DataOutput> getDataOutputs() {
+        return hasOutputAssignments.super.getDataOutputs();
+    }
+
     public void setDataOutputs(List<DataOutput> dataOutputs) {
         this.dataOutputs = dataOutputs;
+    }
+
+    public List<DataOutputAssociation> getDataOutputAssociation() {
+        return hasOutputAssignments.super.getDataOutputAssociation();
     }
 
     public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
         this.dataOutputAssociation = dataOutputAssociation;
     }
 
-    public void setOutputSet(List<OutputSet> outputSet) {
-        this.outputSet = outputSet;
+    public List<OutputSet> getOutputSet() {
+        return hasOutputAssignments.super.getOutputSet();
+    }
+
+    public void setOutputSet(List<OutputSet> outputSets) {
+        this.outputSet = outputSets;
+    }
+
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate();
     }
 
     /*
@@ -180,13 +204,7 @@ public class StartMessageEvent extends StartEvent implements DataIOModel,
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*

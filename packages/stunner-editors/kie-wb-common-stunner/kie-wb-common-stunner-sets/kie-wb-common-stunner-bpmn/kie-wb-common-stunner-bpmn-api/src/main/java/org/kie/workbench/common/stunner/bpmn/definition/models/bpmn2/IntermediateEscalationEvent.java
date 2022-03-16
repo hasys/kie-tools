@@ -31,8 +31,9 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasEscalationEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
@@ -43,7 +44,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.AbstractEmbeddedFormsInitializer.COLLAPSIBLE_CONTAINER;
@@ -59,7 +59,9 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateCatchEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent implements hasOutputAssignments {
+public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent implements hasOutputAssignments,
+                                                                                          hasEscalationEventDefinition,
+                                                                                          hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -113,8 +115,12 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
         this.executionSet = executionSet;
     }
 
+    public String getEscalationRefValue() {
+        return getExecutionSet().getEscalationRef().getValue();
+    }
+
     public EscalationEventDefinition getEscalationEventDefinition() {
-        return new EscalationEventDefinition(getExecutionSet().getEscalationRef().getValue(), getEscalationId());
+        return hasEscalationEventDefinition.super.getEscalationEventDefinition();
     }
 
     public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
@@ -122,8 +128,7 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
     }
 
     public Escalation getEscalation() {
-        return new Escalation(getEscalationId(),
-                           executionSet.getEscalationRef().getValue());
+        return hasEscalationEventDefinition.super.getEscalation();
     }
 
     public String getEscalationId() {
@@ -146,6 +151,14 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
         this.outputSet = outputSet;
     }
 
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate().getValue();
+    }
+
     /*
      Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
      Variable is not used and always null. Getters/setters redirect data from other execution sets.
@@ -154,13 +167,7 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate().getValue())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate().getValue());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*
@@ -173,7 +180,6 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
     public void setExtensionElements(ExtensionElements extensionElements) {
         super.setExtensionElements(extensionElements);
     }
-
 
     public CancellingEscalationEventExecutionSet getExecutionSet() {
         return executionSet;

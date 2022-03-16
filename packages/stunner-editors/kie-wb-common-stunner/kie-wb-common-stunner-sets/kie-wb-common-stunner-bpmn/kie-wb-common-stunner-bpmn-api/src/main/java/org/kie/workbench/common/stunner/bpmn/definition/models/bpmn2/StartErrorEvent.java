@@ -30,8 +30,9 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasErrorEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.hasOutputAssignments;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.error.InterruptingErrorEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -39,7 +40,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
@@ -55,7 +55,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class StartErrorEvent extends StartEvent implements hasOutputAssignments {
+public class StartErrorEvent extends StartEvent implements hasOutputAssignments,
+                                                           hasErrorEventDefinition, hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -106,8 +107,11 @@ public class StartErrorEvent extends StartEvent implements hasOutputAssignments 
         this.executionSet = executionSet;
     }
 
+    public String getErrorRefValue() {
+        return executionSet.getErrorRef().getValue();
+    }
     public ErrorEventDefinition getErrorEventDefinition() {
-        return new ErrorEventDefinition(executionSet.getErrorRef().getValue(), getErrorId());
+        return hasErrorEventDefinition.super.getErrorEventDefinition();
     }
 
     public void setErrorEventDefinition(ErrorEventDefinition errorEventDefinition) {
@@ -115,8 +119,7 @@ public class StartErrorEvent extends StartEvent implements hasOutputAssignments 
     }
 
     public ErrorRef getError() {
-        return new ErrorRef(getErrorId(),
-                         executionSet.getErrorRef().getValue());
+        return hasErrorEventDefinition.super.getError();
     }
 
     public String getErrorId() {
@@ -127,16 +130,36 @@ public class StartErrorEvent extends StartEvent implements hasOutputAssignments 
         this.errorId = errorId;
     }
 
+    public List<DataOutput> getDataOutputs() {
+        return hasOutputAssignments.super.getDataOutputs();
+    }
+
     public void setDataOutputs(List<DataOutput> dataOutputs) {
         this.dataOutputs = dataOutputs;
+    }
+
+    public List<DataOutputAssociation> getDataOutputAssociation() {
+        return hasOutputAssignments.super.getDataOutputAssociation();
     }
 
     public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
         this.dataOutputAssociation = dataOutputAssociation;
     }
 
-    public void setOutputSet(List<OutputSet> outputSet) {
-        this.outputSet = outputSet;
+    public List<OutputSet> getOutputSet() {
+        return hasOutputAssignments.super.getOutputSet();
+    }
+
+    public void setOutputSet(List<OutputSet> outputSets) {
+        this.outputSet = outputSets;
+    }
+
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate();
     }
 
     /*
@@ -147,13 +170,7 @@ public class StartErrorEvent extends StartEvent implements hasOutputAssignments 
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*

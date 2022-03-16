@@ -105,7 +105,7 @@ public abstract class BaseCatchingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<DataOutput> getDataOutputs() {
-        return AssignmentParser.parseDataOutputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasOutputAssignments.super.getDataOutputs();
     }
 
     public void setDataOutputs(List<DataOutput> dataOutputs) {
@@ -113,7 +113,7 @@ public abstract class BaseCatchingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<DataOutputAssociation> getDataOutputAssociation() {
-        return AssignmentParser.parseDataOutputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasOutputAssignments.super.getDataOutputAssociation();
     }
 
     public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
@@ -121,7 +121,7 @@ public abstract class BaseCatchingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<OutputSet> getOutputSet() {
-        return AssignmentParser.getOutputSet(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasOutputAssignments.super.getOutputSet();
     }
 
     public void setOutputSet(List<OutputSet> outputSets) {

@@ -102,7 +102,7 @@ public abstract class BaseThrowingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<DataInput> getDataInputs() {
-        return AssignmentParser.parseDataInputs(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasInputAssignments.super.getDataInputs();
     }
 
     public void setDataInputs(List<DataInput> dataInputs) {
@@ -110,7 +110,7 @@ public abstract class BaseThrowingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<DataInputAssociation> getDataInputAssociation() {
-        return AssignmentParser.parseDataInputAssociation(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasInputAssignments.super.getDataInputAssociation();
     }
 
     public void setDataInputAssociation(List<DataInputAssociation> dataInputAssociation) {
@@ -118,7 +118,7 @@ public abstract class BaseThrowingIntermediateEvent extends BaseIntermediateEven
     }
 
     public List<InputSet> getInputSet() {
-        return AssignmentParser.getInputSet(getId(), dataIOSet.getAssignmentsinfo().getValue());
+        return hasInputAssignments.super.getInputSet();
     }
 
     public void setInputSet(List<InputSet> inputSets) {

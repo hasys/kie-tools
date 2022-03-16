@@ -32,6 +32,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.hasInputAssignments;
+import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -54,7 +55,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndMessageEvent extends EndEvent implements hasInputAssignments {
+public class EndMessageEvent extends EndEvent implements hasInputAssignments,
+                                                         hasMessageEventDefinition {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -106,8 +108,12 @@ public class EndMessageEvent extends EndEvent implements hasInputAssignments {
         labels.add("messageflow_start");
     }
 
+    public String getMessageRefValue() {
+        return executionSet.getMessageRef().getValue();
+    }
+
     public MessageEventDefinition getMessageEventDefinition() {
-        return new MessageEventDefinition(getExecutionSet().getMessageRef().getValue(), getMessageId());
+        return hasMessageEventDefinition.super.getMessageEventDefinition();
     }
 
     public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {
@@ -115,9 +121,7 @@ public class EndMessageEvent extends EndEvent implements hasInputAssignments {
     }
 
     public Message getMessage() {
-        return new Message(getMessageId(),
-                           executionSet.getMessageRef().getValue(),
-                           executionSet.getMessageRef().getValue() + "Type");
+        return hasMessageEventDefinition.super.getMessage();
     }
 
     public String getMessageId() {
@@ -128,16 +132,28 @@ public class EndMessageEvent extends EndEvent implements hasInputAssignments {
         this.messageId = messageId;
     }
 
+    public List<DataInput> getDataInputs() {
+        return hasInputAssignments.super.getDataInputs();
+    }
+
     public void setDataInputs(List<DataInput> dataInputs) {
         this.dataInputs = dataInputs;
+    }
+
+    public List<DataInputAssociation> getDataInputAssociation() {
+        return hasInputAssignments.super.getDataInputAssociation();
     }
 
     public void setDataInputAssociation(List<DataInputAssociation> dataInputAssociation) {
         this.dataInputAssociation = dataInputAssociation;
     }
 
-    public void setInputSet(List<InputSet> inputSet) {
-        this.inputSet = inputSet;
+    public List<InputSet> getInputSet() {
+        return hasInputAssignments.super.getInputSet();
+    }
+
+    public void setInputSet(List<InputSet> inputSets) {
+        this.inputSet = inputSets;
     }
 
     @Override

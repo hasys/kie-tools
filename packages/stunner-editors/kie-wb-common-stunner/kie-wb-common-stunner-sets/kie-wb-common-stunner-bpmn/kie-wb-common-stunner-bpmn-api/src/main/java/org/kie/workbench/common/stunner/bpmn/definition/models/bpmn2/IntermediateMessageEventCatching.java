@@ -29,8 +29,8 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
-import org.kie.workbench.common.stunner.bpmn.definition.hasCancellingMessageEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasMessageEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.events.CorrelationModel;
 import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.events.CorrelationSet;
@@ -43,7 +43,6 @@ import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.morph.Morph;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
-import org.kie.workbench.common.stunner.core.util.StringUtils;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.FIELD_CONTAINER_PARAM;
@@ -61,7 +60,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
 public class IntermediateMessageEventCatching
         extends BaseCatchingIntermediateEvent
         implements CorrelationModel,
-                   hasCancellingMessageEvent {
+                   hasMessageEventDefinition,
+                   hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -111,14 +111,20 @@ public class IntermediateMessageEventCatching
         this.executionSet = executionSet;
     }
 
+    public String getMessageRefValue() {
+        return executionSet.getMessageRef().getValue();
+    }
+
+    public MessageEventDefinition getMessageEventDefinition() {
+        return hasMessageEventDefinition.super.getMessageEventDefinition();
+    }
+
     public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {
         this.messageEventDefinition = messageEventDefinition;
     }
 
     public Message getMessage() {
-        return new Message(getMessageId(),
-                           executionSet.getMessageRef().getValue(),
-                           executionSet.getMessageRef().getValue() + "Type");
+        return hasMessageEventDefinition.super.getMessage();
     }
 
     public String getMessageId() {
@@ -145,6 +151,14 @@ public class IntermediateMessageEventCatching
         this.correlationSet = correlationSet;
     }
 
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate().getValue();
+    }
+
     /*
      Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
      Variable is not used and always null. Getters/setters redirect data from other execution sets.
@@ -153,13 +167,7 @@ public class IntermediateMessageEventCatching
       */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        if (StringUtils.nonEmpty(this.getExecutionSet().getSlaDueDate().getValue())) {
-            MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate().getValue());
-            elements.getMetaData().add(sla);
-        }
-
-        return elements.getMetaData().isEmpty() ? null : elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*

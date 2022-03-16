@@ -15,18 +15,24 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition;
 
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MessageEventDefinition;
-import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.CancellingMessageEventExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ErrorEventDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ErrorRef;
 
-public interface hasCancellingMessageEvent {
+public interface hasErrorEventDefinition {
 
-    CancellingMessageEventExecutionSet getExecutionSet();
+    String getErrorRefValue();
 
-    String getMessageId();
+    String getErrorId();
 
-    void setMessageEventDefinition(MessageEventDefinition messageEventDefinition);
-
-    default MessageEventDefinition getMessageEventDefinition() {
-        return new MessageEventDefinition(getExecutionSet().getMessageRef().getValue(), getMessageId());
+    default ErrorEventDefinition getErrorEventDefinition() {
+        return new ErrorEventDefinition(getErrorRefValue(), getErrorId());
     }
+
+    void setErrorEventDefinition(ErrorEventDefinition errorEventDefinition);
+
+    default ErrorRef getError() {
+        return new ErrorRef(getErrorId(),
+                            getErrorRefValue());
+    }
+
 }

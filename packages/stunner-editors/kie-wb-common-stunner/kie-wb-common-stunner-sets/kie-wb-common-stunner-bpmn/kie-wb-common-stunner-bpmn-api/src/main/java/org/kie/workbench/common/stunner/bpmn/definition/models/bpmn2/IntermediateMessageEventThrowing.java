@@ -96,14 +96,20 @@ public class IntermediateMessageEventThrowing extends BaseThrowingIntermediateEv
         this.executionSet = executionSet;
     }
 
+    public String getMessageRefValue() {
+        return executionSet.getMessageRef().getValue();
+    }
+
+    public MessageEventDefinition getMessageEventDefinition() {
+        return hasMessageEventDefinition.super.getMessageEventDefinition();
+    }
+
     public void setMessageEventDefinition(MessageEventDefinition messageEventDefinition) {
         this.messageEventDefinition = messageEventDefinition;
     }
 
     public Message getMessage() {
-        return new Message(getMessageId(),
-                           executionSet.getMessageRef().getValue(),
-                           executionSet.getMessageRef().getValue() + "Type");
+        return hasMessageEventDefinition.super.getMessage();
     }
 
     public String getMessageId() {

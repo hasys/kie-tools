@@ -15,24 +15,24 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition;
 
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Message;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MessageEventDefinition;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Escalation;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EscalationEventDefinition;
 
-public interface hasMessageEventDefinition {
+public interface hasEscalationEventDefinition {
 
-    String getMessageRefValue();
+    String getEscalationRefValue();
 
-    String getMessageId();
+    String getEscalationId();
 
-    void setMessageEventDefinition(MessageEventDefinition messageEventDefinition);
-
-    default MessageEventDefinition getMessageEventDefinition() {
-        return new MessageEventDefinition(getMessageRefValue(), getMessageId());
+    default EscalationEventDefinition getEscalationEventDefinition() {
+        return new EscalationEventDefinition(getEscalationRefValue(), getEscalationId());
     }
 
-    default Message getMessage() {
-        return new Message(getMessageId(),
-                           getMessageRefValue(),
-                           getMessageRefValue() + "Type");
+    void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition);
+
+    default Escalation getEscalation() {
+        return new Escalation(getEscalationId(),
+                              getEscalationRefValue());
     }
+
 }
