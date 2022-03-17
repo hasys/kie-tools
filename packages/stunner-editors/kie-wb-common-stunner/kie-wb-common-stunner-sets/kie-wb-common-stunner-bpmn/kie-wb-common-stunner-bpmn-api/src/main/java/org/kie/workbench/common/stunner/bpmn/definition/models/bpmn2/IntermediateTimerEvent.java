@@ -18,6 +18,7 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -26,10 +27,13 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
+import org.kie.workbench.common.stunner.bpmn.definition.hasTimerEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.timer.CancellingTimerEventExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.event.timer.TimerSettingsValue;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
@@ -50,12 +54,16 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateCatchEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateTimerEvent extends BaseCatchingIntermediateEvent {
+public class IntermediateTimerEvent extends BaseCatchingIntermediateEvent implements hasTimerEventDefinition,
+                                                                                     hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     protected CancellingTimerEventExecutionSet executionSet;
+
+    public TimerEventDefinition timerEventDefinition;
 
     public IntermediateTimerEvent() {
         this("",
@@ -84,6 +92,48 @@ public class IntermediateTimerEvent extends BaseCatchingIntermediateEvent {
               dataIOSet,
               advancedData);
         this.executionSet = executionSet;
+    }
+
+    public TimerSettingsValue getTimerSettingsValue() {
+        return executionSet.getTimerSettings().getValue();
+    }
+
+    public TimerEventDefinition getTimerEventDefinition() {
+        return hasTimerEventDefinition.super.getTimerEventDefinition();
+    }
+
+    public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
+        this.timerEventDefinition = timerEventDefinition;
+    }
+
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate().getValue();
+    }
+
+    /*
+     Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+     Variable is not used and always null. Getters/setters redirect data from other execution sets.
+     Execution sets not removed due to how forms works now, should be refactored during the migration
+     to the new forms.
+      */
+    @Override
+    public ExtensionElements getExtensionElements() {
+        return hasCustomSLADueDate.super.getExtensionElements();
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    Variable is not used and always null. Getters/setters redirect data from other execution sets.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
+    @Override
+    public void setExtensionElements(ExtensionElements extensionElements) {
+        super.setExtensionElements(extensionElements);
     }
 
     @Override

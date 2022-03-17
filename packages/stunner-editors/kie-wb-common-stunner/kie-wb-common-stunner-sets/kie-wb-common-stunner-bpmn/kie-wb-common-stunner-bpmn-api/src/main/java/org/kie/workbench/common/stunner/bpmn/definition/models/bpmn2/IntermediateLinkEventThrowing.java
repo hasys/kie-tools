@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -27,6 +28,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasLinkEventDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
@@ -51,12 +53,15 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateThrowEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateLinkEventThrowing extends BaseThrowingIntermediateEvent {
+public class IntermediateLinkEventThrowing extends BaseThrowingIntermediateEvent implements hasLinkEventDefinition {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private LinkEventExecutionSet executionSet;
+
+    public LinkEventDefinition linkEventDefinition;
 
     public IntermediateLinkEventThrowing() {
         this("",
@@ -85,6 +90,18 @@ public class IntermediateLinkEventThrowing extends BaseThrowingIntermediateEvent
               dataIOSet,
               advancedData);
         this.executionSet = executionSet;
+    }
+
+    public String getLinkRefvalue() {
+        return executionSet.getLinkRef().getValue();
+    }
+
+    public LinkEventDefinition getLinkEventDefinition() {
+        return hasLinkEventDefinition.super.getLinkEventDefinition();
+    }
+
+    public void setLinkEventDefinition(LinkEventDefinition linkEventDefinition) {
+        this.linkEventDefinition = linkEventDefinition;
     }
 
     @Override
