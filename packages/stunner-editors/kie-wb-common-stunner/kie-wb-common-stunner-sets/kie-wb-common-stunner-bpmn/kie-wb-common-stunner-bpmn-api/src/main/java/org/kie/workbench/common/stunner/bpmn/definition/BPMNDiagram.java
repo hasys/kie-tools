@@ -20,6 +20,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.background.Back
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.diagram.BaseCollaborationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.BaseDiagramSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.Imports;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.BaseProcessData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.BaseRootProcessAdvancedData;
@@ -31,9 +32,47 @@ public interface BPMNDiagram<D extends BaseDiagramSet,
         C extends BaseCollaborationSet> extends BPMNViewDefinition,
                                                 HasProcessData<P> {
 
-    D getDiagramSet();
+    void setName(final String name);
 
-    void setDiagramSet(final D diagramSet);
+    String getDocumentation();
+
+    void setDocumentation(final String documentation);
+
+    String getId();
+
+    void setId(final String id);
+
+    String getPackageName();
+
+    void setPackageName(final String packageName);
+
+    String getProcessType();
+
+    void setProcessType(final String processType);
+
+    String getVersion();
+
+    void setVersion(final String version);
+
+    Boolean isAdHoc();
+
+    void setAdHoc(final Boolean adHoc);
+
+    String getProcessInstanceDescription();
+
+    void setProcessInstanceDescription(final String processInstanceDescription);
+
+    Imports getImports();
+
+    void setImports(final Imports imports);
+
+    Boolean isExecutable();
+
+    void setExecutable(final Boolean executable);
+
+    String getSlaDueDate();
+
+    void setSlaDueDate(final String slaDueDate);
 
     P getProcessData();
 

@@ -188,6 +188,9 @@
 
     <version.org.kie.kogito.lienzo>${project.version}</version.org.kie.kogito.lienzo>
 
+    <!-- XML mapper -->
+    <version.mapper.xml>0.5-SNAPSHOT</version.mapper.xml>
+
     <!-- Properties from KIE-WB-COMMON parent POM -->
 
     <spotbugs.failOnViolation>true</spotbugs.failOnViolation>
@@ -403,6 +406,28 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${version.ch.qos.logback}</version>
+      </dependency>
+
+      <!-- XML Mapper for new marshallers -->
+      <dependency>
+        <groupId>org.treblereel.gwt.xml.mapper</groupId>
+        <artifactId>gwt-backend</artifactId>
+        <version>${version.mapper.xml}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.treblereel.gwt.xml.mapper</groupId>
+        <artifactId>jre-backend</artifactId>
+        <version>${version.mapper.xml}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.treblereel.gwt.xml.mapper</groupId>
+        <artifactId>api</artifactId>
+        <version>${version.mapper.xml}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.treblereel.gwt.xml.mapper</groupId>
+        <artifactId>processor</artifactId>
+        <version>${version.mapper.xml}</version>
       </dependency>
 
       <dependency>

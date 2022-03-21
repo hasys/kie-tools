@@ -23,14 +23,14 @@ import java.util.stream.Stream;
 
 import org.kie.workbench.common.stunner.bpmn.client.resources.BPMNGlyphFactory;
 import org.kie.workbench.common.stunner.bpmn.client.resources.BPMNSVGViewFactory;
-import org.kie.workbench.common.stunner.bpmn.definition.BaseEndEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndCompensationEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndErrorEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndEscalationEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndMessageEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndNoneEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndSignalEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndTerminateEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndCompensationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndErrorEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndNoneEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndTerminateEvent;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasTitle;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasTitle.HorizontalAlignment;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasTitle.ReferencePosition;
@@ -43,10 +43,10 @@ import org.kie.workbench.common.stunner.svg.client.shape.factory.SVGShapeViewRes
 import org.kie.workbench.common.stunner.svg.client.shape.view.SVGShapeView;
 
 public class EndEventShapeDef
-        implements BPMNSvgShapeDef<BaseEndEvent> {
+        implements BPMNSvgShapeDef<EndEvent> {
 
-    public static final SVGShapeViewResources<BaseEndEvent, BPMNSVGViewFactory> VIEW_RESOURCES =
-            new SVGShapeViewResources<BaseEndEvent, BPMNSVGViewFactory>()
+    public static final SVGShapeViewResources<EndEvent, BPMNSVGViewFactory> VIEW_RESOURCES =
+            new SVGShapeViewResources<EndEvent, BPMNSVGViewFactory>()
                     .put(EndNoneEvent.class,
                          BPMNSVGViewFactory::endNoneEvent)
                     .put(EndSignalEvent.class,
@@ -73,7 +73,7 @@ public class EndEventShapeDef
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     @Override
-    public FontHandler<BaseEndEvent, SVGShapeView> newFontHandler() {
+    public FontHandler<EndEvent, SVGShapeView> newFontHandler() {
         return newFontHandlerBuilder()
                 .verticalAlignment(bean -> VerticalAlignment.BOTTOM)
                 .horizontalAlignment(bean -> HorizontalAlignment.CENTER)
@@ -84,15 +84,14 @@ public class EndEventShapeDef
     }
 
     @Override
-    public SizeHandler<BaseEndEvent, SVGShapeView> newSizeHandler() {
+    public SizeHandler<EndEvent, SVGShapeView> newSizeHandler() {
         return newSizeHandlerBuilder()
-                .radius(task -> task.getDimensionsSet().getRadius().getValue())
                 .build();
     }
 
     @Override
     public SVGShapeView<?> newViewInstance(final BPMNSVGViewFactory factory,
-                                           final BaseEndEvent task) {
+                                           final EndEvent task) {
         return VIEW_RESOURCES
                 .getResource(factory,
                              task)
@@ -100,7 +99,7 @@ public class EndEventShapeDef
     }
 
     @Override
-    public Glyph getGlyph(final Class<? extends BaseEndEvent> type,
+    public Glyph getGlyph(final Class<? extends EndEvent> type,
                           final String defId) {
         return GLYPHS.get(type);
     }

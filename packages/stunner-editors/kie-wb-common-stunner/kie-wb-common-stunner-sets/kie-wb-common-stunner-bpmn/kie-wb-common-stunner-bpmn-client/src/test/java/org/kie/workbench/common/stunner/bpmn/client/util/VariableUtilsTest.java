@@ -25,16 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.BaseCatchingIntermediateEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.BaseEndEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.BaseReusableSubprocess;
-import org.kie.workbench.common.stunner.bpmn.definition.BaseStartEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.BaseThrowingIntermediateEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.BaseUserTask;
-import org.kie.workbench.common.stunner.bpmn.definition.BusinessRuleTask;
-import org.kie.workbench.common.stunner.bpmn.definition.EndErrorEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndEscalationEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndMessageEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.EndSignalEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateErrorEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateEscalationEventThrowing;
@@ -42,19 +33,23 @@ import org.kie.workbench.common.stunner.bpmn.definition.IntermediateMessageEvent
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateMessageEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateSignalEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.IntermediateSignalEventThrowing;
-import org.kie.workbench.common.stunner.bpmn.definition.MultipleInstanceSubprocess;
-import org.kie.workbench.common.stunner.bpmn.definition.ReusableSubprocess;
-import org.kie.workbench.common.stunner.bpmn.definition.StartErrorEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.StartEscalationEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.StartMessageEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.StartSignalEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.UserTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseUserTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndErrorEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MultipleInstanceSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartErrorEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartMessageEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartSignalEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.UserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.Id;
-import org.kie.workbench.common.stunner.bpmn.definition.property.general.BPMNGeneralSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.general.Name;
-import org.kie.workbench.common.stunner.bpmn.definition.property.general.TaskGeneralSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.IsMultipleInstance;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionInput;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionOutput;
@@ -517,8 +512,7 @@ public class VariableUtilsTest {
 
     private BaseUserTask mockUserTask(String name, String assignmentsInfoValue, String inputCollection, String outputCollection) {
         UserTask result = mock(UserTask.class);
-        TaskGeneralSet generalSet = mockTaskGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         UserTaskExecutionSet executionSet = mock(UserTaskExecutionSet.class);
         when(result.getExecutionSet()).thenReturn(executionSet);
         AssignmentsInfo assignmentsInfo = mockAssignmentsInfo(assignmentsInfoValue);
@@ -541,8 +535,7 @@ public class VariableUtilsTest {
 
     private BusinessRuleTask mockBusinessRuleTask(String name, String assignmentsInfoValue) {
         BusinessRuleTask result = mock(BusinessRuleTask.class);
-        TaskGeneralSet generalSet = mockTaskGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         AssignmentsInfo assignmentsInfo = mockAssignmentsInfo(assignmentsInfoValue);
         DataIOSet dataIOSet = mockIOSet(assignmentsInfo);
         when(result.getDataIOSet()).thenReturn(dataIOSet);
@@ -551,8 +544,7 @@ public class VariableUtilsTest {
 
     private CustomTask mockServiceTask(String name, String assignmentsInfoValue) {
         CustomTask result = mock(CustomTask.class);
-        TaskGeneralSet generalSet = mockTaskGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         AssignmentsInfo assignmentsInfo = mockAssignmentsInfo(assignmentsInfoValue);
         DataIOSet dataIOSet = mockIOSet(assignmentsInfo);
         when(result.getDataIOSet()).thenReturn(dataIOSet);
@@ -591,10 +583,9 @@ public class VariableUtilsTest {
         return result;
     }
 
-    private <T extends BaseEndEvent> T mockEndEvent(String name, Class<T> clazz) {
+    private <T extends EndEvent> T mockEndEvent(String name, Class<T> clazz) {
         T result = mock(clazz);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         return result;
     }
 
@@ -632,8 +623,7 @@ public class VariableUtilsTest {
 
     private <T extends BaseCatchingIntermediateEvent> T mockCatchingEvent(String name, Class<T> clazz) {
         T result = mock(clazz);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         return result;
     }
 
@@ -663,8 +653,7 @@ public class VariableUtilsTest {
 
     private <T extends BaseThrowingIntermediateEvent> T mockThrowingEvent(String name, Class<T> clazz) {
         T result = mock(clazz);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         return result;
     }
 
@@ -700,10 +689,9 @@ public class VariableUtilsTest {
         return result;
     }
 
-    private <T extends BaseStartEvent> T mockStartEvent(String name, Class<T> clazz) {
+    private <T extends StartEvent> T mockStartEvent(String name, Class<T> clazz) {
         T result = mock(clazz);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         return result;
     }
 
@@ -713,8 +701,7 @@ public class VariableUtilsTest {
 
     private BaseReusableSubprocess mockReusableSubprocess(String name, String assignmentsInfoValue, String inputCollection, String outputCollection) {
         ReusableSubprocess result = mock(ReusableSubprocess.class);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         AssignmentsInfo assignmentsInfo = mockAssignmentsInfo(assignmentsInfoValue);
         DataIOSet dataIOSet = mockIOSet(assignmentsInfo);
         when(result.getDataIOSet()).thenReturn(dataIOSet);
@@ -738,8 +725,7 @@ public class VariableUtilsTest {
 
     private MultipleInstanceSubprocess mockMultipleInstanceSubprocess(String name, String inputVariable, String outputVariable) {
         MultipleInstanceSubprocess result = mock(MultipleInstanceSubprocess.class);
-        BPMNGeneralSet generalSet = mockGeneralSet(name);
-        when(result.getGeneral()).thenReturn(generalSet);
+        when(result.getName()).thenReturn(name);
         MultipleInstanceSubprocessTaskExecutionSet executionSet = mock(MultipleInstanceSubprocessTaskExecutionSet.class);
         when(result.getExecutionSet()).thenReturn(executionSet);
         MultipleInstanceCollectionInput input = mock(MultipleInstanceCollectionInput.class);
@@ -752,20 +738,6 @@ public class VariableUtilsTest {
         when(executionSet.getMultipleInstanceCollectionOutput()).thenReturn(output);
         MultipleInstanceDataOutput dataOutput = mock(MultipleInstanceDataOutput.class);
         when(executionSet.getMultipleInstanceDataOutput()).thenReturn(dataOutput);
-        return result;
-    }
-
-    private TaskGeneralSet mockTaskGeneralSet(String name) {
-        TaskGeneralSet result = mock(TaskGeneralSet.class);
-        Name nameProperty = mockName(name);
-        when(result.getName()).thenReturn(nameProperty);
-        return result;
-    }
-
-    private BPMNGeneralSet mockGeneralSet(String name) {
-        BPMNGeneralSet result = mock(BPMNGeneralSet.class);
-        Name nameProperty = mockName(name);
-        when(result.getName()).thenReturn(nameProperty);
         return result;
     }
 

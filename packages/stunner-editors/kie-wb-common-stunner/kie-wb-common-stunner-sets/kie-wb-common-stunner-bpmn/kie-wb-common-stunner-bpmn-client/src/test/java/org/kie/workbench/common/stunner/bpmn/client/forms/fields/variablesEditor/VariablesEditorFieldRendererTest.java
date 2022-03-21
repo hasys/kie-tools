@@ -32,11 +32,9 @@ import org.kie.workbench.common.forms.dynamic.service.shared.RenderMode;
 import org.kie.workbench.common.stunner.bpmn.client.forms.fields.model.Variable;
 import org.kie.workbench.common.stunner.bpmn.client.forms.fields.model.VariableRow;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
-import org.kie.workbench.common.stunner.bpmn.definition.UserTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.UserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.Id;
-import org.kie.workbench.common.stunner.bpmn.definition.property.general.Name;
-import org.kie.workbench.common.stunner.bpmn.definition.property.general.TaskGeneralSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.IsMultipleInstance;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionInput;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionOutput;
@@ -98,9 +96,6 @@ public class VariablesEditorFieldRendererTest {
 
     @Mock
     private EditorSession clientFullSession;
-
-    @Mock
-    private Iterable nodes;
 
     @Mock
     private ManagedInstance<DefaultFormGroup> formGroupsInstanceMock;
@@ -183,10 +178,7 @@ public class VariablesEditorFieldRendererTest {
         Node node = mock(Node.class);
         when(node.getContent()).thenReturn(view);
         UserTask content = mock(UserTask.class);
-        TaskGeneralSet generalSet = mock(TaskGeneralSet.class);
-        Name nameProperty = mock(Name.class);
-        when(generalSet.getName()).thenReturn(nameProperty);
-        when(content.getGeneral()).thenReturn(generalSet);
+        when(content.getName()).thenReturn("");
         UserTaskExecutionSet executionSet = mock(UserTaskExecutionSet.class);
         when(content.getExecutionSet()).thenReturn(executionSet);
         when(executionSet.getIsMultipleInstance()).thenReturn(mock(IsMultipleInstance.class));
@@ -203,13 +195,13 @@ public class VariablesEditorFieldRendererTest {
 
     @Test
     public void testDeserializeVariables() {
-        List<String> dataTypes = new ArrayList<String>(Arrays.asList("Boolean",
+        List<String> dataTypes = new ArrayList<>(Arrays.asList("Boolean",
                                                                      "Float",
                                                                      "Integer",
                                                                      "Object",
                                                                      "org.veg.Potato",
                                                                      "String"));
-        List<String> dataTypeDisplayNames = new ArrayList<String>(Arrays.asList("Boolean",
+        List<String> dataTypeDisplayNames = new ArrayList<>(Arrays.asList("Boolean",
                                                                                 "Float",
                                                                                 "Integer",
                                                                                 "Potato [org.veg]",
@@ -266,7 +258,7 @@ public class VariablesEditorFieldRendererTest {
 
     @Test
     public void testSerializeVariables() {
-        Map<String, String> mapDataTypeDisplayNamesToNames = new HashMap<String, String>();
+        Map<String, String> mapDataTypeDisplayNamesToNames = new HashMap<>();
         mapDataTypeDisplayNamesToNames.put("String",
                                            "String");
         mapDataTypeDisplayNamesToNames.put("Integer",
@@ -277,7 +269,7 @@ public class VariablesEditorFieldRendererTest {
 
         List<String> tags = new ArrayList<>(Arrays.asList("Tag_1", "Tag_2"));
 
-        List<VariableRow> variableRows = new ArrayList<VariableRow>();
+        List<VariableRow> variableRows = new ArrayList<>();
         variableRows.add(new VariableRow(Variable.VariableType.PROCESS,
                                          "var1",
                                          "String",
@@ -308,7 +300,7 @@ public class VariablesEditorFieldRendererTest {
 
     @Test
     public void testSerializeVariablesWithTags() {
-        Map<String, String> mapDataTypeDisplayNamesToNames = new HashMap<String, String>();
+        Map<String, String> mapDataTypeDisplayNamesToNames = new HashMap<>();
         mapDataTypeDisplayNamesToNames.put("String",
                                            "String");
         mapDataTypeDisplayNamesToNames.put("Integer",
@@ -317,7 +309,7 @@ public class VariablesEditorFieldRendererTest {
                                            "org.veg.Potato");
         variablesEditor.mapDataTypeDisplayNamesToNames = mapDataTypeDisplayNamesToNames;
 
-        List<VariableRow> variableRows = new ArrayList<VariableRow>();
+        List<VariableRow> variableRows = new ArrayList<>();
         variableRows.add(new VariableRow(Variable.VariableType.PROCESS,
                                          "var1",
                                          "String",
@@ -360,7 +352,7 @@ public class VariablesEditorFieldRendererTest {
 
     @Test
     public void testIsDuplicateName() {
-        List<VariableRow> variableRows = new ArrayList<VariableRow>();
+        List<VariableRow> variableRows = new ArrayList<>();
         variableRows.add(new VariableRow(Variable.VariableType.PROCESS,
                                          "var1",
                                          "String",
