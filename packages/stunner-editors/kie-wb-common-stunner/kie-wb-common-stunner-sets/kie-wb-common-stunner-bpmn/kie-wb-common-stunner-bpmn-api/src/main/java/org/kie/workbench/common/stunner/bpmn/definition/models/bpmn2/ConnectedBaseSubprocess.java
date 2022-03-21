@@ -32,9 +32,9 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.variables.Proce
 import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
-public abstract class ConnectedBaseSubprocess extends BaseSubprocess implements DataIOModel,
-                                                                       HasOutgoing,
-                                                                       HasIncoming {
+public abstract class ConnectedBaseSubprocess extends BaseContainerSubprocess implements DataIOModel,
+                                                                                         HasOutgoing,
+                                                                                         HasIncoming {
 
     @XmlUnwrappedCollection
     private List<Incoming> incoming = new ArrayList<>();

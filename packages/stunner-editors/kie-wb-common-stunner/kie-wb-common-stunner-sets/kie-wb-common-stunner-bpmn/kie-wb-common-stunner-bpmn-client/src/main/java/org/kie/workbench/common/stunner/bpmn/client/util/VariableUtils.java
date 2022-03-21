@@ -34,7 +34,7 @@ import java.util.stream.StreamSupport;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.FlowElement;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseUserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
@@ -152,7 +152,7 @@ public class VariableUtils {
         return result;
     }
 
-    private static Collection<VariableUsage> findVariableUsages(String variableName, BaseReusableSubprocess subprocess, Node<View<FlowElement>, Edge> node) {
+    private static Collection<VariableUsage> findVariableUsages(String variableName, BaseNonContainerSubprocess subprocess, Node<View<FlowElement>, Edge> node) {
         final String displayName = subprocess.getName();
         final Collection<VariableUsage> result = findVariableUsages(variableName, subprocess.getDataIOSet().getAssignmentsinfo(), displayName, node);
         MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subprocess.getExecutionSet();
@@ -321,7 +321,7 @@ public class VariableUtils {
         findFunctions.put(d -> d instanceof StartEscalationEvent, (s, pair) -> findVariableUsages(s, ((StartEscalationEvent) pair.getK1()).getDataIOSet().getAssignmentsinfo(), getDisplayName(pair.getK1()), pair.getK2()));
         findFunctions.put(d -> d instanceof StartMessageEvent, (s, pair) -> findVariableUsages(s, ((StartMessageEvent) pair.getK1()).getDataIOSet().getAssignmentsinfo(), getDisplayName(pair.getK1()), pair.getK2()));
         findFunctions.put(d -> d instanceof StartSignalEvent, (s, pair) -> findVariableUsages(s, ((StartSignalEvent) pair.getK1()).getDataIOSet().getAssignmentsinfo(), getDisplayName(pair.getK1()), pair.getK2()));
-        findFunctions.put(d -> d instanceof BaseReusableSubprocess, (s, pair) -> findVariableUsages(s, (BaseReusableSubprocess) pair.getK1(), pair.getK2()));
+        findFunctions.put(d -> d instanceof BaseNonContainerSubprocess, (s, pair) -> findVariableUsages(s, (BaseNonContainerSubprocess) pair.getK1(), pair.getK2()));
         findFunctions.put(d -> d instanceof MultipleInstanceSubprocess, (s, pair) -> findVariableUsages(s, (MultipleInstanceSubprocess) pair.getK1(), pair.getK2()));
         return findFunctions;
     }

@@ -354,6 +354,10 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlUnwrappedCollection
     private List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> properties = new ArrayList<>();
 
+    @XmlElement(name = "callActivity")
+    @XmlUnwrappedCollection
+    private List<ReusableSubprocess> callActivities = new ArrayList<>();
+
     public Process() {
         this("",
              "",
@@ -745,6 +749,15 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     }
 
     @Override
+    public List<ReusableSubprocess> getCallActivities() {
+        return callActivities;
+    }
+
+    public void setCallActivities(List<ReusableSubprocess> callActivities) {
+        this.callActivities = callActivities;
+    }
+
+    @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(processData),
                                          Objects.hashCode(caseManagementSet),
@@ -763,6 +776,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                                          Objects.hashCode(subProcesses),
                                          Objects.hashCode(textAnnotations),
                                          Objects.hashCode(associations),
+                                         Objects.hashCode(callActivities),
                                          Objects.hashCode(properties));
     }
 
@@ -787,6 +801,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                     && Objects.equals(subProcesses, other.subProcesses)
                     && Objects.equals(textAnnotations, other.textAnnotations)
                     && Objects.equals(associations, other.associations)
+                    && Objects.equals(callActivities, other.callActivities)
                     && Objects.equals(properties, other.properties);
         }
         return false;

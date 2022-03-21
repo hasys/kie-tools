@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchingIntermediateEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseThrowingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseUserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
@@ -695,11 +695,11 @@ public class VariableUtilsTest {
         return result;
     }
 
-    private BaseReusableSubprocess mockReusableSubprocess(String name, String assignmentsInfoValue) {
+    private BaseNonContainerSubprocess mockReusableSubprocess(String name, String assignmentsInfoValue) {
         return mockReusableSubprocess(name, assignmentsInfoValue, null, null);
     }
 
-    private BaseReusableSubprocess mockReusableSubprocess(String name, String assignmentsInfoValue, String inputCollection, String outputCollection) {
+    private BaseNonContainerSubprocess mockReusableSubprocess(String name, String assignmentsInfoValue, String inputCollection, String outputCollection) {
         ReusableSubprocess result = mock(ReusableSubprocess.class);
         when(result.getName()).thenReturn(name);
         AssignmentsInfo assignmentsInfo = mockAssignmentsInfo(assignmentsInfoValue);

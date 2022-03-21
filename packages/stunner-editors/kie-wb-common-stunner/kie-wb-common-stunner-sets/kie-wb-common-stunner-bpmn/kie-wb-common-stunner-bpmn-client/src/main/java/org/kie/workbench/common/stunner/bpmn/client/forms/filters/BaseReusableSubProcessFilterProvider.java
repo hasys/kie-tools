@@ -21,14 +21,15 @@ import java.util.Collection;
 import javax.enterprise.event.Event;
 
 import org.kie.workbench.common.forms.adf.engine.shared.FormElementFilter;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.ReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.core.client.api.SessionManager;
 import org.kie.workbench.common.stunner.forms.client.event.FormFieldChanged;
 import org.kie.workbench.common.stunner.forms.client.event.RefreshFormPropertiesEvent;
 
-public abstract class BaseReusableSubProcessFilterProvider<T extends BaseReusableSubprocess> extends MultipleInstanceNodeFilterProvider {
+public abstract class BaseReusableSubProcessFilterProvider<T extends BaseNonContainerSubprocess> extends MultipleInstanceNodeFilterProvider {
 
     static final String INDEPENDENT = "executionSet.independent";
     static final String ABORT_PARENT = "executionSet.abortParent";
@@ -50,8 +51,17 @@ public abstract class BaseReusableSubProcessFilterProvider<T extends BaseReusabl
     @SuppressWarnings("unchecked")
     public boolean isMultipleInstance(final Object definition) {
         final T subProcess = (T) definition;
-        MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subProcess.getExecutionSet();
-        return executionSet.getIsMultipleInstance().getValue();
+        if (subProcess.getExecutionSet() instanceof MultipleInstanceSubprocessTaskExecutionSet) {
+            MultipleInstanceSubprocessTaskExecutionSet executionSet = (MultipleInstanceSubprocessTaskExecutionSet) subProcess.getExecutionSet();
+            return executionSet.getIsMultipleInstance().getValue();
+        }
+
+        if (subProcess.getExecutionSet() instanceof ReusableSubprocessTaskExecutionSet) {
+            ReusableSubprocessTaskExecutionSet executionSet = (ReusableSubprocessTaskExecutionSet) subProcess.getExecutionSet();
+            return executionSet.getIsMultipleInstance().getValue();
+        }
+
+        return false;
     }
 
     @Override

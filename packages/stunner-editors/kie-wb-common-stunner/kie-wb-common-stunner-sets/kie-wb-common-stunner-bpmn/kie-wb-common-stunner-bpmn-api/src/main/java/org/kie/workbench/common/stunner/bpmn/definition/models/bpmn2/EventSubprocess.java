@@ -60,7 +60,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "subProcess", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EventSubprocess extends BaseSubprocess implements HasProcessData<ProcessData> {
+public class EventSubprocess extends BaseContainerSubprocess implements HasProcessData<ProcessData> {
 
     /**
      * For marshallers, always should be true

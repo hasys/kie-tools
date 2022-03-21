@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.workbench.common.forms.adf.engine.shared.FormElementFilter;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseReusableSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.ReusableSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.forms.client.event.FormFieldChanged;
@@ -31,7 +31,7 @@ import static org.kie.workbench.common.stunner.bpmn.client.forms.filters.BaseReu
 import static org.kie.workbench.common.stunner.bpmn.client.forms.filters.BaseReusableSubProcessFilterProvider.INDEPENDENT;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class BaseReusableSubProcessFilterProviderTest<T extends BaseReusableSubprocess> extends MultipleInstanceNodeFilterProviderTest {
+public abstract class BaseReusableSubProcessFilterProviderTest<T extends BaseNonContainerSubprocess> extends MultipleInstanceNodeFilterProviderTest {
 
     @Override
     protected MultipleInstanceNodeFilterProvider newFilterProvider() {

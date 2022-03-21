@@ -29,6 +29,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExclusiveGa
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InclusiveGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ParallelGateway;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ReusableSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ScriptTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.SequenceFlow;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEvent;
@@ -71,6 +72,8 @@ public interface BpmnContainer {
 
     List<DataObjectReference> getDataObjectsReference();
 
+    List<ReusableSubprocess> getCallActivities();
+
     default void clear() {
         getScriptTasks().clear();
         getUserTasks().clear();
@@ -108,7 +111,11 @@ public interface BpmnContainer {
                 flows.add((SequenceFlow) node);
             }
         } else if (node instanceof BaseSubprocess) {
-            getSubProcesses().add((BaseSubprocess) node);
+            if (node instanceof ReusableSubprocess) {
+                getCallActivities().add((ReusableSubprocess) node);
+            } else {
+                getSubProcesses().add((BaseSubprocess) node);
+            }
         } else if (node instanceof Lane) {
             getLanes().add((Lane) node);
         } else if (node instanceof EventGateway) {

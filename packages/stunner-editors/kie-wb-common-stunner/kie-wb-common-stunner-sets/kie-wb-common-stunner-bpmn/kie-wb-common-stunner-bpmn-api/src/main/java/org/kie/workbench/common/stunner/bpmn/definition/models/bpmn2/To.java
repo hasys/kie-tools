@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "to", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class To {
 
-    @XmlAttribute(namespace = "http://www.w3.org/2001/XMLSchema-instance")
+    @XmlAttribute
     private String type = "bpmn2:tFormalExpression";
 
     @XmlValue
