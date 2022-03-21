@@ -17,13 +17,14 @@
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.HasOutgoing;
@@ -53,19 +54,17 @@ public abstract class StartEvent extends FlowNode implements BPMNViewDefinition,
 
     @Labels
     @XmlTransient
-    protected final Set<String> labels = new Sets.Builder<String>()
-            .add("all")
-            .add("lane_child")
-            .add("Startevents_all")
-            .add("Startevents_outgoing_all")
-            .add("sequence_start")
-            .add("choreography_sequence_start")
-            .add("to_task_event")
-            .add("from_task_event")
-            .add("fromtoall")
-            .add("StartEventsMorph")
-            .add("cm_nop")
-            .build();
+    protected final Set<String> labels = new HashSet<>(Arrays.asList("all",
+                                                                     "lane_child",
+                                                                     "Startevents_all",
+                                                                     "Startevents_outgoing_all",
+                                                                     "sequence_start",
+                                                                     "choreography_sequence_start",
+                                                                     "to_task_event",
+                                                                     "from_task_event",
+                                                                     "fromtoall",
+                                                                     "StartEventsMorph",
+                                                                     "cm_nop"));
 
     /*
     Simulation parameters for the start event. Used in Simulation section during marshalling/unmarshalling

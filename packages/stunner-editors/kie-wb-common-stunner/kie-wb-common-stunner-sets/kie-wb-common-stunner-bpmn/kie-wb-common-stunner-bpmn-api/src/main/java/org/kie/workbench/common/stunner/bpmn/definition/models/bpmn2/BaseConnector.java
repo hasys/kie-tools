@@ -17,6 +17,8 @@
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -25,7 +27,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
-import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.FlowElement;
@@ -47,13 +48,12 @@ public abstract class BaseConnector extends FlowElement implements BPMNViewDefin
     private String targetRef;
 
     @Labels
-    protected final Set<String> labels = new Sets.Builder<String>()
-            .add("all")
-            .add("lane_child")
-            .add("ConnectingObjectsMorph")
-            .add("cm_nop")
-            .add("connector")
-            .build();
+    protected final Set<String> labels = new HashSet<>(Arrays.asList("all",
+                                                                     "lane_child",
+                                                                     "ConnectingObjectsMorph",
+                                                                     "ConnectingObjectsMorph",
+                                                                     "cm_nop",
+                                                                     "connector"));
 
     /*
     Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.

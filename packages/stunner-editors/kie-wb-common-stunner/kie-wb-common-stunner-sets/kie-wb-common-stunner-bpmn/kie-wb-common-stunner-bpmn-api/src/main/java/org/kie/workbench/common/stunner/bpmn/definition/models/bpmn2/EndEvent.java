@@ -17,6 +17,8 @@
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -25,7 +27,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
-import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.HasIncoming;
@@ -51,18 +52,16 @@ public abstract class EndEvent extends FlowNode implements BPMNViewDefinition,
     public static final transient String category = BPMNCategories.END_EVENTS;
     @Labels
     @XmlTransient
-    protected final Set<String> labels = new Sets.Builder<String>()
-            .add("all")
-            .add("lane_child")
-            .add("sequence_end")
-            .add("to_task_event")
-            .add("from_task_event")
-            .add("fromtoall")
-            .add("choreography_sequence_end")
-            .add("Endevents_all")
-            .add("EndEventsMorph")
-            .add("cm_nop")
-            .build();
+    protected final Set<String> labels = new HashSet<>(Arrays.asList("all",
+                                                                     "lane_child",
+                                                                     "sequence_end",
+                                                                     "to_task_event",
+                                                                     "from_task_event",
+                                                                     "fromtoall",
+                                                                     "choreography_sequence_end",
+                                                                     "Endevents_all",
+                                                                     "EndEventsMorph",
+                                                                     "cm_nop"));
 
     @XmlUnwrappedCollection
     @XmlElement(name = "incoming")

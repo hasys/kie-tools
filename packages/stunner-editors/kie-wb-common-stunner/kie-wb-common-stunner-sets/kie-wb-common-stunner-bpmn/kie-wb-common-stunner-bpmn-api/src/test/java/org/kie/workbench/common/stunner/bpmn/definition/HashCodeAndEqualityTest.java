@@ -62,7 +62,6 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.assignee.Actors
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignee.Groupid;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.common.ConditionExpression;
-import org.kie.workbench.common.stunner.bpmn.definition.property.connectors.Priority;
 import org.kie.workbench.common.stunner.bpmn.definition.property.connectors.SequenceFlowExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;

@@ -16,6 +16,8 @@
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +35,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.jboss.errai.databinding.client.api.Bindable;
-import org.kie.soup.commons.util.Sets;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
@@ -224,10 +225,8 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     protected RectangleDimensionsSet dimensionsSet;
 
     @Labels
-    private final Set<String> labels = new Sets.Builder<String>()
-            .add("canContainArtifacts")
-            .add("diagram")
-            .build();
+    private final Set<String> labels = new HashSet<>(Arrays.asList("canContainArtifacts",
+                                                                   "diagram"));
 
     public static final Double WIDTH = 950d;
     public static final Double HEIGHT = 950d;

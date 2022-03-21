@@ -62,7 +62,7 @@ public class EndEventShapeDef
                     .put(EndCompensationEvent.class,
                          BPMNSVGViewFactory::endCompensationEvent);
 
-    public static final Map<Class<? extends BaseEndEvent>, Glyph> GLYPHS =
+    public static final Map<Class<? extends EndEvent>, Glyph> GLYPHS =
             Stream.of(new AbstractMap.SimpleEntry<>(EndNoneEvent.class, BPMNGlyphFactory.EVENT_END_NONE),
                       new AbstractMap.SimpleEntry<>(EndSignalEvent.class, BPMNGlyphFactory.EVENT_END_SIGNAL),
                       new AbstractMap.SimpleEntry<>(EndMessageEvent.class, BPMNGlyphFactory.EVENT_END_MESSAGE),

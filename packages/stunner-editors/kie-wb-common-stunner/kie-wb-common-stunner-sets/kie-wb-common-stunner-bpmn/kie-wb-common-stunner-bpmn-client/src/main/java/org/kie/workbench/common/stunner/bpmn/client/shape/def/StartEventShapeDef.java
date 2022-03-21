@@ -68,7 +68,7 @@ public class StartEventShapeDef
                     .put(StartCompensationEvent.class,
                          BPMNSVGViewFactory::startCompensationEvent);
 
-    public static final Map<Class<? extends BaseStartEvent>, Glyph> GLYPHS =
+    public static final Map<Class<? extends StartEvent>, Glyph> GLYPHS =
             Stream.of(new AbstractMap.SimpleEntry<>(StartNoneEvent.class, BPMNGlyphFactory.EVENT_START_NONE),
                       new AbstractMap.SimpleEntry<>(StartTimerEvent.class, BPMNGlyphFactory.EVENT_START_TIMER),
                       new AbstractMap.SimpleEntry<>(StartSignalEvent.class, BPMNGlyphFactory.EVENT_START_SIGNAL),
