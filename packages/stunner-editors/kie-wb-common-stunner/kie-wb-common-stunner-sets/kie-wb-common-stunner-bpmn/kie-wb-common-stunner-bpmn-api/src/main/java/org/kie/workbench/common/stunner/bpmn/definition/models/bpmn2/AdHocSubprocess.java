@@ -19,6 +19,10 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlCData;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -32,6 +36,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.Rect
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.AdHocSubprocessTaskExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.task.BaseSubprocessTaskExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.ProcessData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
@@ -55,13 +60,22 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
+@XmlRootElement(name = "adHocSubProcess", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class AdHocSubprocess
-        extends EmbeddedSubprocess {
+        extends ConnectedBaseSubprocess {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     protected AdHocSubprocessTaskExecutionSet executionSet;
+
+    /*
+        This property is used for marshalling purpose and generated in getter.
+     */
+    @XmlElement(name = "completionCondition")
+    @XmlCData
+    private CompletionCondition completionCondition;
 
     public AdHocSubprocess() {
         this("Sub-process");
@@ -94,9 +108,42 @@ public class AdHocSubprocess
               fontSet,
               dimensionsSet,
               simulationSet,
-              executionSet,
               processData,
               advancedData);
+        this.executionSet = executionSet;
+    }
+
+    @Override
+    public ExtensionElements getExtensionElements() {
+        ExtensionElements elements = super.getExtensionElements();
+
+        if (elements == null) {
+            elements = new ExtensionElements();
+        }
+        getExecutionSet().setOnEntryOnExitMetadata(elements);
+        getExecutionSet().setActivationConditionMetadata(elements);
+        getExecutionSet().setAutostartMetadata(elements);
+
+        return elements.isEmtpy() ? null : elements;
+    }
+
+    @Override
+    public AdHocSubprocessTaskExecutionSet getExecutionSet() {
+        return executionSet;
+    }
+
+    @Override
+    public void setExecutionSet(BaseSubprocessTaskExecutionSet executionSet) {
+        this.executionSet = (AdHocSubprocessTaskExecutionSet) executionSet;
+    }
+
+    public CompletionCondition getCompletionCondition() {
+        return new CompletionCondition(executionSet.getAdHocCompletionCondition().getValue().getScript(),
+                                       executionSet.getAdHocCompletionCondition().getValue().getLanguage());
+    }
+
+    public void setCompletionCondition(CompletionCondition completionCondition) {
+        this.completionCondition = completionCondition;
     }
 
     @Override

@@ -149,6 +149,10 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
     })
     private List<BaseSubprocess> subProcesses = new ArrayList<>();
 
+    @XmlElement(name = "adHocSubProcess")
+    @XmlUnwrappedCollection
+    private List<AdHocSubprocess> adHocSubProcess = new ArrayList<>();
+
     @XmlElement(name = "callActivity")
     @XmlUnwrappedCollection
     private List<ReusableSubprocess> callActivities = new ArrayList<>();
@@ -321,6 +325,14 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
         this.callActivities = callActivities;
     }
 
+    public List<AdHocSubprocess> getAdHocSubProcess() {
+        return adHocSubProcess;
+    }
+
+    public void setAdHocSubProcess(List<AdHocSubprocess> adHocSubProcess) {
+        this.adHocSubProcess = adHocSubProcess;
+    }
+
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(startEvents),
@@ -334,6 +346,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
                                          Objects.hashCode(subProcesses),
                                          Objects.hashCode(textAnnotations),
                                          Objects.hashCode(associations),
+                                         Objects.hashCode(adHocSubProcess),
                                          Objects.hashCode(callActivities));
     }
 
@@ -352,6 +365,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
                     && Objects.equals(subProcesses, other.subProcesses)
                     && Objects.equals(textAnnotations, other.textAnnotations)
                     && Objects.equals(associations, other.associations)
+                    && Objects.equals(adHocSubProcess, other.adHocSubProcess)
                     && Objects.equals(callActivities, other.callActivities);
         }
         return false;

@@ -29,6 +29,8 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.annotations.field.selector.SelectorDataProvider;
 import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.selectors.listBox.type.ListBoxFieldType;
 import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.type.TextAreaFieldType;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.general.SLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.property.subProcess.execution.EmbeddedSubprocessExecutionSet;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
@@ -129,6 +131,25 @@ public class AdHocSubprocessTaskExecutionSet
 
     public void setAdHocAutostart(AdHocAutostart adHocAutostart) {
         this.adHocAutostart = adHocAutostart;
+    }
+
+    public void setActivationConditionMetadata(ExtensionElements elements) {
+        if (adHocActivationCondition != null
+                && adHocActivationCondition.getValue() != null
+                && !adHocActivationCondition.getValue().isEmpty()) {
+            MetaData activationCondition = new MetaData("customActivationCondition",
+                                                        adHocActivationCondition.getValue());
+            elements.getMetaData().add(activationCondition);
+        }
+    }
+
+    public void setAutostartMetadata(ExtensionElements elements) {
+        if (adHocAutostart != null
+                && adHocAutostart.getValue() != null) {
+            MetaData autoStart = new MetaData("customAutoStart",
+                                              adHocAutostart.getValue().toString());
+            elements.getMetaData().add(autoStart);
+        }
     }
 
     @Override

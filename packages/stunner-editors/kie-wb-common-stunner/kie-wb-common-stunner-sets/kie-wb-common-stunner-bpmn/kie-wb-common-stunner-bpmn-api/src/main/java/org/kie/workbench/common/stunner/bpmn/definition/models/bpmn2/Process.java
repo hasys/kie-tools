@@ -224,6 +224,10 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlTransient
     protected RectangleDimensionsSet dimensionsSet;
 
+    @XmlElement(name = "adHocSubProcess")
+    @XmlUnwrappedCollection
+    private List<AdHocSubprocess> adHocSubProcess = new ArrayList<>();
+
     @Labels
     private final Set<String> labels = new HashSet<>(Arrays.asList("canContainArtifacts",
                                                                    "diagram"));
@@ -756,6 +760,14 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
         this.callActivities = callActivities;
     }
 
+    public List<AdHocSubprocess> getAdHocSubProcess() {
+        return adHocSubProcess;
+    }
+
+    public void setAdHocSubProcess(List<AdHocSubprocess> adHocSubProcess) {
+        this.adHocSubProcess = adHocSubProcess;
+    }
+
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(processData),
@@ -776,6 +788,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                                          Objects.hashCode(textAnnotations),
                                          Objects.hashCode(associations),
                                          Objects.hashCode(callActivities),
+                                         Objects.hashCode(adHocSubProcess),
                                          Objects.hashCode(properties));
     }
 
@@ -801,6 +814,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                     && Objects.equals(textAnnotations, other.textAnnotations)
                     && Objects.equals(associations, other.associations)
                     && Objects.equals(callActivities, other.callActivities)
+                    && Objects.equals(adHocSubProcess, other.adHocSubProcess)
                     && Objects.equals(properties, other.properties);
         }
         return false;

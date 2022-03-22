@@ -26,11 +26,19 @@ public class CompletionCondition {
     @XmlAttribute
     private String type = "bpmn2:tFormalExpression";
 
+    @XmlAttribute
+    private String language;
+
     @XmlValue
     @XmlCData
     private String value;
 
     public CompletionCondition() {
+    }
+
+    public CompletionCondition(String value, String language) {
+        this.value = value;
+        this.language = language;
     }
 
     public CompletionCondition(String value) {
@@ -51,5 +59,13 @@ public class CompletionCondition {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

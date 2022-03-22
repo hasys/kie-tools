@@ -17,6 +17,7 @@ package org.kie.workbench.common.stunner.bpmn.definition;
 
 import java.util.List;
 
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.AdHocSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Association;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
@@ -74,6 +75,8 @@ public interface BpmnContainer {
 
     List<ReusableSubprocess> getCallActivities();
 
+    List<AdHocSubprocess> getAdHocSubProcess();
+
     default void clear() {
         getScriptTasks().clear();
         getUserTasks().clear();
@@ -82,6 +85,7 @@ public interface BpmnContainer {
         getEndEvents().clear();
         getSequenceFlows().clear();
         getSubProcesses().clear();
+        getAdHocSubProcess().clear();
         getLanes().clear();
         getEventBasedGateways().clear();
         getInclusiveGateways().clear();
@@ -92,6 +96,7 @@ public interface BpmnContainer {
         getTextAnnotations().clear();
         getAssociations().clear();
         getDataObjectsReference().clear();
+        getCallActivities().clear();
     }
 
     default void addNode(BPMNViewDefinition node) {
@@ -113,6 +118,8 @@ public interface BpmnContainer {
         } else if (node instanceof BaseSubprocess) {
             if (node instanceof ReusableSubprocess) {
                 getCallActivities().add((ReusableSubprocess) node);
+            } else if (node instanceof AdHocSubprocess) {
+                getAdHocSubProcess().add((AdHocSubprocess) node);
             } else {
                 getSubProcesses().add((BaseSubprocess) node);
             }
