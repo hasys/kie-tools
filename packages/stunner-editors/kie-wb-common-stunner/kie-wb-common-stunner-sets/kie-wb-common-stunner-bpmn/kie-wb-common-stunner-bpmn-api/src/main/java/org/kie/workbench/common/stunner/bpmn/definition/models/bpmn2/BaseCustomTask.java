@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.kie.workbench.common.stunner.bpmn.workitem;
+package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
 import org.kie.workbench.common.stunner.bpmn.definition.property.simulation.SimulationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.TaskType;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -34,10 +33,5 @@ public abstract class BaseCustomTask extends BaseTask {
                           TaskType taskType,
                           AdvancedData advancedData) {
         super(name, documentation, simulationSet, taskType, advancedData);
-    }
-
-    @Override
-    public String getId() {
-        return null;
     }
 }

@@ -102,7 +102,8 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
     @XmlElement(name = "task")
     @XmlUnwrappedCollection
     @XmlElements({
-            @XmlElement(name = "_NoneTask", type = NoneTask.class)
+            @XmlElement(name = "_NoneTask", type = NoneTask.class),
+            @XmlElement(name = "_CustomTask", type = CustomTask.class)
     })
     private List<BaseTask> tasks = new ArrayList<>();
 

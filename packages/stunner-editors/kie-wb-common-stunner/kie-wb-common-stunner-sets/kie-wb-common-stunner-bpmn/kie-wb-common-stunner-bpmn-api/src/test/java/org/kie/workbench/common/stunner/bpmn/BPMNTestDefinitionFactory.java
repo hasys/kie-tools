@@ -17,7 +17,7 @@
 package org.kie.workbench.common.stunner.bpmn;
 
 import org.kie.workbench.common.stunner.bpmn.definition.factory.BPMNDefinitionSetModelFactoryImpl;
-import org.kie.workbench.common.stunner.bpmn.workitem.CustomTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.workitem.CustomTaskFactory;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinitionRegistry;
 import org.kie.workbench.common.stunner.core.factory.definition.TypeDefinitionFactory;

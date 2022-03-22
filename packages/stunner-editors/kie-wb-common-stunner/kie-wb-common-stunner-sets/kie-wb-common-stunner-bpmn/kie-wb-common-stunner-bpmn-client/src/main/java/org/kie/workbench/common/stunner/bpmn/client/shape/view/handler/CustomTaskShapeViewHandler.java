@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 import com.ait.lienzo.client.core.shape.Picture;
 import org.kie.workbench.common.stunner.bpmn.client.workitem.WorkItemDefinitionClientUtils;
-import org.kie.workbench.common.stunner.bpmn.workitem.CustomTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinition;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinitionRegistry;
 import org.kie.workbench.common.stunner.core.client.shape.view.ShapeViewHandler;

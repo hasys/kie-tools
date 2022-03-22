@@ -37,6 +37,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseInterme
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectReference;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions_XMLMapperImpl;
@@ -323,6 +324,9 @@ public class BPMNClientMarshalling {
                 } else if (definition instanceof BusinessRuleTask) {
                     BusinessRuleTask bTask = (BusinessRuleTask) task;
                     definitions.getItemDefinitions().addAll(bTask.getItemDefinitions());
+                } else if (definition instanceof CustomTask) {
+                    CustomTask cTask = (CustomTask) task;
+                    definitions.getItemDefinitions().addAll(cTask.getItemDefinitions());
                 }
             }
 

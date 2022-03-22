@@ -46,6 +46,7 @@ import org.kie.workbench.common.stunner.bpmn.client.documentation.template.BPMND
 import org.kie.workbench.common.stunner.bpmn.client.shape.factory.BPMNShapeFactory;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Process;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BgColor;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BorderColor;
@@ -89,7 +90,6 @@ import org.kie.workbench.common.stunner.bpmn.documentation.model.general.General
 import org.kie.workbench.common.stunner.bpmn.documentation.model.general.Imports;
 import org.kie.workbench.common.stunner.bpmn.documentation.model.general.ProcessOverview;
 import org.kie.workbench.common.stunner.bpmn.documentation.model.general.ProcessVariablesTotal;
-import org.kie.workbench.common.stunner.bpmn.workitem.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.workitem.IconDefinition;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinition;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinitionRegistry;
@@ -492,7 +492,7 @@ public class ClientBPMNDocumentationService implements BPMNDocumentationService 
             return Optional.ofNullable(definition)
                     .filter(def -> def instanceof CustomTask)
                     .map(def -> (CustomTask) def)
-                    .map(org.kie.workbench.common.stunner.bpmn.workitem.CustomTask::getTaskName)
+                    .map(CustomTask::getTaskName)
                     .map(name -> Optional.ofNullable(workItemDefinitionRegistry
                                                              .get()
                                                              .get(name))
@@ -515,7 +515,7 @@ public class ClientBPMNDocumentationService implements BPMNDocumentationService 
             return Optional.ofNullable(definition)
                     .filter(def -> def instanceof CustomTask)
                     .map(def -> (CustomTask) def)
-                    .map(org.kie.workbench.common.stunner.bpmn.workitem.CustomTask::getTaskName)
+                    .map(CustomTask::getTaskName)
                     .map(name -> Optional.ofNullable(workItemDefinitionRegistry
                                                              .get()
                                                              .get(name))
