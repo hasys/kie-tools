@@ -23,6 +23,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchin
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseThrowingIntermediateEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRuleTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectReference;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EventGateway;
@@ -77,6 +78,8 @@ public interface BpmnContainer {
 
     List<AdHocSubprocess> getAdHocSubProcess();
 
+    List<BusinessRuleTask> getBusinessRuleTask();
+
     default void clear() {
         getScriptTasks().clear();
         getUserTasks().clear();
@@ -97,6 +100,7 @@ public interface BpmnContainer {
         getAssociations().clear();
         getDataObjectsReference().clear();
         getCallActivities().clear();
+        getBusinessRuleTask().clear();
     }
 
     default void addNode(BPMNViewDefinition node) {
@@ -104,6 +108,8 @@ public interface BpmnContainer {
             getScriptTasks().add((ScriptTask) node);
         } else if (node instanceof UserTask) {
             getUserTasks().add((UserTask) node);
+        } else if (node instanceof BusinessRuleTask) {
+            getBusinessRuleTask().add((BusinessRuleTask) node);
         } else if (node instanceof BaseTask) {
             getTasks().add((BaseTask) node);
         } else if (node instanceof StartEvent) {

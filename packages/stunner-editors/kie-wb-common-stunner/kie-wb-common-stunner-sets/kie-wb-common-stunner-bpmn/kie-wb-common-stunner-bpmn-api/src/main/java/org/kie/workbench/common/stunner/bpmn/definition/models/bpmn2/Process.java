@@ -353,6 +353,10 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     })
     private List<BaseSubprocess> subProcesses = new ArrayList<>();
 
+    @XmlElement(name = "businessRuleTask")
+    @XmlUnwrappedCollection
+    private List<BusinessRuleTask> businessRuleTask = new ArrayList<>();
+
     @XmlElement(name = "property")
     @XmlUnwrappedCollection
     private List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> properties = new ArrayList<>();
@@ -768,6 +772,14 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
         this.adHocSubProcess = adHocSubProcess;
     }
 
+    public List<BusinessRuleTask> getBusinessRuleTask() {
+        return businessRuleTask;
+    }
+
+    public void setBusinessRuleTask(List<BusinessRuleTask> businessRuleTask) {
+        this.businessRuleTask = businessRuleTask;
+    }
+
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(processData),
@@ -789,6 +801,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                                          Objects.hashCode(associations),
                                          Objects.hashCode(callActivities),
                                          Objects.hashCode(adHocSubProcess),
+                                         Objects.hashCode(businessRuleTask),
                                          Objects.hashCode(properties));
     }
 
@@ -815,6 +828,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
                     && Objects.equals(associations, other.associations)
                     && Objects.equals(callActivities, other.callActivities)
                     && Objects.equals(adHocSubProcess, other.adHocSubProcess)
+                    && Objects.equals(businessRuleTask, other.businessRuleTask)
                     && Objects.equals(properties, other.properties);
         }
         return false;

@@ -113,6 +113,10 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
     })
     private List<ScriptTask> scriptTasks = new ArrayList<>();
 
+    @XmlElement(name = "businessRuleTask")
+    @XmlUnwrappedCollection
+    private List<BusinessRuleTask> businessRuleTask = new ArrayList<>();
+
     @XmlElement(name = "userTask")
     @XmlUnwrappedCollection
     @XmlElements({
@@ -333,6 +337,14 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
         this.adHocSubProcess = adHocSubProcess;
     }
 
+    public List<BusinessRuleTask> getBusinessRuleTask() {
+        return businessRuleTask;
+    }
+
+    public void setBusinessRuleTask(List<BusinessRuleTask> businessRuleTask) {
+        this.businessRuleTask = businessRuleTask;
+    }
+
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(startEvents),
@@ -347,6 +359,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
                                          Objects.hashCode(textAnnotations),
                                          Objects.hashCode(associations),
                                          Objects.hashCode(adHocSubProcess),
+                                         Objects.hashCode(businessRuleTask),
                                          Objects.hashCode(callActivities));
     }
 
@@ -366,6 +379,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
                     && Objects.equals(textAnnotations, other.textAnnotations)
                     && Objects.equals(associations, other.associations)
                     && Objects.equals(adHocSubProcess, other.adHocSubProcess)
+                    && Objects.equals(businessRuleTask, other.businessRuleTask)
                     && Objects.equals(callActivities, other.callActivities);
         }
         return false;
