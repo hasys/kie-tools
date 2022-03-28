@@ -48,6 +48,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageE
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNodeRef;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.GenericServiceTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Incoming;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEvent;
@@ -327,6 +328,9 @@ public class BPMNClientMarshalling {
                 } else if (definition instanceof CustomTask) {
                     CustomTask cTask = (CustomTask) task;
                     definitions.getItemDefinitions().addAll(cTask.getItemDefinitions());
+                } else if (definition instanceof GenericServiceTask) {
+                    GenericServiceTask gTask = (GenericServiceTask) task;
+                    definitions.getItemDefinitions().addAll(gTask.getItemDefinitions());
                 }
             }
 

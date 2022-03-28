@@ -321,6 +321,13 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     })
     private List<UserTask> userTasks = new ArrayList<>();
 
+    @XmlElement(name = "serviceTask")
+    @XmlUnwrappedCollection
+    @XmlElements({
+            @XmlElement(name = "_GenericServiceTask", type = GenericServiceTask.class)
+    })
+    private List<GenericServiceTask> genericServiceTask = new ArrayList<>();
+
     @XmlElement(name = "eventBasedGateway")
     @XmlUnwrappedCollection
     private List<EventGateway> eventBasedGateways = new ArrayList<>();
@@ -634,6 +641,15 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
 
     public void setUserTasks(List<UserTask> userTasks) {
         this.userTasks = userTasks;
+    }
+
+    @Override
+    public List<GenericServiceTask> getGenericServiceTask() {
+        return genericServiceTask;
+    }
+
+    public void setGenericServiceTask(List<GenericServiceTask> genericServiceTask) {
+        this.genericServiceTask = genericServiceTask;
     }
 
     public List<SequenceFlow> getSequenceFlows() {

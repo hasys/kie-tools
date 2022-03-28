@@ -28,6 +28,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.DataObjectR
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EventGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExclusiveGateway;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.GenericServiceTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InclusiveGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ParallelGateway;
@@ -80,6 +81,8 @@ public interface BpmnContainer {
 
     List<BusinessRuleTask> getBusinessRuleTask();
 
+    List<GenericServiceTask> getGenericServiceTask();
+
     default void clear() {
         getScriptTasks().clear();
         getUserTasks().clear();
@@ -110,6 +113,8 @@ public interface BpmnContainer {
             getUserTasks().add((UserTask) node);
         } else if (node instanceof BusinessRuleTask) {
             getBusinessRuleTask().add((BusinessRuleTask) node);
+        } else if (node instanceof GenericServiceTask) {
+            getGenericServiceTask().add((GenericServiceTask) node);
         } else if (node instanceof BaseTask) {
             getTasks().add((BaseTask) node);
         } else if (node instanceof StartEvent) {

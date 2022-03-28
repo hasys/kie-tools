@@ -118,6 +118,13 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
     @XmlUnwrappedCollection
     private List<BusinessRuleTask> businessRuleTask = new ArrayList<>();
 
+    @XmlElement(name = "serviceTask")
+    @XmlUnwrappedCollection
+    @XmlElements({
+            @XmlElement(name = "_GenericServiceTask", type = GenericServiceTask.class)
+    })
+    private List<GenericServiceTask> genericServiceTask = new ArrayList<>();
+
     @XmlElement(name = "userTask")
     @XmlUnwrappedCollection
     @XmlElements({
@@ -223,6 +230,15 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
 
     public void setUserTasks(List<UserTask> userTasks) {
         this.userTasks = userTasks;
+    }
+
+    @Override
+    public List<GenericServiceTask> getGenericServiceTask() {
+        return genericServiceTask;
+    }
+
+    public void setGenericServiceTask(List<GenericServiceTask> genericServiceTask) {
+        this.genericServiceTask = genericServiceTask;
     }
 
     public List<SequenceFlow> getSequenceFlows() {
