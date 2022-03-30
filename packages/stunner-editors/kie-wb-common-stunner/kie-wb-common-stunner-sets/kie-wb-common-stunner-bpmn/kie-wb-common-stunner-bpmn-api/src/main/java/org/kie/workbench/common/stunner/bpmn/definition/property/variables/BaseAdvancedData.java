@@ -16,9 +16,29 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.property.variables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNPropertySet;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 
 public interface BaseAdvancedData extends BPMNPropertySet {
 
     String getMetaDataAttributes();
+
+    default List<MetaData> getAsMetaData() {
+        List<MetaData> metaData = new ArrayList<>();
+
+        if (StringUtils.nonEmpty(getMetaDataAttributes())) {
+            String[] metaArray = getMetaDataAttributes().split("Ø");
+            for (String md : metaArray) {
+                String[] metaNV = md.split("ß");
+                MetaData meta = new MetaData(metaNV[0], metaNV[1]);
+                metaData.add(meta);
+            }
+        }
+
+        return metaData;
+    }
 }

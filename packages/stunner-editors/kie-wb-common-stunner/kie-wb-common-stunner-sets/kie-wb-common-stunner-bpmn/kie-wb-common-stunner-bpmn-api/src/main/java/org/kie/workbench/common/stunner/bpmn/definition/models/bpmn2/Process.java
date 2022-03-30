@@ -46,11 +46,17 @@ import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.ty
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
 import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.Global;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.Import;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.DiagramSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.GlobalVariables;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.DefaultImport;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.Imports;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.ImportsValue;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.ProcessData;
@@ -63,6 +69,7 @@ import org.kie.workbench.common.stunner.core.definition.annotation.definition.La
 import org.kie.workbench.common.stunner.core.definition.annotation.property.Value;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanContain;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.processing.fields.fieldInitializers.nestedForms.SubFormFieldInitializer.COLLAPSIBLE_CONTAINER;
@@ -193,6 +200,7 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @Value
     @FieldValue
     @FormField(afterElement = "executable")
+    @XmlTransient
     private String slaDueDate;
 
     @Property
@@ -373,6 +381,15 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlUnwrappedCollection
     private List<ReusableSubprocess> callActivities = new ArrayList<>();
 
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    This variable will be always null and getter/setter will return data from other Execution sets.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
+    @XmlElement
+    private ExtensionElements extensionElements;
+
     public Process() {
         this("",
              "",
@@ -428,6 +445,61 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
         this.fontSet = fontSet;
         this.dimensionsSet = dimensionsSet;
         this.advancedData = advancedData;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
+    public ExtensionElements getExtensionElements() {
+        ExtensionElements elements = new ExtensionElements();
+        List<MetaData> metaData = new ArrayList<>();
+        elements.setMetaData(metaData);
+
+        if (StringUtils.nonEmpty(this.getProcessInstanceDescription())) {
+            MetaData name = new MetaData("customDescription", this.getProcessInstanceDescription());
+            metaData.add(name);
+        }
+
+        if (StringUtils.nonEmpty(this.getSlaDueDate())) {
+            MetaData sla = new MetaData("customSLADueDate", this.getSlaDueDate());
+            elements.getMetaData().add(sla);
+        }
+
+        ImportsValue imports = getImports().getValue();
+        //List<WSDLImport> wsdlImports = imports.getWSDLImports();
+        List<DefaultImport> defaultImports = imports.getDefaultImports();
+        if (defaultImports != null && !defaultImports.isEmpty()) {
+            for (DefaultImport i : defaultImports) {
+                elements.getImports().add(new Import(i.getClassName()));
+            }
+        }
+
+        //GLOBAL identifier type; format is "name:type:,name2:type2:"
+        GlobalVariables globalVariables = getAdvancedData().getGlobalVariables();
+        if (globalVariables != null
+                && globalVariables.getValue() != null
+                && !globalVariables.getValue().isEmpty()) {
+            String[] globals = globalVariables.getValue().split(",");
+            for (String global : globals) {
+                String[] g = global.split(":");
+                elements.getGlobals().add(new Global(g[0], g[1]));
+            }
+        }
+
+        metaData.addAll(this.getAdvancedData().getAsMetaData());
+
+        return elements;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
+    public void setExtensionElements(ExtensionElements extensionElements) {
+        this.extensionElements = extensionElements;
     }
 
     @Override

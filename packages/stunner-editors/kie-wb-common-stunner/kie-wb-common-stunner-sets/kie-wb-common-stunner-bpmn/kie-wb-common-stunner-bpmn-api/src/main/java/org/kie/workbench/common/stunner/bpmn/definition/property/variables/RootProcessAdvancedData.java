@@ -42,7 +42,7 @@ public class RootProcessAdvancedData implements BaseRootProcessAdvancedData {
             type = MetaDataEditorFieldType.class
     )
     @Valid
-    private MetaDataAttributes metaDataAttributes;
+    private String metaDataAttributes;
 
     @Property
     @FormField(
@@ -58,12 +58,12 @@ public class RootProcessAdvancedData implements BaseRootProcessAdvancedData {
 
     public RootProcessAdvancedData(final @MapsTo("globalVariables") GlobalVariables globalVariables, final @MapsTo("metaDataAttributes") MetaDataAttributes metaDataAttributes) {
         this.globalVariables = globalVariables;
-        this.metaDataAttributes = metaDataAttributes;
+        this.metaDataAttributes = metaDataAttributes.getValue();
     }
 
     public RootProcessAdvancedData(final String globalVariables, final String metaDataAttributes) {
         this.globalVariables = new GlobalVariables(globalVariables);
-        this.metaDataAttributes = new MetaDataAttributes(metaDataAttributes);
+        this.metaDataAttributes = metaDataAttributes;
     }
 
     @Override
@@ -76,11 +76,11 @@ public class RootProcessAdvancedData implements BaseRootProcessAdvancedData {
     }
 
     @Override
-    public MetaDataAttributes getMetaDataAttributes() {
+    public String getMetaDataAttributes() {
         return metaDataAttributes;
     }
 
-    public void setMetaDataAttributes(MetaDataAttributes metadataAttributes) {
+    public void setMetaDataAttributes(String metadataAttributes) {
         this.metaDataAttributes = metadataAttributes;
     }
 

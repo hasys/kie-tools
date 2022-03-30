@@ -49,6 +49,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEv
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExtensionElements;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNodeRef;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.GenericServiceTask;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Import;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Incoming;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateEscalationEvent;
@@ -82,6 +83,8 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.ElementPara
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.Scenario;
 import org.kie.workbench.common.stunner.bpmn.definition.models.dc.Bounds;
 import org.kie.workbench.common.stunner.bpmn.definition.models.di.Waypoint;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.ImportsValue;
+import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.WSDLImport;
 import org.kie.workbench.common.stunner.core.definition.adapter.binding.BindableAdapterUtils;
 import org.kie.workbench.common.stunner.core.diagram.Diagram;
 import org.kie.workbench.common.stunner.core.graph.Edge;
@@ -156,6 +159,12 @@ public class BPMNClientMarshalling {
         for (final NodeImpl<ViewImpl<BPMNViewDefinition>> node : nodes) {
             BPMNViewDefinition definition = node.getContent().getDefinition();
             if (definition instanceof Process) {
+                Process p = (Process) definition;
+                ImportsValue imports = p.getImports().getValue();
+                List<WSDLImport> wsdlImports = imports.getWSDLImports();
+                for (WSDLImport wsdlImport : wsdlImports) {
+                    definitions.getImports().add(new Import(wsdlImport.getLocation(), wsdlImport.getNamespace()));
+                }
                 continue;
             }
 

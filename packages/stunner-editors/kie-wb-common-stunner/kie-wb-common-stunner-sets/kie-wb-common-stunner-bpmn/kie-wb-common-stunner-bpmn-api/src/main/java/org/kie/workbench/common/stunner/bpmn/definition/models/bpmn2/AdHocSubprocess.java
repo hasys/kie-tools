@@ -124,7 +124,7 @@ public class AdHocSubprocess
         getExecutionSet().setActivationConditionMetadata(elements);
         getExecutionSet().setAutostartMetadata(elements);
 
-        return elements.isEmtpy() ? null : elements;
+        return elements.isEmpty() ? null : elements;
     }
 
     @Override

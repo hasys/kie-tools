@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpsim.BPSimData;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.Global;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.Import;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnEntryScript;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.OnExitScript;
@@ -36,6 +38,12 @@ public class ExtensionElements {
 
     @XmlUnwrappedCollection
     private List<MetaData> metaData;
+
+    @XmlUnwrappedCollection
+    private List<Import> imports = new ArrayList<>();
+
+    @XmlUnwrappedCollection
+    private List<Global> globals = new ArrayList<>();
 
     @XmlElement(name = "onEntry-script")
     private OnEntryScript onEntryScript;
@@ -86,10 +94,26 @@ public class ExtensionElements {
         this.onExitScript = onExitScript;
     }
 
-    public boolean isEmtpy() {
+    public boolean isEmpty() {
         return (getMetaData() == null || getMetaData().isEmpty())
-                &&  getOnEntryScript() == null
-                &&  getOnExitScript() == null;
+                && getOnEntryScript() == null
+                && getOnExitScript() == null;
+    }
+
+    public List<Import> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<Import> imports) {
+        this.imports = imports;
+    }
+
+    public List<Global> getGlobals() {
+        return globals;
+    }
+
+    public void setGlobals(List<Global> globals) {
+        this.globals = globals;
     }
 
     @Override

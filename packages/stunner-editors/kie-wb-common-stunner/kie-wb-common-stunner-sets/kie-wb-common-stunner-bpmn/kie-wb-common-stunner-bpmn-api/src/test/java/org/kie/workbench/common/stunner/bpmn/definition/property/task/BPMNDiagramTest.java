@@ -127,7 +127,7 @@ public class BPMNDiagramTest {
         RootProcessAdvancedData advancedData = new RootProcessAdvancedData();
         assertEquals(advancedData.getMetaDataAttributes(), new MetaDataAttributes());
 
-        advancedData.setMetaDataAttributes(new MetaDataAttributes(METADATA));
+        advancedData.setMetaDataAttributes(METADATA);
         assertEquals(advancedData.getMetaDataAttributes(), new MetaDataAttributes(METADATA));
     }
 

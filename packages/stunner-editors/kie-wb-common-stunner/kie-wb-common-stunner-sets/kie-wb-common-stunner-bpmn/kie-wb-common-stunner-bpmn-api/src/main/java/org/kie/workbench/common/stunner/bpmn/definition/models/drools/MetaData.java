@@ -15,11 +15,15 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition.models.drools;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 public class MetaData {
 
@@ -29,6 +33,14 @@ public class MetaData {
     @XmlCData
     @XmlElement(name = "metaValue", namespace = "http://www.jboss.org/drools")
     private String metaValue;
+
+    @XmlElement(name = "import", namespace = "http://www.jboss.org/drools")
+    @XmlUnwrappedCollection
+    private List<Import> imports = new ArrayList<>();
+
+    @XmlElement(name = "global", namespace = "http://www.jboss.org/drools")
+    @XmlUnwrappedCollection
+    private List<Global> globals = new ArrayList<>();
 
     public MetaData() {
 
@@ -58,6 +70,22 @@ public class MetaData {
         this.metaValue = metaValue;
     }
 
+    public List<Import> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<Import> imports) {
+        this.imports = imports;
+    }
+
+    public List<Global> getGlobals() {
+        return globals;
+    }
+
+    public void setGlobals(List<Global> globals) {
+        this.globals = globals;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -68,12 +96,16 @@ public class MetaData {
         }
         MetaData metaData = (MetaData) o;
         return Objects.equals(getName(), metaData.getName())
-                && Objects.equals(getMetaValue(), metaData.getMetaValue());
+                && Objects.equals(getMetaValue(), metaData.getMetaValue())
+                && Objects.equals(getImports(), metaData.getImports())
+                && Objects.equals(getGlobals(), metaData.getGlobals());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(),
-                            getMetaValue());
+                            getMetaValue(),
+                            getImports(),
+                            getGlobals());
     }
 }

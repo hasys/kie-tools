@@ -111,7 +111,7 @@ public class EmbeddedSubprocess extends ConnectedBaseSubprocess implements DataI
         }
         getExecutionSet().setOnEntryOnExitMetadata(elements);
 
-        return elements.isEmtpy() ? null : elements;
+        return elements.isEmpty() ? null : elements;
     }
 
     @Override

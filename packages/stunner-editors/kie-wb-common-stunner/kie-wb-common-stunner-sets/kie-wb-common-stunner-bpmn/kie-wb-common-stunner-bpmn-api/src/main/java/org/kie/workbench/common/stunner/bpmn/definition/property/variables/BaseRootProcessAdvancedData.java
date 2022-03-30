@@ -16,13 +16,9 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.property.variables;
 
-import org.kie.workbench.common.stunner.bpmn.definition.BPMNPropertySet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.GlobalVariables;
-import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.MetaDataAttributes;
 
-public interface BaseRootProcessAdvancedData extends BPMNPropertySet {
+public interface BaseRootProcessAdvancedData extends BaseAdvancedData {
 
     GlobalVariables getGlobalVariables();
-
-    MetaDataAttributes getMetaDataAttributes();
 }

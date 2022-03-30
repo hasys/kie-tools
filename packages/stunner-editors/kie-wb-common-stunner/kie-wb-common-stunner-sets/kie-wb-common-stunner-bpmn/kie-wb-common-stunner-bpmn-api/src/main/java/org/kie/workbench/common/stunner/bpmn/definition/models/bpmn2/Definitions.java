@@ -30,7 +30,7 @@ import org.treblereel.gwt.xml.mapper.api.annotation.XMLMapper;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @XMLMapper
-@XmlType(propOrder = {"itemDefinitions", "messages", "signals", "errors", "escalations", "process", "bpmnDiagram", "relationship"})
+@XmlType(propOrder = {"imports", "itemDefinitions", "messages", "signals", "errors", "escalations", "process", "bpmnDiagram", "relationship"})
 @XmlRootElement(name = "definitions", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class Definitions {
 
@@ -69,6 +69,10 @@ public class Definitions {
     @XmlElement(name = "escalation")
     @XmlUnwrappedCollection
     private List<Escalation> escalations = new ArrayList<>();
+
+    @XmlElement(name = "import")
+    @XmlUnwrappedCollection
+    private List<Import> imports = new ArrayList<>();
 
     // All code behind this comment is auto generated.
     // Please regenerate it again if you added new property.
@@ -161,6 +165,14 @@ public class Definitions {
         this.escalations = escalations;
     }
 
+    public List<Import> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<Import> imports) {
+        this.imports = imports;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -177,6 +189,7 @@ public class Definitions {
                 && Objects.equals(getRelationship(), that.getRelationship())
                 && Objects.equals(getProcess(), that.getProcess())
                 && Objects.equals(getItemDefinitions(), that.getItemDefinitions())
+                && Objects.equals(getImports(), that.getImports())
                 && Objects.equals(getSignals(), that.getSignals())
                 && Objects.equals(getMessages(), that.getMessages())
                 && Objects.equals(getErrors(), that.getErrors())
@@ -191,6 +204,7 @@ public class Definitions {
                                          Objects.hashCode(bpmnDiagram),
                                          Objects.hashCode(relationship),
                                          Objects.hashCode(process),
+                                         Objects.hashCode(imports),
                                          Objects.hashCode(itemDefinitions),
                                          Objects.hashCode(messages),
                                          Objects.hashCode(signals),
