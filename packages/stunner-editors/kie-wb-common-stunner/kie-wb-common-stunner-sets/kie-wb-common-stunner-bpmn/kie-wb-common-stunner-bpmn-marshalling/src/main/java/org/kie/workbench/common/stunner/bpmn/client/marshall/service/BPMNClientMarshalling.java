@@ -85,6 +85,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.dc.Bounds;
 import org.kie.workbench.common.stunner.bpmn.definition.models.di.Waypoint;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.ImportsValue;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.WSDLImport;
+import org.kie.workbench.common.stunner.bpmn.definition.property.event.compensation.HasActivityRef;
 import org.kie.workbench.common.stunner.core.definition.adapter.binding.BindableAdapterUtils;
 import org.kie.workbench.common.stunner.core.diagram.Diagram;
 import org.kie.workbench.common.stunner.core.graph.Edge;
@@ -386,18 +387,22 @@ public class BPMNClientMarshalling {
             }
         }
 
-        // When all IDs ready push children to lanes
+        // When all IDs are ready
         for (final NodeImpl<ViewImpl<BPMNViewDefinition>> node : nodes) {
             BPMNViewDefinition definition = node.getContent().getDefinition();
             if (definition instanceof Lane) {
                 addChildrenToLane(graph, node);
             }
+            if (definition instanceof HasActivityRef) {
+                HasActivityRef hasActivityRef = (HasActivityRef) definition;
+                hasActivityRef.updateActivityRef(IdGenerator.getIdByUuid(hasActivityRef.getActivityRef()));
+            }
         }
 
         // Update associations IDs when all IDs are ready.
         for (Association association : process.getAssociations()) {
-            association.setTargetRef(IdGenerator.getIdBUuid(association.getTargetRef()));
-            association.setSourceRef(IdGenerator.getIdBUuid(association.getSourceRef()));
+            association.setTargetRef(IdGenerator.getIdByUuid(association.getTargetRef()));
+            association.setSourceRef(IdGenerator.getIdByUuid(association.getSourceRef()));
             for (BpmnEdge edge : plane.getBpmnEdges()) {
                 if (Objects.equals(edge.getBpmnElement(), association.getId())) {
                     edge.setId("edge_shape_" + association.getSourceRef() + "_to_shape_" + association.getTargetRef());

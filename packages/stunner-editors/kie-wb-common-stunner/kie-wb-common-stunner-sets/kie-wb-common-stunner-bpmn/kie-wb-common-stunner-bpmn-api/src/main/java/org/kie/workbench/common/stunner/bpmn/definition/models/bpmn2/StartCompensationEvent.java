@@ -94,6 +94,7 @@ public class StartCompensationEvent extends StartEvent {
     Execution sets not removed due to how forms works now, should be refactored during the migration
     to the new forms.
      */
+    @Override
     public ExtensionElements getExtensionElements() {
         ExtensionElements elements = super.getExtensionElements();
         MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate());

@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -29,6 +30,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.compensation.CompensationEventExecutionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.event.compensation.HasActivityRef;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
@@ -48,12 +50,18 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "endEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class EndCompensationEvent extends EndEvent {
+public class EndCompensationEvent extends EndEvent implements HasActivityRef {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     private CompensationEventExecutionSet executionSet;
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    */
+    private CompensateEventDefinition compensateEventDefinition = new CompensateEventDefinition();
 
     public EndCompensationEvent() {
         this("",
@@ -78,6 +86,31 @@ public class EndCompensationEvent extends EndEvent {
 
     public void setExecutionSet(CompensationEventExecutionSet executionSet) {
         this.executionSet = executionSet;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    */
+    public CompensateEventDefinition getCompensateEventDefinition() {
+        compensateEventDefinition.setActivityRef(executionSet.getActivityRef().getValue());
+        return compensateEventDefinition;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+     */
+    public void setCompensateEventDefinition(CompensateEventDefinition compensateEventDefinition) {
+        this.compensateEventDefinition = compensateEventDefinition;
+    }
+
+    @Override
+    public void updateActivityRef(String newActivityRef) {
+        executionSet.getActivityRef().setValue(newActivityRef);
+    }
+
+    @Override
+    public String getActivityRef() {
+        return executionSet.getActivityRef().getValue();
     }
 
     @Override

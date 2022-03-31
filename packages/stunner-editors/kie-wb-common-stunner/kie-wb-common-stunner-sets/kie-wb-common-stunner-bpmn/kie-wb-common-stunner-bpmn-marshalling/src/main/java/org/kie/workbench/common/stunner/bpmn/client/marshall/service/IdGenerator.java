@@ -203,7 +203,7 @@ public class IdGenerator {
         return null;
     }
 
-    public static String getIdBUuid(String uuid) {
+    public static String getIdByUuid(String uuid) {
         return oldNewId.get(uuid);
     }
 }

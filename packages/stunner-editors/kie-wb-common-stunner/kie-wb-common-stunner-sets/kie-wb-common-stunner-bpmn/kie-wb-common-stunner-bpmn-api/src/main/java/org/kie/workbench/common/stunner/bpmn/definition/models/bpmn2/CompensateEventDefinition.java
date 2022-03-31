@@ -15,7 +15,12 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.Objects;
+
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 /***
  * Used only for marshalling/unmarshalling purposes as empty element compensateEventDefinition
@@ -23,4 +28,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "compensateEventDefinition", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class CompensateEventDefinition {
 
+    @XmlAttribute(name = "activityRef")
+    private String activityRef;
+
+    public CompensateEventDefinition() {
+    }
+
+    public CompensateEventDefinition(String activityRef) {
+        this.activityRef = activityRef;
+    }
+
+    public String getActivityRef() {
+        return activityRef;
+    }
+
+    public void setActivityRef(String activityRef) {
+        this.activityRef = activityRef;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CompensateEventDefinition)) {
+            return false;
+        }
+        CompensateEventDefinition that = (CompensateEventDefinition) o;
+        return Objects.equals(getActivityRef(), that.getActivityRef());
+    }
+
+    @Override
+    public int hashCode() {
+        return HashUtil.combineHashCodes(Objects.hashCode(getActivityRef()));
+    }
 }

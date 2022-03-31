@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -28,6 +29,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.CircleDimensionSet;
@@ -57,7 +59,13 @@ public class IntermediateCompensationEvent extends BaseCatchingIntermediateEvent
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     protected BaseCancellingEventExecutionSet executionSet;
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    */
+    private CompensateEventDefinition compensateEventDefinition = new CompensateEventDefinition();
 
     public IntermediateCompensationEvent() {
         this("",
@@ -95,12 +103,45 @@ public class IntermediateCompensationEvent extends BaseCatchingIntermediateEvent
         labels.remove("sequence_start");
     }
 
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    */
+    public CompensateEventDefinition getCompensateEventDefinition() {
+        return compensateEventDefinition;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+     */
+    public void setCompensateEventDefinition(CompensateEventDefinition compensateEventDefinition) {
+        this.compensateEventDefinition = compensateEventDefinition;
+    }
+
     public BaseCancellingEventExecutionSet getExecutionSet() {
         return executionSet;
     }
 
     public void setExecutionSet(BaseCancellingEventExecutionSet executionSet) {
         this.executionSet = executionSet;
+    }
+
+    /*
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    Variable is not used and always null. Getters/setters redirect data from other execution sets.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
+    @Override
+    public ExtensionElements getExtensionElements() {
+        ExtensionElements elements = super.getExtensionElements();
+
+        if (executionSet.getSlaDueDate().getValue() != null && !executionSet.getSlaDueDate().getValue().isEmpty()) {
+            MetaData customAutoStart = new MetaData("customSLADueDate",
+                                                    executionSet.getSlaDueDate().getValue());
+            elements.getMetaData().add(customAutoStart);
+        }
+
+        return elements.getMetaData().isEmpty() ? null : elements;
     }
 
     @Override
