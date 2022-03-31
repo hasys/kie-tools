@@ -300,7 +300,8 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
             @XmlElement(name = "_EscalationCatchEvent", type = IntermediateEscalationEvent.class),
             @XmlElement(name = "_CompensationCatchEvent", type = IntermediateCompensationEvent.class),
             @XmlElement(name = "_SignalCatchEvent", type = IntermediateSignalEventCatching.class),
-            @XmlElement(name = "_MessageCatchEvent", type = IntermediateMessageEventCatching.class)
+            @XmlElement(name = "_MessageCatchEvent", type = IntermediateMessageEventCatching.class),
+            @XmlElement(name = "_IntermediateConditionalEvent", type = IntermediateConditionalEvent.class)
     })
     private List<BaseCatchingIntermediateEvent> intermediateCatchEvent = new ArrayList<>();
 

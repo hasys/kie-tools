@@ -19,6 +19,8 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
@@ -27,6 +29,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.conditional.InterruptingConditionalEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
@@ -46,12 +49,16 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
-public class StartConditionalEvent extends StartEvent {
+@XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+public class StartConditionalEvent extends StartEvent implements hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
     @Valid
+    @XmlTransient
     protected InterruptingConditionalEventExecutionSet executionSet;
+
+    private ConditionalEventDefinition conditionalEventDefinition;
 
     public StartConditionalEvent() {
         this("",
@@ -68,6 +75,36 @@ public class StartConditionalEvent extends StartEvent {
               documentation,
               advancedData);
         this.executionSet = executionSet;
+    }
+
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    public String getSlaDueDateString() {
+        return executionSet.getSlaDueDate();
+    }
+
+    /*
+     Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+     Variable is not used and always null. Getters/setters redirect data from other execution sets.
+     Execution sets not removed due to how forms works now, should be refactored during the migration
+     to the new forms.
+      */
+    @Override
+    public ExtensionElements getExtensionElements() {
+        return hasCustomSLADueDate.super.getExtensionElements();
+    }
+
+    public ConditionalEventDefinition getConditionalEventDefinition() {
+        ConditionalEventDefinition definition = new ConditionalEventDefinition();
+        Condition condition = new Condition(executionSet.getConditionExpression().getValue().getScript());
+        definition.setCondition(condition);
+        return definition;
+    }
+
+    public void setConditionalEventDefinition(ConditionalEventDefinition conditionalEventDefinition) {
+        this.conditionalEventDefinition = conditionalEventDefinition;
     }
 
     public InterruptingConditionalEventExecutionSet getExecutionSet() {
