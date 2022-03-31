@@ -37,7 +37,6 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.assignee.Actors
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignee.Groupid;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
-import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.diagram.CollaborationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.GlobalVariables;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.MetaDataAttributes;
@@ -336,8 +335,7 @@ public class ClientBPMNDocumentationServiceTest {
                 new BackgroundSet(),
                 new FontSet(),
                 new RectangleDimensionsSet(),
-                advancedData,
-                new CollaborationSet()
+                advancedData
         );
 
         userTask = new UserTask(TASK_NAME,

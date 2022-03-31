@@ -52,6 +52,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.assignment.AssignmentParser;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.cm.CaseManagementSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.collaboration.diagram.BaseCollaborationSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.DiagramSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.GlobalVariables;
 import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.imports.DefaultImport;
@@ -85,7 +86,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "process", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcessAdvancedData>,
+public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcessAdvancedData, BaseCollaborationSet>,
                                 BpmnContainer {
 
     @Category
@@ -653,6 +654,15 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @Override
     public void setProcessData(final ProcessData processData) {
         this.processData = processData;
+    }
+
+    @Override
+    public BaseCollaborationSet getCollaborationSet() {
+        return null;
+    }
+
+    @Override
+    public void setCollaborationSet(BaseCollaborationSet collaborationSet) {
     }
 
     @Override
