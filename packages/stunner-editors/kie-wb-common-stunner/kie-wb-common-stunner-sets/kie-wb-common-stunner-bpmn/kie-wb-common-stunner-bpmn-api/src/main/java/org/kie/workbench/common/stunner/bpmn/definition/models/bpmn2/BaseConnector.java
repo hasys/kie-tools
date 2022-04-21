@@ -123,6 +123,14 @@ public abstract class BaseConnector extends FlowElement implements BPMNViewDefin
         this.targetRef = targetRef;
     }
 
+    public abstract boolean isAutoConnectionSource();
+
+    public abstract void setAutoConnectionSource(boolean autoConnectionSource);
+
+    public abstract boolean isAutoConnectionTarget();
+
+    public abstract void setAutoConnectionTarget(boolean autoConnectionTarget);
+
     @Override
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(getClass()),

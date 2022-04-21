@@ -17,32 +17,28 @@
 package org.kie.workbench.common.stunner.bpmn.client.marshall.service;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import elemental2.dom.DomGlobal;
 import elemental2.promise.Promise;
 import org.kie.workbench.common.stunner.bpmn.client.workitem.WorkItemDefinitionClientService;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseGateway;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
+import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseConnector;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EventGateway;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExclusiveGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNode;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNodeRef;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InclusiveGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ParallelGateway;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.NonDirectionalAssociation;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Process;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.SequenceFlow;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmndi.BpmnDiagram;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmndi.BpmnEdge;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmndi.BpmnShape;
 import org.kie.workbench.common.stunner.bpmn.definition.models.di.Waypoint;
 import org.kie.workbench.common.stunner.bpmn.factory.BPMNDiagramFactory;
 import org.kie.workbench.common.stunner.bpmn.workitem.WorkItemDefinition;
@@ -61,11 +57,9 @@ import org.kie.workbench.common.stunner.core.factory.impl.NodeFactoryImpl;
 import org.kie.workbench.common.stunner.core.graph.Edge;
 import org.kie.workbench.common.stunner.core.graph.Graph;
 import org.kie.workbench.common.stunner.core.graph.Node;
-import org.kie.workbench.common.stunner.core.graph.content.Bounds;
 import org.kie.workbench.common.stunner.core.graph.content.definition.Definition;
 import org.kie.workbench.common.stunner.core.graph.content.view.ControlPoint;
 import org.kie.workbench.common.stunner.core.graph.content.view.MagnetConnection;
-import org.kie.workbench.common.stunner.core.graph.content.view.View;
 import org.kie.workbench.common.stunner.core.graph.content.view.ViewConnector;
 import org.kie.workbench.common.stunner.core.graph.util.GraphUtils;
 import org.kie.workbench.common.stunner.core.util.DefinitionUtils;
@@ -120,18 +114,21 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
     }
 
     @Override
+    @SuppressWarnings({"rawtypes"})
     public void transform(final String xml,
                           final ServiceCallback<Diagram> callback) {
         doTransform(DEFAULT_DIAGRAM_ID, xml, callback);
     }
 
     @Override
+    @SuppressWarnings({"rawtypes"})
     public void transform(final String fileName,
                           final String xml,
                           final ServiceCallback<Diagram> callback) {
         doTransform(createDiagramTitleFromFilePath(fileName), xml, callback);
     }
 
+    @SuppressWarnings({"rawtypes"})
     private void doTransform(final String fileName,
                              final String xml,
                              final ServiceCallback<Diagram> callback) {
@@ -149,6 +146,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
                 });
     }
 
+    @SuppressWarnings({"rawtypes"})
     private Diagram doTransform(final String fileName,
                                 final String xml) {
 
@@ -158,13 +156,15 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
         return parse(fileName, xml);
     }
 
+    @SuppressWarnings({"rawtypes"})
     public Promise<String> transform(final Diagram diagram) {
         String raw = marshalling.marshall(convert(diagram));
         return promises.resolve(raw);
     }
 
-    private void updateDiagramSet(Node<Definition<BPMNDiagram>, ?> diagramNode, String name) {
-        final BPMNDiagram diagramSet = diagramNode.getContent().getDefinition();
+    @SuppressWarnings({"rawtypes"})
+    private void updateDiagramSet(Node<Definition<Object>, ?> diagramNode, String name) {
+        final BPMNDiagram diagramSet = (BPMNDiagram) diagramNode.getContent().getDefinition();
 
         if (diagramSet.getPackageName() == null ||
                 diagramSet.getName().isEmpty()) {
@@ -182,6 +182,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
         }
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private Diagram createNewDiagram(String fileName) {
         final String title = createDiagramTitleFromFilePath(fileName);
         final String defSetId = BPMNClientMarshalling.getDefinitionSetId();
@@ -191,14 +192,14 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
                                                           defSetId,
                                                           metadata);
 
-        final Node<Definition<BPMNDiagram>, ?> diagramNode = GraphUtils.getFirstNode((Graph<?, Node>) diagram.getGraph(), Process.class);
+        final Node<Definition<Object>, ?> diagramNode = GraphUtils.getFirstNode((Graph<?, Node>) diagram.getGraph(), Process.class);
 
         updateDiagramSet(diagramNode, fileName);
         updateClientMetadata(diagram);
         return diagram;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private Diagram parse(final String fileName, final String raw) {
         final Metadata metadata = createMetadata();
         final String title = createDiagramTitleFromFilePath(fileName);
@@ -210,16 +211,18 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
                                                           defSetId,
                                                           metadata);
 
-        final Node<Definition<BPMNDiagram>, ?> diagramNode = GraphUtils.getFirstNode((Graph<?, Node>) diagram.getGraph(), Process.class);
+        final Node<Definition<Object>, ?> diagramNode = GraphUtils.getFirstNode((Graph<?, Node>) diagram.getGraph(), Process.class);
 
         diagramNode.getContent().setDefinition(definitions.getProcess());
 
-        buildStartEvents(definitions, diagram);
-        buildEndEvents(definitions, diagram);
-        buildTasks(definitions, diagram);
-        buildLanes(definitions, diagram);
-        buildGateways(definitions, diagram);
-        buildSequenceFlows(definitions, diagram);
+        NodeMarshallerFactory factory = new NodeMarshallerFactory(nodeFactory, definitionUtils, definitions);
+        Graph graph = diagram.getGraph();
+
+        Map<String, Node<Definition<Object>, Edge>> nodesParents = buildLanes(factory, definitions.getProcess().getLanes(), graph, diagramNode);
+        BpmnContainer processContainer = definitions.getProcess();
+        BpmnDiagram bpmnDiagram = definitions.getBpmnDiagram();
+
+        buildContainer(processContainer, bpmnDiagram, diagram, diagramNode, factory, graph, nodesParents);
 
         updateDiagramSet(diagramNode, fileName);
         updateClientMetadata(diagram);
@@ -227,168 +230,134 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
         return diagram;
     }
 
-    private void buildSequenceFlows(Definitions definitions, Diagram diagram) {
-        for (SequenceFlow event : definitions.getProcess().getSequenceFlows()) {
-            for (BpmnEdge shape : definitions.getBpmnDiagram().getBpmnPlane().getBpmnEdges()) {
-                if (shape.getBpmnElement().equals(event.getId())) {
+    private void buildContainer(BpmnContainer processContainer, BpmnDiagram bpmnDiagram, Diagram diagram, Node<Definition<Object>, ?> diagramNode, NodeMarshallerFactory factory, Graph graph, Map<String, Node<Definition<Object>, Edge>> nodesParents) {
+        addNodesToGraph(factory, processContainer.getStartEvents(), graph, diagramNode, nodesParents);
+        addNodesToGraph(factory, processContainer.getEndEvents(), graph, diagramNode, nodesParents);
+        addNodesToGraph(factory, processContainer.getIntermediateCatchEvent(), graph, diagramNode, nodesParents);
+        addNodesToGraph(factory, processContainer.getIntermediateThrowEvent(), graph, diagramNode, nodesParents);
+        addNodesToGraph(factory, processContainer.getTextAnnotations(), graph, diagramNode, nodesParents);
+        addNodesToGraph(factory, processContainer.getDataObjectsReference(), graph, diagramNode, nodesParents);
+        addGatewaysToGraph(processContainer, factory, graph, diagramNode, nodesParents);
+        addTasksToGraph(processContainer, factory, graph, diagramNode, nodesParents);
+        buildConnections(processContainer, bpmnDiagram, diagram);
+        addSubprocessesToGraph(factory, processContainer.getSubProcesses(), graph, diagramNode, nodesParents, bpmnDiagram, diagram);
+        addSubprocessesToGraph(factory, processContainer.getAdHocSubProcess(), graph, diagramNode, nodesParents, bpmnDiagram, diagram);
+    }
 
-                    final String sourceRef = event.getSourceRef();
-                    final String targetRef = event.getTargetRef();
+    @SuppressWarnings({"rawtypes"})
+    private void buildConnections(BpmnContainer processContainer, BpmnDiagram bpmnDiagram, Diagram diagram) {
+        for (SequenceFlow sequenceFlow : processContainer.getSequenceFlows()) {
+            buildConnection(bpmnDiagram, diagram, sequenceFlow);
+        }
+        for (NonDirectionalAssociation association : processContainer.getAssociations()) {
+            buildConnection(bpmnDiagram, diagram, association);
+        }
+    }
 
-                    View<Object> contentSource = (View<Object>) diagram.getGraph().getNode(sourceRef).getContent();
-                    View<Object> contentTarget = (View<Object>) diagram.getGraph().getNode(targetRef).getContent();
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void buildConnection(BpmnDiagram bpmnDiagram, Diagram diagram, BaseConnector sequenceFlow) {
+        for (BpmnEdge bpmnEdge : bpmnDiagram.getBpmnPlane().getBpmnEdges()) {
+            if (bpmnEdge.getBpmnElement().equals(sequenceFlow.getId())) {
+                final String sourceRef = sequenceFlow.getSourceRef();
+                final String targetRef = sequenceFlow.getTargetRef();
 
-                    double sourceX = contentSource.getBounds().getUpperLeft().getX();
-                    double sourceY = contentSource.getBounds().getUpperLeft().getY();
+                double sourceWaypointX = bpmnEdge.getWaypoint().get(0).getX();
+                double sourceWaypointY = bpmnEdge.getWaypoint().get(0).getY();
 
-                    double targetX = contentTarget.getBounds().getUpperLeft().getX();
-                    double targetY = contentTarget.getBounds().getUpperLeft().getY();
+                double targetWaypointX = bpmnEdge.getWaypoint().get(bpmnEdge.getWaypoint().size() - 1).getX();
+                double targetWaypointY = bpmnEdge.getWaypoint().get(bpmnEdge.getWaypoint().size() - 1).getY();
 
-                    double sourceWaypointX = shape.getWaypoint().get(0).getX();
-                    double sourceWaypointY = shape.getWaypoint().get(0).getY();
+                final Edge<Definition<Object>, Node> build = edgeFactory.build(sequenceFlow.getId(), sequenceFlow);
 
-                    double targetWaypointX = shape.getWaypoint().get(shape.getWaypoint().size()-1).getX();
-                    double targetWaypointY = shape.getWaypoint().get(shape.getWaypoint().size()-1).getY();
+                build.setSourceNode(diagram.getGraph().getNode(sourceRef));
+                build.setTargetNode(diagram.getGraph().getNode(targetRef));
 
-                    DomGlobal.console.debug("Source X: " + sourceX);
-                    DomGlobal.console.debug("Source Y: " + sourceY);
+                MagnetConnection sourceConnection = MagnetConnection.Builder.at(sourceWaypointX, sourceWaypointY)
+                        .setAuto(sequenceFlow.isAutoConnectionSource());
+                MagnetConnection targetConnection = MagnetConnection.Builder.at(targetWaypointX, targetWaypointY)
+                        .setAuto(sequenceFlow.isAutoConnectionTarget());
 
-                    DomGlobal.console.debug("Waypoint Source X: " + sourceWaypointX);
-                    DomGlobal.console.debug("Waypoint Source Y: " + sourceWaypointY);
+                ViewConnector<Object> connector = (ViewConnector<Object>) build.getContent();
 
-                    DomGlobal.console.debug("Target X: " + targetX);
-                    DomGlobal.console.debug("target Y: " + targetY);
+                if (bpmnEdge.getWaypoint().size() > 2) {
+                    final List<Waypoint> waypoints = bpmnEdge.getWaypoint().subList(1, bpmnEdge.getWaypoint().size() - 1);
+                    ControlPoint[] controlPoints = new ControlPoint[waypoints.size()];
 
-                    DomGlobal.console.debug("Waypoint Target X: " + targetWaypointX);
-                    DomGlobal.console.debug("Waypoint target Y: " + targetWaypointY);
-
-                    final Edge<Definition<Object>, Node> build = edgeFactory.build(event.getId(), event);
-
-                    build.setSourceNode(diagram.getGraph().getNode(sourceRef));
-                    build.setTargetNode(diagram.getGraph().getNode(targetRef));
-
-                    MagnetConnection sourceConnection = MagnetConnection.Builder.at(sourceWaypointX, sourceWaypointY)
-                            .setAuto(event.isAutoConnectionSource());
-                    MagnetConnection targetConnection = MagnetConnection.Builder.at(targetWaypointX, targetWaypointY)
-                            .setAuto(event.isAutoConnectionTarget());
-
-                    ViewConnector<Object> connector = (ViewConnector<Object>) build.getContent();
-
-                    if (shape.getWaypoint().size() > 2) {
-                        final List<Waypoint> waypoints = shape.getWaypoint().subList(1, shape.getWaypoint().size() - 1);
-                        ControlPoint[] controlPoints = new ControlPoint[waypoints.size()];
-
-                        for (int i = 0; i < waypoints.size(); i++) {
-                            controlPoints[i] = ControlPoint.build(waypoints.get(i).getX(), waypoints.get(i).getY());
-                        }
-
-                        connector.setControlPoints(controlPoints);
+                    for (int i = 0; i < waypoints.size(); i++) {
+                        controlPoints[i] = ControlPoint.build(waypoints.get(i).getX(), waypoints.get(i).getY());
                     }
 
-                    connector.setSourceConnection(sourceConnection);
-                    connector.setTargetConnection(targetConnection);
-
-                    diagram.getGraph().getNode(sourceRef).getOutEdges().add(build);
-                    diagram.getGraph().getNode(targetRef).getInEdges().add(build);
+                    connector.setControlPoints(controlPoints);
                 }
+
+                connector.setSourceConnection(sourceConnection);
+                connector.setTargetConnection(targetConnection);
+
+                diagram.getGraph().getNode(sourceRef).getOutEdges().add(build);
+                diagram.getGraph().getNode(targetRef).getInEdges().add(build);
             }
         }
     }
 
-    private void buildTasks(Definitions definitions, Diagram diagram) {
-        for (BaseTask task : definitions.getProcess().getTasks()) {
-            for (BpmnShape shape : definitions.getBpmnDiagram().getBpmnPlane().getBpmnShapes()) {
-                if (shape.getBpmnElement().equals(task.getId())) {
-                    final Node<Definition<Object>, Edge> build = nodeFactory.build(task.getId(), task);
-                    View<Object> content = (View) build.getContent();
-                    Bounds bounds = definitionUtils.buildBounds(task, shape.getBounds().getX(), shape.getBounds().getY());
-                    content.setBounds(bounds);
-                    content.getBounds().getLowerRight().setX(content.getBounds().getUpperLeft().getX() + shape.getBounds().getWidth());
-                    content.getBounds().getLowerRight().setY(content.getBounds().getUpperLeft().getY() + shape.getBounds().getHeight());
-                    diagram.getGraph().addNode(build);
-                }
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private Map<String, Node<Definition<Object>, Edge>> buildLanes(NodeMarshallerFactory factory, List<Lane> lanes, Graph graph, Node<Definition<Object>, ?> parent) {
+        Map<String, Node<Definition<Object>, Edge>> parentForTheNode = new HashMap<>();
+        for (Lane lane : lanes) {
+            Node<Definition<Object>, Edge> graphNode = factory.buildNode(lane.getId(), lane, parent);
+            if (graphNode != null) {
+                graph.addNode(graphNode);
+            }
+
+            for (FlowNodeRef nodeRef : lane.getFlowNodeRefs()) {
+                parentForTheNode.put(nodeRef.getValue(), graphNode);
+            }
+        }
+
+        return parentForTheNode;
+    }
+
+    private void addGatewaysToGraph(BpmnContainer processContainer, NodeMarshallerFactory factory, Graph graph, Node<Definition<Object>, ?> parent, Map<String, Node<Definition<Object>, Edge>> parents) {
+        addNodesToGraph(factory, processContainer.getParallelGateways(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getExclusiveGateways(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getInclusiveGateways(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getEventBasedGateways(), graph, parent, parents);
+    }
+
+    private void addTasksToGraph(BpmnContainer processContainer, NodeMarshallerFactory factory, Graph graph, Node<Definition<Object>, ?> parent, Map<String, Node<Definition<Object>, Edge>> parents) {
+        addNodesToGraph(factory, processContainer.getTasks(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getScriptTasks(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getUserTasks(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getGenericServiceTask(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getBusinessRuleTask(), graph, parent, parents);
+        addNodesToGraph(factory, processContainer.getCallActivities(), graph, parent, parents);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void addNodesToGraph(NodeMarshallerFactory factory, List<? extends FlowNode> nodes, Graph graph, Node<Definition<Object>, ?> parent, Map<String, Node<Definition<Object>, Edge>> parents) {
+        for (FlowNode flowNode : nodes) {
+            Node<Definition<Object>, Edge> graphNode = buildGraphNode(factory, parent, parents, flowNode);
+            if (graphNode != null) {
+                graph.addNode(graphNode);
             }
         }
     }
 
-    private void buildLanes(Definitions definitions, Diagram diagram) {
-        DomGlobal.console.debug("Number of Lanes: " + definitions.getProcess().getLanes().size());
-        for (Lane lane : definitions.getProcess().getLanes()) {
-
-            DomGlobal.console.debug("Children:::: " + lane.getFlowNodeRefs().size());
-
-            for (FlowNodeRef ref : lane.getFlowNodeRefs()) {
-                DomGlobal.console.debug("Flow Node: " + ref.getValue());
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private void addSubprocessesToGraph(NodeMarshallerFactory factory, List<? extends FlowNode> subProcesses, Graph graph, Node<Definition<Object>, ?> parent, Map<String, Node<Definition<Object>, Edge>> parents, BpmnDiagram bpmnDiagram, Diagram diagram) {
+        for (FlowNode subProcess : subProcesses) {
+            Node<Definition<Object>, Edge> graphNode = buildGraphNode(factory, parent, parents, subProcess);
+            if (graphNode != null) {
+                graph.addNode(graphNode);
             }
 
-
-            for (BpmnShape shape : definitions.getBpmnDiagram().getBpmnPlane().getBpmnShapes()) {
-                if (shape.getBpmnElement().equals(lane.getId())) {
-                    final Node<Definition<Object>, Edge> build = nodeFactory.build(lane.getId(), lane);
-                    View<Object> content = (View) build.getContent();
-                    Bounds bounds = definitionUtils.buildBounds(lane, shape.getBounds().getX(), shape.getBounds().getY());
-                    content.setBounds(bounds);
-                    //content.getBounds().getLowerRight().setX(content.getBounds().getUpperLeft().getX() + shape.getBounds().getWidth());
-                    //content.getBounds().getLowerRight().setY(content.getBounds().getUpperLeft().getY() + shape.getBounds().getHeight());
-                    diagram.getGraph().addNode(build);
-                }
-            }
+            buildContainer((BpmnContainer) subProcess, bpmnDiagram, diagram, graphNode, factory, graph, parents);
         }
     }
 
-    private void buildGateways(Definitions definitions, Diagram diagram) {
-        for (ParallelGateway gateway : definitions.getProcess().getParallelGateways()) {
-            buildGateway(definitions, diagram, gateway);
-        }
-
-        for (ExclusiveGateway gateway : definitions.getProcess().getExclusiveGateways()) {
-            buildGateway(definitions, diagram, gateway);
-        }
-
-        for (InclusiveGateway gateway : definitions.getProcess().getInclusiveGateways()) {
-            buildGateway(definitions, diagram, gateway);
-        }
-
-        for (EventGateway gateway : definitions.getProcess().getEventBasedGateways()) {
-            buildGateway(definitions, diagram, gateway);
-        }
-
-    }
-
-    private void buildGateway(Definitions definitions, Diagram diagram, BaseGateway event) {
-        for (BpmnShape shape : definitions.getBpmnDiagram().getBpmnPlane().getBpmnShapes()) {
-            if (shape.getBpmnElement().equals(event.getId())) {
-                final Node<Definition<Object>, Edge> build = nodeFactory.build(event.getId(), event);
-                View<Object> content = (View) build.getContent();
-                Bounds bounds = definitionUtils.buildBounds(event, shape.getBounds().getX(), shape.getBounds().getY());
-                content.setBounds(bounds);
-                diagram.getGraph().addNode(build);
-            }
-        }
-    }
-
-    private void buildEndEvents(Definitions definitions, Diagram diagram) {
-        for (EndEvent event : definitions.getProcess().getEndEvents()) {
-            buildEvent(definitions, diagram, event);
-        }
-    }
-
-    private void buildStartEvents(Definitions definitions, Diagram diagram) {
-        for (StartEvent event : definitions.getProcess().getStartEvents()) {
-            buildEvent(definitions, diagram, event);
-        }
-    }
-
-    private void buildEvent(Definitions definitions, Diagram diagram, FlowNode event) {
-        for (BpmnShape shape : definitions.getBpmnDiagram().getBpmnPlane().getBpmnShapes()) {
-            if (shape.getBpmnElement().equals(event.getId())) {
-                final Node<Definition<Object>, Edge> build = nodeFactory.build(event.getId(), event);
-                View<Object> content = (View) build.getContent();
-                Bounds bounds = definitionUtils.buildBounds(event, shape.getBounds().getX(), shape.getBounds().getY());
-                content.setBounds(bounds);
-                diagram.getGraph().addNode(build);
-            }
-        }
+    @SuppressWarnings({"rawtypes"})
+    private Node<Definition<Object>, Edge> buildGraphNode(NodeMarshallerFactory factory, Node<Definition<Object>, ?> parent, Map<String, Node<Definition<Object>, Edge>> parents, FlowNode flowNode) {
+        Node<Definition<Object>, ?> p = parents.get(flowNode.getId()) != null ? parents.get(flowNode.getId()) : parent;
+        return factory.buildNode(flowNode, p);
     }
 
     private Metadata createMetadata() {
@@ -397,6 +366,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
                 .build();
     }
 
+    @SuppressWarnings({"rawtypes"})
     private void updateClientMetadata(final Diagram diagram) {
         if (null != diagram) {
             final Metadata metadata = diagram.getMetadata();
@@ -407,6 +377,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
         }
     }
 
+    @SuppressWarnings({"rawtypes"})
     private DiagramImpl convert(final Diagram diagram) {
         return new DiagramImpl(diagram.getName(),
                                diagram.getGraph(),

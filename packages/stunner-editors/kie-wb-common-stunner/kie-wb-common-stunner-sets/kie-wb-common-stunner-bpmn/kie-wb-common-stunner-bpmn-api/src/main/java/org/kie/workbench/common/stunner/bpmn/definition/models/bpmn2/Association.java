@@ -17,11 +17,20 @@
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 
 @XmlRootElement(name = "association", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class Association extends BaseConnector {
+
+    // Marshalled in Extensions metadata
+    @XmlTransient
+    private boolean isAutoConnectionSource = false;
+
+    // Marshalled in Extensions metadata
+    @XmlTransient
+    private boolean isAutoConnectionTarget = false;
 
     public Association() {
         this("", "");
@@ -40,6 +49,26 @@ public class Association extends BaseConnector {
      */
     public String getName() {
         return null;
+    }
+
+    @Override
+    public boolean isAutoConnectionSource() {
+        return isAutoConnectionSource;
+    }
+
+    @Override
+    public void setAutoConnectionSource(boolean autoConnectionSource) {
+        isAutoConnectionSource = autoConnectionSource;
+    }
+
+    @Override
+    public boolean isAutoConnectionTarget() {
+        return isAutoConnectionTarget;
+    }
+
+    @Override
+    public void setAutoConnectionTarget(boolean autoConnectionTarget) {
+        isAutoConnectionTarget = autoConnectionTarget;
     }
 
     @Override

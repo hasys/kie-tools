@@ -16,6 +16,8 @@
 
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.jboss.errai.databinding.client.api.Bindable;
@@ -45,6 +47,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         policy = FieldPolicy.ONLY_MARKED,
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
+@XmlRootElement(name = "association", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class NonDirectionalAssociation extends Association {
 
     public NonDirectionalAssociation() {

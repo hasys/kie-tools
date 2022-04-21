@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -234,10 +235,6 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     @XmlTransient
     protected RectangleDimensionsSet dimensionsSet;
 
-    @XmlElement(name = "adHocSubProcess")
-    @XmlUnwrappedCollection
-    private List<AdHocSubprocess> adHocSubProcess = new ArrayList<>();
-
     @Labels
     private final Set<String> labels = new HashSet<>(Arrays.asList("canContainArtifacts",
                                                                    "diagram"));
@@ -245,19 +242,14 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     public static final Double WIDTH = 950d;
     public static final Double HEIGHT = 950d;
 
+    @XmlElement(name = "property")
+    @XmlUnwrappedCollection
+    private List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> properties = new ArrayList<>();
+
     @XmlElement(name = "startEvent")
     @XmlUnwrappedCollection
     @XmlJavaTypeAdapter(FallbackStartEventAdapter.class)
     private List<StartEvent> startEvents = new ArrayList<>();
-
-    @XmlElement(name = "laneSet")
-    private List<Lane> lanes = new ArrayList<>();
-
-    @XmlElement(name = "textAnnotation")
-    private List<TextAnnotation> textAnnotations = new ArrayList<>();
-
-    @XmlElement(name = "association")
-    private List<Association> associations = new ArrayList<>();
 
     @XmlElement(name = "endEvent")
     @XmlUnwrappedCollection
@@ -297,9 +289,21 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     })
     private List<BaseCatchingIntermediateEvent> intermediateCatchEvent = new ArrayList<>();
 
-    @XmlElement(name = "sequenceFlow")
+    @XmlElement(name = "eventBasedGateway")
     @XmlUnwrappedCollection
-    private List<SequenceFlow> sequenceFlows = new ArrayList<>();
+    private List<EventGateway> eventBasedGateways = new ArrayList<>();
+
+    @XmlElement(name = "inclusiveGateway")
+    @XmlUnwrappedCollection
+    private List<InclusiveGateway> inclusiveGateways = new ArrayList<>();
+
+    @XmlElement(name = "exclusiveGateway")
+    @XmlUnwrappedCollection
+    private List<ExclusiveGateway> exclusiveGateways = new ArrayList<>();
+
+    @XmlElement(name = "parallelGateway")
+    @XmlUnwrappedCollection
+    private List<ParallelGateway> parallelGateways = new ArrayList<>();
 
     @XmlElement(name = "task")
     @XmlUnwrappedCollection
@@ -330,29 +334,13 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     })
     private List<GenericServiceTask> genericServiceTask = new ArrayList<>();
 
-    @XmlElement(name = "eventBasedGateway")
+    @XmlElement(name = "businessRuleTask")
     @XmlUnwrappedCollection
-    private List<EventGateway> eventBasedGateways = new ArrayList<>();
+    private List<BusinessRuleTask> businessRuleTask = new ArrayList<>();
 
-    @XmlElement(name = "inclusiveGateway")
+    @XmlElement(name = "callActivity")
     @XmlUnwrappedCollection
-    private List<InclusiveGateway> inclusiveGateways = new ArrayList<>();
-
-    @XmlElement(name = "exclusiveGateway")
-    @XmlUnwrappedCollection
-    private List<ExclusiveGateway> exclusiveGateways = new ArrayList<>();
-
-    @XmlElement(name = "parallelGateway")
-    @XmlUnwrappedCollection
-    private List<ParallelGateway> parallelGateways = new ArrayList<>();
-
-    @XmlElement(name = "dataObject")
-    @XmlUnwrappedCollection
-    private List<DataObject> dataObjects = new ArrayList<>();
-
-    @XmlElement(name = "dataObjectReference")
-    @XmlUnwrappedCollection
-    private List<DataObjectReference> dataObjectsReference = new ArrayList<>();
+    private List<ReusableSubprocess> callActivities = new ArrayList<>();
 
     @XmlElement(name = "subProcess")
     @XmlUnwrappedCollection
@@ -363,17 +351,31 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
     })
     private List<BaseSubprocess> subProcesses = new ArrayList<>();
 
-    @XmlElement(name = "businessRuleTask")
+    @XmlElement(name = "adHocSubProcess")
     @XmlUnwrappedCollection
-    private List<BusinessRuleTask> businessRuleTask = new ArrayList<>();
+    private List<AdHocSubprocess> adHocSubProcess = new ArrayList<>();
 
-    @XmlElement(name = "property")
-    @XmlUnwrappedCollection
-    private List<org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Property> properties = new ArrayList<>();
+    @XmlElement(name = "lane")
+    @XmlElementWrapper(name = "laneSet", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+    private List<Lane> lanes = new ArrayList<>();
 
-    @XmlElement(name = "callActivity")
+    @XmlElement(name = "association")
+    private List<NonDirectionalAssociation> associations = new ArrayList<>();
+
+    @XmlElement(name = "sequenceFlow")
     @XmlUnwrappedCollection
-    private List<ReusableSubprocess> callActivities = new ArrayList<>();
+    private List<SequenceFlow> sequenceFlows = new ArrayList<>();
+
+    @XmlElement(name = "textAnnotation")
+    private List<TextAnnotation> textAnnotations = new ArrayList<>();
+
+    @XmlElement(name = "dataObject")
+    @XmlUnwrappedCollection
+    private List<DataObject> dataObjects = new ArrayList<>();
+
+    @XmlElement(name = "dataObjectReference")
+    @XmlUnwrappedCollection
+    private List<DataObjectReference> dataObjectsReference = new ArrayList<>();
 
     /*
     Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
@@ -823,11 +825,11 @@ public class Process implements BPMNDiagram<DiagramSet, ProcessData, RootProcess
         this.textAnnotations = textAnnotations;
     }
 
-    public List<Association> getAssociations() {
+    public List<NonDirectionalAssociation> getAssociations() {
         return associations;
     }
 
-    public void setAssociations(List<Association> associations) {
+    public void setAssociations(List<NonDirectionalAssociation> associations) {
         this.associations = associations;
     }
 

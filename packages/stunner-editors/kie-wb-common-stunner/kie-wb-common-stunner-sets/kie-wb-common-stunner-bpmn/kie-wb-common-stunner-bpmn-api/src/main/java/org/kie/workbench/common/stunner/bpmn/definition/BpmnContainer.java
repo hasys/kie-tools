@@ -18,7 +18,6 @@ package org.kie.workbench.common.stunner.bpmn.definition;
 import java.util.List;
 
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.AdHocSubprocess;
-import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Association;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseTask;
@@ -31,6 +30,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ExclusiveGa
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.GenericServiceTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.InclusiveGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Lane;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.NonDirectionalAssociation;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ParallelGateway;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ReusableSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ScriptTask;
@@ -71,7 +71,7 @@ public interface BpmnContainer {
 
     List<TextAnnotation> getTextAnnotations();
 
-    List<Association> getAssociations();
+    List<NonDirectionalAssociation> getAssociations();
 
     List<DataObjectReference> getDataObjectsReference();
 
@@ -150,8 +150,8 @@ public interface BpmnContainer {
             getIntermediateCatchEvent().add((BaseCatchingIntermediateEvent) node);
         } else if (node instanceof TextAnnotation) {
             getTextAnnotations().add((TextAnnotation) node);
-        } else if (node instanceof Association) {
-            getAssociations().add((Association) node);
+        } else if (node instanceof NonDirectionalAssociation) {
+            getAssociations().add((NonDirectionalAssociation) node);
         } else if (node instanceof DataObjectReference) {
             getDataObjectsReference().add((DataObjectReference) node);
         }

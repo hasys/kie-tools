@@ -40,5 +40,24 @@ public class BaseConnectorTest {
 
     private class FakeBaseConnector extends BaseConnector {
 
+        @Override
+        public boolean isAutoConnectionSource() {
+            return false;
+        }
+
+        @Override
+        public void setAutoConnectionSource(boolean autoConnectionSource) {
+
+        }
+
+        @Override
+        public boolean isAutoConnectionTarget() {
+            return false;
+        }
+
+        @Override
+        public void setAutoConnectionTarget(boolean autoConnectionTarget) {
+
+        }
     }
 }

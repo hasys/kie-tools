@@ -115,10 +115,10 @@ public class DefinitionUtils {
             final String wField = adapter.getMetaPropertyField(definition, PropertyMetaTypes.WIDTH);
             final String hField = adapter.getMetaPropertyField(definition, PropertyMetaTypes.HEIGHT);
             if (null != wField && null != hField) {
-                Optional<?> hasWitdth = adapter.getProperty(definition, wField);
+                Optional<?> hasWidth = adapter.getProperty(definition, wField);
                 Optional<?> hasHeight = adapter.getProperty(definition, hField);
-                if (hasWitdth.isPresent() && hasHeight.isPresent()) {
-                    width = (Double) definitionManager.adapters().forProperty().getValue(hasWitdth.get());
+                if (hasWidth.isPresent() && hasHeight.isPresent()) {
+                    width = (Double) definitionManager.adapters().forProperty().getValue(hasWidth.get());
                     height = (Double) definitionManager.adapters().forProperty().getValue(hasHeight.get());
                 }
             }

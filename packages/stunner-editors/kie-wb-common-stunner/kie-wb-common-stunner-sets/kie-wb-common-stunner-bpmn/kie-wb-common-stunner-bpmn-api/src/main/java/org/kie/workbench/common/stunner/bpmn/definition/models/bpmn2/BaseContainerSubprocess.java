@@ -56,7 +56,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
     private List<TextAnnotation> textAnnotations = new ArrayList<>();
 
     @XmlElement(name = "association")
-    private List<Association> associations = new ArrayList<>();
+    private List<NonDirectionalAssociation> associations = new ArrayList<>();
 
     @XmlElement(name = "endEvent")
     @XmlUnwrappedCollection
@@ -321,11 +321,11 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
         this.textAnnotations = textAnnotations;
     }
 
-    public List<Association> getAssociations() {
+    public List<NonDirectionalAssociation> getAssociations() {
         return associations;
     }
 
-    public void setAssociations(List<Association> associations) {
+    public void setAssociations(List<NonDirectionalAssociation> associations) {
         this.associations = associations;
     }
 

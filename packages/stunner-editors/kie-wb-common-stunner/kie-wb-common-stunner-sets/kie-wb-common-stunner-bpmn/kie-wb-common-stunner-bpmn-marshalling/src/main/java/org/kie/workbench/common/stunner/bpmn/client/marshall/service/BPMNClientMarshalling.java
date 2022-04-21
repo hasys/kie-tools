@@ -319,7 +319,7 @@ public class BPMNClientMarshalling {
 
                         // Add association to the same parent as it's TextAnnotation
                         Element parent = GraphUtils.getParent(node);
-                        Object parentDefinition = parent.getContent();
+                        BPMNViewDefinition parentDefinition = ((ViewImpl<BPMNViewDefinition>) parent.getContent()).getDefinition();
                         if (parentDefinition instanceof BpmnContainer) {
                             ((BpmnContainer) parentDefinition).addNode(association);
                         }
@@ -357,13 +357,18 @@ public class BPMNClientMarshalling {
 
             Element parent = GraphUtils.getParent(node);
             Object parentDefinition = ((ViewImpl) parent.getContent()).getDefinition();
+            parentDefinition = parentDefinition instanceof BpmnContainer ? parentDefinition : process;
             if (parentDefinition instanceof BpmnContainer) {
                 List<Edge<? extends ViewConnector<?>, Node>> edges = new ArrayList<>();
                 edges.addAll(GraphUtils.getSourceConnections(node));
                 edges.addAll(GraphUtils.getTargetConnections(node));
-                ((BpmnContainer) parentDefinition).addNode(definition);
+                BpmnContainer finalParentDefinition = (BpmnContainer) parentDefinition;
+                finalParentDefinition.addNode(definition);
                 edges.forEach(edge -> {
-                    ((BpmnContainer) parentDefinition).addNode((SequenceFlow) ((ViewConnector) edge.getContent()).getDefinition());
+                    ViewConnector connector = edge.getContent();
+                    if (connector.getDefinition() instanceof SequenceFlow) {
+                        finalParentDefinition.addNode((SequenceFlow) connector.getDefinition());
+                    }
                 });
             }
 

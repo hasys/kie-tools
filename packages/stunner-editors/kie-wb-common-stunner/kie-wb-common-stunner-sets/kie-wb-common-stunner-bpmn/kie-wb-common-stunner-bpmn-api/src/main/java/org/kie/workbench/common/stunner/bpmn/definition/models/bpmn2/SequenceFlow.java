@@ -153,18 +153,22 @@ public class SequenceFlow extends BaseConnector {
         executionSet.setConditionExpression(expression);
     }
 
+    @Override
     public boolean isAutoConnectionSource() {
         return isAutoConnectionSource;
     }
 
+    @Override
     public void setAutoConnectionSource(boolean autoConnectionSource) {
         isAutoConnectionSource = autoConnectionSource;
     }
 
+    @Override
     public boolean isAutoConnectionTarget() {
         return isAutoConnectionTarget;
     }
 
+    @Override
     public void setAutoConnectionTarget(boolean autoConnectionTarget) {
         isAutoConnectionTarget = autoConnectionTarget;
     }
