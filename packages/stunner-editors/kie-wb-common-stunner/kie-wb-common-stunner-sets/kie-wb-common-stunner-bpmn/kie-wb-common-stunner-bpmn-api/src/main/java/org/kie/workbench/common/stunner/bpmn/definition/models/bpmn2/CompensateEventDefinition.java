@@ -26,7 +26,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
  * Used only for marshalling/unmarshalling purposes as empty element compensateEventDefinition
  */
 @XmlRootElement(name = "compensateEventDefinition", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class CompensateEventDefinition {
+public class CompensateEventDefinition extends AbstractEventDefinition {
 
     @XmlAttribute(name = "activityRef")
     private String activityRef;

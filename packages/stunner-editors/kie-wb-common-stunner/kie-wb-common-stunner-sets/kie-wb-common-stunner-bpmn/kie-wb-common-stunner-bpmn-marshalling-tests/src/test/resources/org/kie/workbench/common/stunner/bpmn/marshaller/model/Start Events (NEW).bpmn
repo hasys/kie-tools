@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn2:definitions xmlns="http://www.omg.org/bpmn20" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:drools="http://www.jboss.org/drools" xmlns:xsi="xsi" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd " exporter="jBPM Process Modeler" exporterVersion="2.0" id="Definition_1">
+  <bpmn2:itemDefinition id="_StartEvent_3_StartSignalDOANameOutputXItem" structureRef="StartSignalDOADataType" />
+  <bpmn2:message id="Message_1" itemRef="StartMessageMessageType" name="StartMessageMessage" />
+  <bpmn2:signal id="Signal_1" name="StartSignalSignal" />
+  <bpmn2:error id="Error_2" errorCode="StartErrorError" />
+  <bpmn2:escalation id="Escalation_2" escalationCode="StarEscalationEscalationCode" />
+  <bpmn2:process name="somePath" id="somePath" drools:packageName="com.example" drools:adHoc="false" isExecutable="false">
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartNoneEvent" name="Start Event Name" id="StartEvent_1">
+      <bpmn2:documentation>
+        <![CDATA[Start Name Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Event Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartEventMAName">
+          <drools:metaValue>
+            <![CDATA[StartEventMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartMessageEvent" name="Start Message Name" id="StartEvent_2">
+      <bpmn2:documentation>
+        <![CDATA[Start Message Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:messageEventDefinition drools:msgref="StartMessageMessage" messageRef="Message_1" />
+      <bpmn2:dataOutput id="StartEvent_2_StartMessageDIANameOutputX" drools:dtype="StartMessageDOADataType" itemSubjectRef="_StartEvent_2_StartMessageDIANameOutputXItem" name="StartMessageDIAName" />
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:assignment>
+          <bpmn2:from type="bpmn2:tFormalExpression">
+            <![CDATA[StartEvent_2_StartMessageDIANameOutputX]]>
+          </bpmn2:from>
+          <bpmn2:to type="bpmn2:tFormalExpression">
+            <![CDATA[StartMessageDOATarget]]>
+          </bpmn2:to>
+        </bpmn2:assignment>
+        <bpmn2:sourceRef>
+          <![CDATA[StartEvent_2_StartMessageDIANameOutputX]]>
+        </bpmn2:sourceRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>
+          <![CDATA[StartEvent_2_StartMessageDIANameOutputX]]>
+        </bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Message Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartMessageMAName">
+          <drools:metaValue>
+            <![CDATA[StartMessageMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartSignalEvent" name="Start Signal Name" id="StartEvent_3">
+      <bpmn2:documentation>
+        <![CDATA[Start Signal Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Signal Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartSignalMAName">
+          <drools:metaValue>
+            <![CDATA[StartSignalMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="StartEvent_3_StartSignalDOANameOutputX" drools:dtype="StartSignalDOADataType" itemSubjectRef="_StartEvent_3_StartSignalDOANameOutputXItem" name="StartSignalDOAName" />
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:assignment>
+          <bpmn2:from type="bpmn2:tFormalExpression">
+            <![CDATA[StartEvent_3_StartSignalDOANameOutputX]]>
+          </bpmn2:from>
+          <bpmn2:to type="bpmn2:tFormalExpression">
+            <![CDATA[StartSignalDOATarget]]>
+          </bpmn2:to>
+        </bpmn2:assignment>
+        <bpmn2:sourceRef>
+          <![CDATA[StartEvent_3_StartSignalDOANameOutputX]]>
+        </bpmn2:sourceRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>
+          <![CDATA[StartEvent_3_StartSignalDOANameOutputX]]>
+        </bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:signalEventDefinition signalRef="Signal_1" />
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartTimerEvent" name="Start Timer Name" id="StartEvent_4">
+      <bpmn2:documentation>
+        <![CDATA[Start Timer Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:timerEventDefinition>
+        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression">
+          <![CDATA[1983-12-25T11:00:00-03:00]]>
+        </bpmn2:timeDate>
+      </bpmn2:timerEventDefinition>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Timer Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartTimerMAName">
+          <drools:metaValue>
+            <![CDATA[StartTimeMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartErrorEvent" name="Start Error Name" id="StartEvent_5">
+      <bpmn2:documentation>
+        <![CDATA[Start Error Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:errorEventDefinition drools:errorref="StartErrorError" errorRef="Error_2" />
+      <bpmn2:dataOutput id="StartEvent_5_StartErrorDOANameOutputX" drools:dtype="StartErrorDOADataType" itemSubjectRef="_StartEvent_5_StartErrorDOANameOutputXItem" name="StartErrorDOAName" />
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:assignment>
+          <bpmn2:from type="bpmn2:tFormalExpression">
+            <![CDATA[StartEvent_5_StartErrorDOANameOutputX]]>
+          </bpmn2:from>
+          <bpmn2:to type="bpmn2:tFormalExpression">
+            <![CDATA[StartErrorDOATarget]]>
+          </bpmn2:to>
+        </bpmn2:assignment>
+        <bpmn2:sourceRef>
+          <![CDATA[StartEvent_5_StartErrorDOANameOutputX]]>
+        </bpmn2:sourceRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>
+          <![CDATA[StartEvent_5_StartErrorDOANameOutputX]]>
+        </bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Error Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartErrorMAName">
+          <drools:metaValue>
+            <![CDATA[StartErrorMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartConditionalEvent" name="Start Conditional Name" id="StartEvent_6">
+      <bpmn2:documentation>
+        <![CDATA[Start Conditional Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:conditionalEventDefinition>
+        <bpmn2:condition xsi:type="bpmn2:tFormalExpression" language="http://www.jboss.org/drools/rule">
+          <![CDATA[StartConditionalConditionExpression ]]>
+        </bpmn2:condition>
+      </bpmn2:conditionalEventDefinition>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Conditional Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartConditionalMAName">
+          <drools:metaValue>
+            <![CDATA[StartConditionalMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartEscalationEvent" name="Start Escalation Name" id="StartEvent_7">
+      <bpmn2:documentation>
+        <![CDATA[Start Escalation Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:escalationEventDefinition drools:escode="StarEscalationEscalationCode" escalationRef="Escalation_2" />
+      <bpmn2:dataOutput id="StartEvent_7_StartEscalationDOANameOutputX" drools:dtype="StartEscalationDOADataType" itemSubjectRef="_StartEvent_7_StartEscalationDOANameOutputXItem" name="StartEscalationDOAName" />
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:assignment>
+          <bpmn2:from type="bpmn2:tFormalExpression">
+            <![CDATA[StartEvent_7_StartEscalationDOANameOutputX]]>
+          </bpmn2:from>
+          <bpmn2:to type="bpmn2:tFormalExpression">
+            <![CDATA[StartEscalationDOATarget]]>
+          </bpmn2:to>
+        </bpmn2:assignment>
+        <bpmn2:sourceRef>
+          <![CDATA[StartEvent_7_StartEscalationDOANameOutputX]]>
+        </bpmn2:sourceRef>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>
+          <![CDATA[StartEvent_7_StartEscalationDOANameOutputX]]>
+        </bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Escalation Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartEscalationMAName">
+          <drools:metaValue>
+            <![CDATA[StartEscalationMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:startEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="_StartCompensationEvent" name="Start Compensation Name" id="StartEvent_8">
+      <bpmn2:documentation>
+        <![CDATA[Start Compensation Documentation]]>
+      </bpmn2:documentation>
+      <bpmn2:compensateEventDefinition />
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue>
+            <![CDATA[Start Compensation Name]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="StartCompensationMAName">
+          <drools:metaValue>
+            <![CDATA[StartCompensationMAValue]]>
+          </drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue>
+            <![CDATA[25/12/1983]]>
+          </drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+    </bpmn2:startEvent>
+    <bpmn2:extensionElements />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="somePath">
+      <bpmndi:BPMNShape id="shape_StartEvent_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="56.0" width="56.0" x="322.0" y="71.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_2" bpmnElement="StartEvent_2">
+        <dc:Bounds height="56.0" width="56.0" x="322.0" y="192.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_3" bpmnElement="StartEvent_3">
+        <dc:Bounds height="56.0" width="56.0" x="322.0" y="313.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_4" bpmnElement="StartEvent_4">
+        <dc:Bounds height="56.0" width="56.0" x="322.0" y="434.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_5" bpmnElement="StartEvent_5">
+        <dc:Bounds height="56.0" width="56.0" x="483.0" y="71.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_6" bpmnElement="StartEvent_6">
+        <dc:Bounds height="56.0" width="56.0" x="483.0" y="192.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_7" bpmnElement="StartEvent_7">
+        <dc:Bounds height="56.0" width="56.0" x="483.0" y="313.0" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape_StartEvent_8" bpmnElement="StartEvent_8">
+        <dc:Bounds height="56.0" width="56.0" x="483.0" y="434.0" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmn2:relationship type="BPSimData">
+    <bpmn2:extensionElements>
+      <bpsim:BPSimData>
+        <bpsim:Scenario id="default" name="Simulationscenario">
+          <bpsim:ScenarioParameters />
+          <bpsim:ElementParameters elementRef="StartEvent_1">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_2">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_3">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_4">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_5">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_6">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_7">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+          <bpsim:ElementParameters elementRef="StartEvent_8">
+            <bpsim:TimeParameters>
+              <bpsim:ProcessingTime>
+                <bpsim:NormalDistribution mean="0" standardDeviation="0" />
+              </bpsim:ProcessingTime>
+            </bpsim:TimeParameters>
+          </bpsim:ElementParameters>
+        </bpsim:Scenario>
+      </bpsim:BPSimData>
+    </bpmn2:extensionElements>
+    <bpmn2:source>Definition_1</bpmn2:source>
+    <bpmn2:target>Definition_1</bpmn2:target>
+  </bpmn2:relationship>
+</bpmn2:definitions>

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 @XmlRootElement(name = "conditionalEventDefinition", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class ConditionalEventDefinition {
+public class ConditionalEventDefinition extends AbstractEventDefinition {
 
     private Condition condition;
 

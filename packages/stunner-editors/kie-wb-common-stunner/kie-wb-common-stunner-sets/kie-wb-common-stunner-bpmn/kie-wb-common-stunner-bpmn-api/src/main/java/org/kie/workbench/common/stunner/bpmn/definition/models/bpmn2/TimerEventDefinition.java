@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 @XmlRootElement(name = "linkEventDefinition", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class TimerEventDefinition {
+public class TimerEventDefinition  extends AbstractEventDefinition {
 
     @XmlAttribute
     private TimeDuration timeDuration;
