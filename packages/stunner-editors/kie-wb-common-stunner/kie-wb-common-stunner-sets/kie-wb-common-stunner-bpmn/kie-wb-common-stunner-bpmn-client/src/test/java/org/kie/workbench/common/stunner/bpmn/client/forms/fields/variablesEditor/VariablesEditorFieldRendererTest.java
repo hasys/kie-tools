@@ -31,10 +31,9 @@ import org.kie.workbench.common.forms.dynamic.client.rendering.formGroups.impl.d
 import org.kie.workbench.common.forms.dynamic.service.shared.RenderMode;
 import org.kie.workbench.common.stunner.bpmn.client.forms.fields.model.Variable;
 import org.kie.workbench.common.stunner.bpmn.client.forms.fields.model.VariableRow;
-import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Process;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.UserTask;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.AssignmentsInfo;
-import org.kie.workbench.common.stunner.bpmn.definition.property.diagram.Id;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.IsMultipleInstance;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionInput;
 import org.kie.workbench.common.stunner.bpmn.definition.property.task.MultipleInstanceCollectionOutput;
@@ -196,17 +195,17 @@ public class VariablesEditorFieldRendererTest {
     @Test
     public void testDeserializeVariables() {
         List<String> dataTypes = new ArrayList<>(Arrays.asList("Boolean",
-                                                                     "Float",
-                                                                     "Integer",
-                                                                     "Object",
-                                                                     "org.veg.Potato",
-                                                                     "String"));
+                                                               "Float",
+                                                               "Integer",
+                                                               "Object",
+                                                               "org.veg.Potato",
+                                                               "String"));
         List<String> dataTypeDisplayNames = new ArrayList<>(Arrays.asList("Boolean",
-                                                                                "Float",
-                                                                                "Integer",
-                                                                                "Potato [org.veg]",
-                                                                                "Object",
-                                                                                "String"));
+                                                                          "Float",
+                                                                          "Integer",
+                                                                          "Potato [org.veg]",
+                                                                          "Object",
+                                                                          "String"));
 
         variablesEditor.setDataTypes(dataTypes,
                                      dataTypeDisplayNames);
@@ -384,9 +383,9 @@ public class VariablesEditorFieldRendererTest {
 
     @Test
     public void testIdDuplicateID() {
-        Id id = new Id(PROCESS_ID);
-        BPMNDiagramImpl bpmnDiagram = new BPMNDiagramImpl();
-        bpmnDiagram.getDiagramSet().setId(id);
+        String id = PROCESS_ID;
+        Process bpmnDiagram = new Process();
+        bpmnDiagram.setId(id);
 
         Node node = mock(Node.class);
         View view = mock(View.class);

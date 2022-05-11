@@ -84,7 +84,9 @@ public abstract class FlowNode extends FlowElement {
             metaData.add(name);
         }
 
-        metaData.addAll(this.getAdvancedData().getAsMetaData());
+        if (this.getAdvancedData() != null) {
+            metaData.addAll(this.getAdvancedData().getAsMetaData());
+        }
 
         return elements;
     }

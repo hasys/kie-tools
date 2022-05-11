@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseCatchingIntermediateEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseThrowingIntermediateEvent;
@@ -32,6 +31,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BusinessRul
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.CustomTask;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndErrorEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.EndSignalEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateErrorEventCatching;
@@ -42,9 +42,11 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Intermediat
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MultipleInstanceSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Process;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.ReusableSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartErrorEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEscalationEvent;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartMessageEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartSignalEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.UserTask;
@@ -413,7 +415,7 @@ public class VariableUtilsTest {
 
     @Test
     public void testMatchesProcessID() {
-        BPMNDiagramImpl bpmnDiagram = mockBpmnDiagram();
+        Process bpmnDiagram = mockBpmnDiagram();
         List<Node> nodes = mockNodeList(bpmnDiagram);
         when(graph.nodes()).thenReturn(nodes);
         boolean result1 = VariableUtils.matchesProcessID(graph, PROCESS_ID);
@@ -424,7 +426,7 @@ public class VariableUtilsTest {
 
     @Test
     public void testIsBPMNDiagramImpl() {
-        BPMNDiagramImpl bpmnDiagram = mockBpmnDiagram();
+        Process bpmnDiagram = mockBpmnDiagram();
         BaseUserTask userTask = mockUserTask(NODE_NAME, ASSIGNMENTS_INFO_VALUE);
 
         List<Node> nodes1 = mockNodeList(bpmnDiagram);
@@ -759,10 +761,10 @@ public class VariableUtilsTest {
         return result;
     }
 
-    private BPMNDiagramImpl mockBpmnDiagram() {
-        Id id = new Id(PROCESS_ID);
-        BPMNDiagramImpl bpmnDiagram = new BPMNDiagramImpl();
-        bpmnDiagram.getDiagramSet().setId(id);
+    private Process mockBpmnDiagram() {
+        String id = PROCESS_ID;
+        Process bpmnDiagram = new Process();
+        bpmnDiagram.setId(id);
         return bpmnDiagram;
     }
 }

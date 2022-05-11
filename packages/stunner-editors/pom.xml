@@ -189,7 +189,7 @@
     <version.org.kie.kogito.lienzo>${project.version}</version.org.kie.kogito.lienzo>
 
     <!-- XML mapper -->
-    <version.mapper.xml>0.5-SNAPSHOT</version.mapper.xml>
+    <version.mapper.xml>0.6-SNAPSHOT</version.mapper.xml>
 
     <!-- Properties from KIE-WB-COMMON parent POM -->
 

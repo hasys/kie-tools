@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagram;
-import org.kie.workbench.common.stunner.bpmn.definition.BPMNDiagramImpl;
 import org.kie.workbench.common.stunner.bpmn.definition.FlowElement;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseNonContainerSubprocess;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.BaseSubprocess;
@@ -51,6 +50,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Intermediat
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventCatching;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.IntermediateSignalEventThrowing;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.MultipleInstanceSubprocess;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Process;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartErrorEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartEscalationEvent;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.StartMessageEvent;
@@ -105,8 +105,8 @@ public class VariableUtils {
         return StreamSupport.stream(nodes.spliterator(), false)
                 .filter(VariableUtils::isBPMNDiagramImpl)
                 .map(node -> ((View) node.getContent()))
-                .map(view -> (BPMNDiagramImpl) view.getDefinition())
-                .anyMatch(bpmnDiagram -> Objects.equals(bpmnDiagram.getDiagramSet().getId().getValue(), variableName));
+                .map(view -> (Process) view.getDefinition())
+                .anyMatch(bpmnDiagram -> Objects.equals(bpmnDiagram.getId(), variableName));
     }
 
     @SuppressWarnings("unchecked")
@@ -188,7 +188,7 @@ public class VariableUtils {
 
     protected static boolean isBPMNDiagramImpl(Node node) {
         return node.getContent() instanceof View &&
-                ((View) node.getContent()).getDefinition() instanceof BPMNDiagramImpl;
+                ((View) node.getContent()).getDefinition() instanceof Process;
     }
 
     private static String getDisplayName(FlowElement definition) {

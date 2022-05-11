@@ -140,7 +140,8 @@
     <!-- New Marshaller -->
     <dependency>
       <groupId>org.treblereel.gwt.xml.mapper</groupId>
-      <artifactId>jre-backend</artifactId>
+      <artifactId>gwt-backend</artifactId>
+      <!--<artifactId>jre-backend</artifactId> -->
     </dependency>
 
     <dependency>
