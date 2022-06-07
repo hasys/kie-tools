@@ -21,17 +21,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 
-import org.kie.workbench.common.stunner.bpmn.definition.property.common.ConditionExpression;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dataio.DataIOSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.error.ErrorRef;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.escalation.EscalationRef;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.message.MessageRef;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.signal.SignalRef;
-import org.kie.workbench.common.stunner.bpmn.definition.property.event.timer.TimerSettings;
 import org.treblereel.gwt.xml.mapper.api.annotation.XMLMapper;
 
 @XMLMapper
-public class FallbackStartEvent extends StartEvent {
+public class FallbackEndEvent extends EndEvent {
 
     @XmlElementRefs({
             @XmlElementRef(name = "compensateEventDefinition", type = CompensateEventDefinition.class),
@@ -39,21 +37,20 @@ public class FallbackStartEvent extends StartEvent {
             @XmlElementRef(name = "signalEventDefinition", type = SignalEventDefinition.class),
             @XmlElementRef(name = "errorEventDefinition", type = ErrorEventDefinition.class),
             @XmlElementRef(name = "escalationEventDefinition", type = EscalationEventDefinition.class),
-            @XmlElementRef(name = "conditionalEventDefinition", type = ConditionalEventDefinition.class),
-            @XmlElementRef(name = "timerEventDefinition", type = TimerEventDefinition.class),
+            @XmlElementRef(name = "terminateEventDefinition", type = TerminateEventDefinition.class),
     })
     private AbstractEventDefinition eventDefinition;
 
-    @XmlElement(name = "dataOutput")
-    private List<DataOutput> dataOutputs;
+    @XmlElement(name = "dataInput")
+    private List<DataInput> dataInputs;
 
-    @XmlElement(name = "dataOutputAssociation")
-    private List<DataOutputAssociation> dataOutputAssociation;
+    @XmlElement(name = "dataInputAssociation")
+    private List<DataInputAssociation> dataInputAssociation;
 
-    @XmlElement(name = "outputSet")
-    private List<OutputSet> outputSet;
+    @XmlElement(name = "inputSet")
+    private List<InputSet> inputSet;
 
-    private FallbackStartEventExecutionSet executionSet;
+    private FallbackEndEventExecutionSet executionSet;
 
     private DataIOSet dataIOSet;
 
@@ -69,35 +66,35 @@ public class FallbackStartEvent extends StartEvent {
         this.eventDefinition = eventDefinition;
     }
 
-    public List<DataOutput> getDataOutputs() {
-        return dataOutputs;
+    public List<DataInput> getDataInputs() {
+        return dataInputs;
     }
 
-    public void setDataOutputs(List<DataOutput> dataOutputs) {
-        this.dataOutputs = dataOutputs;
+    public void setDataInputs(List<DataInput> dataInputs) {
+        this.dataInputs = dataInputs;
     }
 
-    public List<DataOutputAssociation> getDataOutputAssociation() {
-        return dataOutputAssociation;
+    public List<DataInputAssociation> getDataInputAssociation() {
+        return dataInputAssociation;
     }
 
-    public void setDataOutputAssociation(List<DataOutputAssociation> dataOutputAssociation) {
-        this.dataOutputAssociation = dataOutputAssociation;
+    public void setDataInputAssociation(List<DataInputAssociation> dataInputAssociation) {
+        this.dataInputAssociation = dataInputAssociation;
     }
 
-    public List<OutputSet> getOutputSet() {
-        return outputSet;
+    public List<InputSet> getInputSet() {
+        return inputSet;
     }
 
-    public void setOutputSet(List<OutputSet> outputSet) {
-        this.outputSet = outputSet;
+    public void setInputSet(List<InputSet> inputSet) {
+        this.inputSet = inputSet;
     }
 
-    public FallbackStartEventExecutionSet getExecutionSet() {
+    public FallbackEndEventExecutionSet getExecutionSet() {
         return executionSet;
     }
 
-    public void setExecutionSet(FallbackStartEventExecutionSet executionSet) {
+    public void setExecutionSet(FallbackEndEventExecutionSet executionSet) {
         this.executionSet = executionSet;
     }
 
@@ -109,31 +106,19 @@ public class FallbackStartEvent extends StartEvent {
         this.dataIOSet = dataIOSet;
     }
 
-    public static class FallbackStartEventExecutionSet {
+    public static class FallbackEndEventExecutionSet {
 
         private Boolean isInterrupting;
 
         private String metaData;
 
-        private TimerSettings timerSettings;
-
         private ErrorRef errorRef;
 
         private EscalationRef escalationRef;
 
-        private ConditionExpression conditionExpression;
-
         private SignalRef signalRef;
 
         private MessageRef messageRef;
-
-        public TimerSettings getTimerSettings() {
-            return timerSettings;
-        }
-
-        public void setTimerSettings(TimerSettings timerSettings) {
-            this.timerSettings = timerSettings;
-        }
 
         public Boolean getIsInterrupting() {
             return isInterrupting;
@@ -157,14 +142,6 @@ public class FallbackStartEvent extends StartEvent {
 
         public void setErrorRef(ErrorRef errorRef) {
             this.errorRef = errorRef;
-        }
-
-        public ConditionExpression getConditionExpression() {
-            return conditionExpression;
-        }
-
-        public void setConditionExpression(ConditionExpression conditionExpression) {
-            this.conditionExpression = conditionExpression;
         }
 
         public EscalationRef getEscalationRef() {

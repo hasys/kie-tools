@@ -17,6 +17,7 @@ package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.BaseStartEventExecutionSet;
 
 public class FallbackStartEventAdapter extends XmlAdapter<FallbackStartEvent, StartEvent> {
@@ -60,17 +61,28 @@ public class FallbackStartEventAdapter extends XmlAdapter<FallbackStartEvent, St
             BaseStartEventExecutionSet executionSet = startNoneEvent.getExecutionSet();
         }
 
+        if (result instanceof hasCustomSLADueDate) {
+            ((hasCustomSLADueDate) result).setSlaDueDate(v.getExtensionElements());
+        }
+
+        FallbackFlowNodeAdapter.unmarshal(result, v);
+
         return result;
     }
 
     @Override
-    public FallbackStartEvent marshal(StartEvent v) throws Exception {
+    public FallbackStartEvent marshal(StartEvent v) {
         FallbackStartEvent fallbackStartEvent = new FallbackStartEvent();
+        fallbackStartEvent.setId(v.getId());
+        fallbackStartEvent.setName(v.getName());
+        fallbackStartEvent.setDocumentation(v.getDocumentation());
+        fallbackStartEvent.setExtensionElements(v.getExtensionElements());
+
         if (v instanceof StartCompensationEvent) {
-            fallbackStartEvent.setEventDefinition(new MessageEventDefinition());
+            fallbackStartEvent.setEventDefinition(new CompensateEventDefinition());
         }
         if (v instanceof StartMessageEvent) {
-            fallbackStartEvent.setEventDefinition(new CompensateEventDefinition());
+            fallbackStartEvent.setEventDefinition(new MessageEventDefinition());
         }
         if (v instanceof StartSignalEvent) {
             fallbackStartEvent.setEventDefinition(new SignalEventDefinition());
@@ -86,6 +98,10 @@ public class FallbackStartEventAdapter extends XmlAdapter<FallbackStartEvent, St
         }
         if (v instanceof StartTimerEvent) {
             fallbackStartEvent.setEventDefinition(new TimerEventDefinition());
+        }
+
+        if (v instanceof hasCustomSLADueDate) {
+            ((hasCustomSLADueDate) v).setSlaDueDate(v.getExtensionElements());
         }
         return fallbackStartEvent;
     }

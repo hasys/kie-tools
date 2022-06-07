@@ -57,7 +57,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class StartEscalationEvent extends StartEvent implements hasOutputAssignments,
-                                                                hasEscalationEventDefinition, hasCustomSLADueDate {
+                                                                hasEscalationEventDefinition,
+                                                                hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -117,6 +118,8 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
     }
 
     public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
+        getExecutionSet().getEscalationRef().setValue(escalationEventDefinition.getEscalationRef());
+        escalationId = escalationEventDefinition.getEsccode();
         this.escalationEventDefinition = escalationEventDefinition;
     }
 
@@ -125,7 +128,7 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
     }
 
     public String getEscalationId() {
-        return escalationId;
+        return escalationId != null ? escalationId : escalationEventDefinition.getEsccode();
     }
 
     public void setEscalationId(String escalationId) {
@@ -164,6 +167,11 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
         return executionSet.getSlaDueDate();
     }
 
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.setSlaDueDate(slaDueDate);
+    }
+
     /*
      Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
      Variable is not used and always null. Getters/setters redirect data from other execution sets.
@@ -185,7 +193,6 @@ public class StartEscalationEvent extends StartEvent implements hasOutputAssignm
     public void setExtensionElements(ExtensionElements extensionElements) {
         super.setExtensionElements(extensionElements);
     }
-
 
     public InterruptingEscalationEventExecutionSet getExecutionSet() {
         return executionSet;

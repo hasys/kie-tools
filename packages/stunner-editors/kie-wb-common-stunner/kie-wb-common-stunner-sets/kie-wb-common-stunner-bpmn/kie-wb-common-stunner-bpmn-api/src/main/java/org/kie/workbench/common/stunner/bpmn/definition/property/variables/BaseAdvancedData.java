@@ -27,6 +27,8 @@ public interface BaseAdvancedData extends BPMNPropertySet {
 
     String getMetaDataAttributes();
 
+    void setMetaDataAttributes(String metaData);
+
     default List<MetaData> getAsMetaData() {
         List<MetaData> metaData = new ArrayList<>();
 
@@ -40,5 +42,22 @@ public interface BaseAdvancedData extends BPMNPropertySet {
         }
 
         return metaData;
+    }
+
+    default void setMetaDataAttributes(List<MetaData> metaDataList) {
+        StringBuilder builder = new StringBuilder();
+        for (MetaData metaData : metaDataList) {
+            if (!metaData.getName().equals("elementname")
+                    && !metaData.getName().equals("customSLADueDate")
+                    && !metaData.getName().equals("customAsync")
+                    && !metaData.getName().equals("customAutoStart")) {
+                String variable = metaData.getName() + "ß" + metaData.getMetaValue();
+                builder.append(variable);
+                builder.append("Ø");
+            }
+        }
+        if (builder.length() > 0) {
+            setMetaDataAttributes(builder.substring(0, builder.length() - 1));
+        }
     }
 }

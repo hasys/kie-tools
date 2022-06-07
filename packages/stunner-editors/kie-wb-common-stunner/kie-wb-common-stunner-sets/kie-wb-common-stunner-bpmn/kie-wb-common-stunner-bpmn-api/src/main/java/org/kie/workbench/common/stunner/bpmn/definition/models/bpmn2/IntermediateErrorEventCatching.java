@@ -53,7 +53,8 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "intermediateCatchEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEvent implements hasErrorEventDefinition, hasCustomSLADueDate {
+public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEvent implements hasErrorEventDefinition,
+                                                                                             hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -104,6 +105,7 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
     public String getErrorRefValue() {
         return executionSet.getErrorRef().getValue();
     }
+
     public ErrorEventDefinition getErrorEventDefinition() {
         return hasErrorEventDefinition.super.getErrorEventDefinition();
     }
@@ -130,6 +132,11 @@ public class IntermediateErrorEventCatching extends BaseCatchingIntermediateEven
 
     public String getSlaDueDateString() {
         return executionSet.getSlaDueDate().getValue();
+    }
+
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.getSlaDueDate().setValue(slaDueDate);
     }
 
     /*

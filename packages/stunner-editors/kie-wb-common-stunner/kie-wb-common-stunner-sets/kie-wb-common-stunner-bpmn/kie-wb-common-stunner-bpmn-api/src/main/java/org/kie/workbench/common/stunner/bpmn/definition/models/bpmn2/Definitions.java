@@ -74,6 +74,9 @@ public class Definitions {
     @XmlUnwrappedCollection
     private List<Import> imports = new ArrayList<>();
 
+    @XmlElement
+    private Collaboration collaboration;
+
     // All code behind this comment is auto generated.
     // Please regenerate it again if you added new property.
 
@@ -173,6 +176,14 @@ public class Definitions {
         this.imports = imports;
     }
 
+    public Collaboration getCollaboration() {
+        return collaboration;
+    }
+
+    public void setCollaboration(Collaboration collaboration) {
+        this.collaboration = collaboration;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -185,6 +196,7 @@ public class Definitions {
         return Objects.equals(getId(), that.getId())
                 && Objects.equals(getExporter(), that.getExporter())
                 && Objects.equals(getExporterVersion(), that.getExporterVersion())
+                && Objects.equals(getCollaboration(), that.getCollaboration())
                 && Objects.equals(getBpmnDiagram(), that.getBpmnDiagram())
                 && Objects.equals(getRelationship(), that.getRelationship())
                 && Objects.equals(getProcess(), that.getProcess())
@@ -201,6 +213,7 @@ public class Definitions {
         return HashUtil.combineHashCodes(Objects.hashCode(id),
                                          Objects.hashCode(exporter),
                                          Objects.hashCode(exporterVersion),
+                                         Objects.hashCode(collaboration),
                                          Objects.hashCode(bpmnDiagram),
                                          Objects.hashCode(relationship),
                                          Objects.hashCode(process),

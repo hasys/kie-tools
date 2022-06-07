@@ -25,6 +25,8 @@ public interface hasCustomSLADueDate {
 
     String getSlaDueDateString();
 
+    void setSlaDueDateString(String slaDueDate);
+
     default ExtensionElements getExtensionElements() {
         ExtensionElements elements = getSuperExtensionElements();
         if (StringUtils.nonEmpty(getSlaDueDateString())) {
@@ -35,4 +37,12 @@ public interface hasCustomSLADueDate {
         return elements.getMetaData().isEmpty() ? null : elements;
     }
 
+    default void setSlaDueDate(ExtensionElements elements) {
+        for (MetaData data : elements.getMetaData()) {
+            if (data.getName().equals("customSLADueDate")) {
+                getSuperExtensionElements().addMetaData(data);
+                setSlaDueDateString(data.getMetaValue());
+            }
+        }
+    }
 }

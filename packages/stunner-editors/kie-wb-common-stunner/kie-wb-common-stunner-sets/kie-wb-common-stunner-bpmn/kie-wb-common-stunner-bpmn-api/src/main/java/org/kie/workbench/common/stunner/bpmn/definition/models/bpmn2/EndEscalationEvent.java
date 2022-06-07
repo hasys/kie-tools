@@ -115,6 +115,8 @@ public class EndEscalationEvent extends EndEvent implements hasInputAssignments,
     }
 
     public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
+        getExecutionSet().getEscalationRef().setValue(escalationEventDefinition.getEscalationRef());
+        escalationId = escalationEventDefinition.getEsccode();
         this.escalationEventDefinition = escalationEventDefinition;
     }
 

@@ -25,7 +25,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.xml.stream.XMLStreamException;
 
-import com.google.gwt.core.client.GWT;
 import org.kie.workbench.common.stunner.bpmn.BPMNDefinitionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
@@ -180,15 +179,12 @@ public class BPMNClientMarshalling {
                 if (startEvent instanceof StartMessageEvent) {
                     StartMessageEvent startMessage = (StartMessageEvent) startEvent;
                     startMessage.setMessageId(IdGenerator.getTypeId(startMessage));
-                    GWT.log("Setting Message Id:" + startMessage.getMessageId());
-
                     definitions.getMessages().add(startMessage.getMessage());
                 }
 
                 if (startEvent instanceof StartErrorEvent) {
                     StartErrorEvent startErrorEvent = (StartErrorEvent) startEvent;
                     startErrorEvent.setErrorId(IdGenerator.getTypeId(startErrorEvent));
-                    GWT.log("Setting Error Id:" + startErrorEvent.getErrorId());
                     definitions.getErrors().add(startErrorEvent.getError());
                 }
 

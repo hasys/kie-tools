@@ -212,7 +212,7 @@
       <bpmn2:documentation>
         <![CDATA[Start Escalation Documentation]]>
       </bpmn2:documentation>
-      <bpmn2:escalationEventDefinition drools:escode="StarEscalationEscalationCode" escalationRef="Escalation_2" />
+      <bpmn2:escalationEventDefinition drools:esccode="StarEscalationEscalationCode" escalationRef="Escalation_2"/>
       <bpmn2:dataOutput id="StartEvent_7_StartEscalationDOANameOutputX" drools:dtype="StartEscalationDOADataType" itemSubjectRef="_StartEvent_7_StartEscalationDOANameOutputXItem" name="StartEscalationDOAName" />
       <bpmn2:dataOutputAssociation>
         <bpmn2:assignment>

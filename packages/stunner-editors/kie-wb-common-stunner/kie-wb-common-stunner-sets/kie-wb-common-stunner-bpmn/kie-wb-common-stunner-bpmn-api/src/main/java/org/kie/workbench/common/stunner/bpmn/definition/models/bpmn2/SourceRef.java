@@ -15,9 +15,13 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
+
+import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 @XmlRootElement(name = "sourceRef", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class SourceRef {
@@ -39,5 +43,24 @@ public class SourceRef {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SourceRef)) {
+            return false;
+        }
+
+        SourceRef sourceRef = (SourceRef) o;
+
+        return Objects.equals(getValue(), sourceRef.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return HashUtil.combineHashCodes(Objects.hashCode(getValue()));
     }
 }

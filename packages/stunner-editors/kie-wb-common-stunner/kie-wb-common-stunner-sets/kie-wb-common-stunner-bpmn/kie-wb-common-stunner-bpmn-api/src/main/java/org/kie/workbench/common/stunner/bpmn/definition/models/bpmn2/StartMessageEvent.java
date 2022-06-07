@@ -196,6 +196,11 @@ public class StartMessageEvent extends StartEvent implements DataIOModel,
         return executionSet.getSlaDueDate();
     }
 
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.setSlaDueDate(slaDueDate);
+    }
+
     /*
      Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
      Variable is not used and always null. Getters/setters redirect data from other execution sets.

@@ -40,15 +40,17 @@ import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
     |varInTask:custom.data.Type:,varInConstantInt:Integer:,varInConstantString:String:,varInExpression:String:||varOutTask:String:,varOutExpression:String:|[din]varIn->varInTask,[din]varInConstantInt=123,[din]varInConstantString=constant+string,[din]varInExpression=%23%7Bexpression.in%7D,[dout]varOutTask->varOut,[dout]%23%7Bexpression.out%7D=varOutExpression
  [0]|[1]|[2]|[3]|[4]
  [0] - single data input (like EndEvent)
-         - Example: TaskVarIn:custom.data.Type:
+         Example: TaskVarIn:custom.data.Type:
  [1] - multiple data input (like Task)
-         - Example: TaskVarIn:custom.data.Type:,TaskConstantIn:Integer:
+         Example: TaskVarIn:custom.data.Type:,TaskConstantIn:Integer:
  [2] - single data output (like StartEvent)
-         - Example: TaskVarOut:String:
+         Example: TaskVarOut:String:
  [3] - multiple data output (like Task)
-         - Example: TaskVarOut:String:,ProcessVarOut:String:
+         Example: TaskVarOut:String:,ProcessVarOut:String:
  [4] - assignments
-         - Example: [din]ProcessVarIn->TaskVarIn,[din]TaskConstantIn=123,[dout]TaskVarOut->ProcessVarOut,[dout]%23%7Bexpression.out%7D=TaskExpressionOut
+         -> means variable mapped to another variable
+         = means variable mapped to constant value
+         Example: [din]ProcessVarIn->TaskVarIn,[din]TaskConstantIn=123,[dout]TaskVarOut->ProcessVarOut,[dout]%23%7Bexpression.out%7D=TaskExpressionOut
  */
 public class AssignmentParser {
 

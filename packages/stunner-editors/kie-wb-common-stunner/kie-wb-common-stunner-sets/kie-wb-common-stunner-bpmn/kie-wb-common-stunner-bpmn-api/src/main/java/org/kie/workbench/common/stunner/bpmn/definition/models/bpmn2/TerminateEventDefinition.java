@@ -21,6 +21,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Used only for marshalling/unmarshalling purposes as empty element compensateEventDefinition
  */
 @XmlRootElement(name = "terminateEventDefinition", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class TerminateEventDefinition {
+public class TerminateEventDefinition extends AbstractEventDefinition {
 
 }

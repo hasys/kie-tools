@@ -26,7 +26,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 public class EscalationEventDefinition extends AbstractEventDefinition {
 
     @XmlAttribute(namespace = "http://www.jboss.org/drools")
-    private String escode;
+    private String esccode;
 
     @XmlAttribute
     private String escalationRef;
@@ -36,20 +36,20 @@ public class EscalationEventDefinition extends AbstractEventDefinition {
     }
 
     public EscalationEventDefinition(String droolsEsCode, String escalationRef) {
-        this.escode = droolsEsCode;
+        this.esccode = droolsEsCode;
         this.escalationRef = escalationRef;
     }
 
-    public String getEscode() {
-        return escode;
+    public String getEsccode() {
+        return esccode;
     }
 
-    public void setEscode(String escode) {
-        this.escode = escode;
+    public void setEsccode(String esccode) {
+        this.esccode = esccode;
     }
 
     public void setEscalationRef(String escalationRef) {
-        this.escode = escalationRef;
+        this.escalationRef = escalationRef;
     }
 
     public String getEscalationRef() {
@@ -65,13 +65,13 @@ public class EscalationEventDefinition extends AbstractEventDefinition {
             return false;
         }
         EscalationEventDefinition that = (EscalationEventDefinition) o;
-        return Objects.equals(getEscode(), that.getEscode())
+        return Objects.equals(getEsccode(), that.getEsccode())
                 && Objects.equals(getEscalationRef(), that.getEscalationRef());
     }
 
     @Override
     public int hashCode() {
-        return HashUtil.combineHashCodes(Objects.hashCode(escode),
-                                         Objects.hashCode(escode));
+        return HashUtil.combineHashCodes(Objects.hashCode(esccode),
+                                         Objects.hashCode(escalationRef));
     }
 }

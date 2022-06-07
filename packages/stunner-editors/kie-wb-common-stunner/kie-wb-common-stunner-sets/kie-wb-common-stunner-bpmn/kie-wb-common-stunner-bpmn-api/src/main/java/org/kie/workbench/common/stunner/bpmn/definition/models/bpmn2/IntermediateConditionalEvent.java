@@ -115,6 +115,11 @@ public class IntermediateConditionalEvent extends BaseCatchingIntermediateEvent 
         return executionSet.getSlaDueDate().getValue();
     }
 
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.getSlaDueDate().setValue(slaDueDate);
+    }
+
     /*
      Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
      Variable is not used and always null. Getters/setters redirect data from other execution sets.

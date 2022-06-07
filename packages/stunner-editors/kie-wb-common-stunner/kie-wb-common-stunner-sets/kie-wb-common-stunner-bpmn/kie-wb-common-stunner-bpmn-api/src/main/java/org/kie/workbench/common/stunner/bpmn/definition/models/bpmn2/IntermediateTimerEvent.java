@@ -103,6 +103,14 @@ public class IntermediateTimerEvent extends BaseCatchingIntermediateEvent implem
     }
 
     public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
+        if (timerEventDefinition.getTimeDuration() != null) {
+            executionSet.getTimerSettings().getValue().setTimeDuration(timerEventDefinition.getTimeDuration().getValue());
+        } else if (timerEventDefinition.getTimeCycle() != null) {
+            executionSet.getTimerSettings().getValue().setTimeCycle(timerEventDefinition.getTimeCycle().getValue());
+            executionSet.getTimerSettings().getValue().setTimeCycleLanguage(timerEventDefinition.getTimeCycle().getLanguage());
+        } else if (timerEventDefinition.getTimeDate() != null) {
+            executionSet.getTimerSettings().getValue().setTimeDate(timerEventDefinition.getTimeDate().getValue());
+        }
         this.timerEventDefinition = timerEventDefinition;
     }
 
@@ -112,6 +120,11 @@ public class IntermediateTimerEvent extends BaseCatchingIntermediateEvent implem
 
     public String getSlaDueDateString() {
         return executionSet.getSlaDueDate().getValue();
+    }
+
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.getSlaDueDate().setValue(slaDueDate);
     }
 
     /*

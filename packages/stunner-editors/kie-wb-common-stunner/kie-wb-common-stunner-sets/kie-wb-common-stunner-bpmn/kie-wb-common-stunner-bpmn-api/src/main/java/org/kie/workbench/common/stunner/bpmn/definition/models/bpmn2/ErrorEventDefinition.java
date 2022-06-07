@@ -26,7 +26,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 public class ErrorEventDefinition extends AbstractEventDefinition {
 
     @XmlAttribute(namespace = "http://www.jboss.org/drools")
-    private String errorref;
+    private String droolsErrorName;
 
     @XmlAttribute
     private String errorRef;
@@ -36,23 +36,23 @@ public class ErrorEventDefinition extends AbstractEventDefinition {
     }
 
     public ErrorEventDefinition(String droolsErrorName, String errorId) {
-        this.errorref = droolsErrorName;
+        this.droolsErrorName = droolsErrorName;
         this.errorRef = errorId;
     }
 
-    public String getErrorref() {
-        return errorref;
+    public String getDroolsErrorName() {
+        return droolsErrorName;
     }
 
     public void setErrorRef(String errorRef) {
-        this.errorref = errorRef;
+        this.droolsErrorName = errorRef;
     }
 
     public String getErrorRef() {
         return errorRef;
     }
 
-    public void setErrorref(String errorRef) {
+    public void setDroolsErrorName(String errorRef) {
         this.errorRef = errorRef;
     }
 
@@ -65,13 +65,13 @@ public class ErrorEventDefinition extends AbstractEventDefinition {
             return false;
         }
         ErrorEventDefinition that = (ErrorEventDefinition) o;
-        return Objects.equals(getErrorref(), that.getErrorref())
+        return Objects.equals(getDroolsErrorName(), that.getDroolsErrorName())
                 && Objects.equals(getErrorRef(), that.getErrorRef());
     }
 
     @Override
     public int hashCode() {
-        return HashUtil.combineHashCodes(Objects.hashCode(errorref),
-                                         Objects.hashCode(errorref));
+        return HashUtil.combineHashCodes(Objects.hashCode(droolsErrorName),
+                                         Objects.hashCode(errorRef));
     }
 }

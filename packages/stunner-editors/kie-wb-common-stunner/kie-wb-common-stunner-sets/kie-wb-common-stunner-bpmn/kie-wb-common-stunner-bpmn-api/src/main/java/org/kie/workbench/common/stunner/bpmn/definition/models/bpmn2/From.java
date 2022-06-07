@@ -15,10 +15,14 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
+
+import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 @XmlRootElement(name = "from", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class From {
@@ -51,5 +55,26 @@ public class From {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof From)) {
+            return false;
+        }
+
+        From from = (From) o;
+
+        return Objects.equals(getType(), from.getType())
+                && Objects.equals(getValue(), from.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return HashUtil.combineHashCodes(Objects.hashCode(getType()),
+                                         Objects.hashCode(getValue()));
     }
 }

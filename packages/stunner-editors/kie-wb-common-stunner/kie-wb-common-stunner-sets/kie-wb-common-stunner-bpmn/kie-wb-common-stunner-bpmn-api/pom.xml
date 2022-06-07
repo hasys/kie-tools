@@ -140,8 +140,8 @@
     <!-- New Marshaller -->
     <dependency>
       <groupId>org.treblereel.gwt.xml.mapper</groupId>
-      <artifactId>gwt-backend</artifactId>
-      <!--<artifactId>jre-backend</artifactId> -->
+      <!--      <artifactId>gwt-backend</artifactId>-->
+      <artifactId>jre-backend</artifactId>
     </dependency>
 
     <dependency>
@@ -159,6 +159,12 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
 

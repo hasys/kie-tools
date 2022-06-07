@@ -86,6 +86,7 @@ public class DataInputAssociation {
         }
         DataInputAssociation that = (DataInputAssociation) o;
         return Objects.equals(getTargetRef(), that.getTargetRef())
+                && Objects.equals(getSourceRef(), that.getSourceRef())
                 && Objects.equals(getAssignment(), that.getAssignment());
     }
 

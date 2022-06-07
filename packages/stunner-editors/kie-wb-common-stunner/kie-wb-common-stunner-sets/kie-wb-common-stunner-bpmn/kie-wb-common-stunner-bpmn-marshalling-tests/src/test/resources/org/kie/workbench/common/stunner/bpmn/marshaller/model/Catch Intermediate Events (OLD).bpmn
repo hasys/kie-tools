@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:drools="http://www.jboss.org/drools" id="_KzGeYMihEDqvPbH0FKFc7w" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd http://www.omg.org/spec/DD/20100524/DC DC.xsd http://www.omg.org/spec/DD/20100524/DI DI.xsd " exporter="jBPM Process Modeler" exporterVersion="2.0" targetNamespace="http://www.omg.org/bpmn20">
+  <bpmn2:itemDefinition id="__F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="messageRefNameType" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="_AF09AA0F-9306-4362-9CE6-48BF6726FB8C" structureRef=""/>
+  <bpmn2:itemDefinition id="_5EAD03FD-818B-4AF4-9398-A09770270CD9" structureRef=""/>
+  <bpmn2:itemDefinition id="__4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:itemDefinition id="__814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputXItem" structureRef="custom.data.Type"/>
+  <bpmn2:message id="_KzHFcMihEDqvPbH0FKFc7w" itemRef="messageRefNameType" name="messageRefName"/>
+  <bpmn2:signal id="_-787283466" name="signalRefName"/>
+  <bpmn2:error id="errorRefName" errorCode="errorRefName"/>
+  <bpmn2:escalation id="_-1807190538" escalationCode="escalationRefCodeName"/>
+  <bpmn2:collaboration id="_3089BB28-E621-4FC4-8F50-F9FD7F639DAC" name="Default Collaboration">
+    <bpmn2:participant id="_7A0BDD81-54DF-4E83-AF3C-2FCAFA459A83" name="Pool Participant" processRef="Untitled"/>
+  </bpmn2:collaboration>
+  <bpmn2:process id="process" drools:packageName="com.example" drools:version="1.0" drools:adHoc="false" name="Untitled" isExecutable="true" processType="Public">
+    <bpmn2:intermediateCatchEvent id="_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F" name="Intermediate Catch Conditional Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Conditional Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Conditional Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:conditionalEventDefinition>
+        <bpmn2:condition xsi:type="bpmn2:tFormalExpression" language="http://www.jboss.org/drools/rule"><![CDATA[condition.expression.exec()]]></bpmn2:condition>
+      </bpmn2:conditionalEventDefinition>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_669DEDF8-55E0-4E53-8681-2C7E82AAB122" name="Intermediate Catch Compensation Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Compensation Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Compensation Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutpuVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_669DEDF8-55E0-4E53-8681-2C7E82AAB122_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:compensateEventDefinition/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_9D3204A1-EA0F-45D6-960A-09DB297873DB" name="Intermediate Catch Escalation Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Escalation Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Escalation Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateName]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_9D3204A1-EA0F-45D6-960A-09DB297873DB_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:escalationEventDefinition drools:esccode="escalationRefCodeName" escalationRef="_-1807190538"/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_59D00257-5881-4432-94D2-46A591A570BA" name="Intermediate Catch Error Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Error Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Error Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_59D00257-5881-4432-94D2-46A591A570BA_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:errorEventDefinition drools:erefname="errorRefName" errorRef="errorRefName"/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8" name="Intermediate Catch Link Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Link Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Link Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:linkEventDefinition id="_KzKv0MihEDqvPbH0FKFc7w" name="linkRefName"/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42" name="Intermediate Catch Signal Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Signal Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Signal Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:signalEventDefinition signalRef="_-787283466"/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_1D5356C0-6DF6-4E75-961D-23336F175D81" name="Intermediate Catch Message Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Message Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Message Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConstant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_1D5356C0-6DF6-4E75-961D-23336F175D81_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:messageEventDefinition drools:msgref="messageRefName" messageRef="_KzHFcMihEDqvPbH0FKFc7w"/>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:intermediateCatchEvent id="_F9E1D03F-A807-465A-B357-491D591139B9" name="Intermediate Catch Timer Name">
+      <bpmn2:documentation><![CDATA[Intermediate Catch Timer Documentation]]></bpmn2:documentation>
+      <bpmn2:extensionElements>
+        <drools:metaData name="elementname">
+          <drools:metaValue><![CDATA[Intermediate Catch Timer Name]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="MetaName">
+          <drools:metaValue><![CDATA[MetaValue_One]]></drools:metaValue>
+        </drools:metaData>
+        <drools:metaData name="customSLADueDate">
+          <drools:metaValue><![CDATA[slaDueDateValue]]></drools:metaValue>
+        </drools:metaData>
+      </bpmn2:extensionElements>
+      <bpmn2:dataOutput id="_F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputX" drools:dtype="custom.data.Type" itemSubjectRef="__F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputXItem" name="OutputVarName"/>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputX</bpmn2:sourceRef>
+        <bpmn2:assignment>
+          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[_F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputX]]></bpmn2:from>
+          <bpmn2:to xsi:type="bpmn2:tFormalExpression"><![CDATA[OutputVarConctant]]></bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataOutputAssociation>
+      <bpmn2:outputSet>
+        <bpmn2:dataOutputRefs>_F9E1D03F-A807-465A-B357-491D591139B9_OutputVarNameOutputX</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:timerEventDefinition>
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1H</bpmn2:timeDuration>
+      </bpmn2:timerEventDefinition>
+    </bpmn2:intermediateCatchEvent>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="Untitled">
+      <bpmndi:BPMNShape id="shape__F9E1D03F-A807-465A-B357-491D591139B9" bpmnElement="_F9E1D03F-A807-465A-B357-491D591139B9">
+        <dc:Bounds height="56" width="56" x="473" y="105"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__1D5356C0-6DF6-4E75-961D-23336F175D81" bpmnElement="_1D5356C0-6DF6-4E75-961D-23336F175D81">
+        <dc:Bounds height="56" width="56" x="758" y="105"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42" bpmnElement="_4F01C25D-7E2C-45F7-A0E6-7E4600ED1F42">
+        <dc:Bounds height="56" width="56" x="473" y="193"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8" bpmnElement="_831495D9-38A3-4F1E-A7F1-CFCF8FFFBDB8">
+        <dc:Bounds height="56" width="56" x="758" y="193"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__59D00257-5881-4432-94D2-46A591A570BA" bpmnElement="_59D00257-5881-4432-94D2-46A591A570BA">
+        <dc:Bounds height="56" width="56" x="473" y="281"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__9D3204A1-EA0F-45D6-960A-09DB297873DB" bpmnElement="_9D3204A1-EA0F-45D6-960A-09DB297873DB">
+        <dc:Bounds height="56" width="56" x="758" y="281"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__669DEDF8-55E0-4E53-8681-2C7E82AAB122" bpmnElement="_669DEDF8-55E0-4E53-8681-2C7E82AAB122">
+        <dc:Bounds height="56" width="56" x="473" y="369"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape__814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F" bpmnElement="_814A5A3C-C121-4DB5-AC6D-059AFAD4DA2F">
+        <dc:Bounds height="56" width="56" x="758" y="369"/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmn2:relationship type="BPSimData">
+    <bpmn2:extensionElements>
+      <bpsim:BPSimData>
+        <bpsim:Scenario id="default" name="Simulationscenario">
+          <bpsim:ScenarioParameters/>
+        </bpsim:Scenario>
+      </bpsim:BPSimData>
+    </bpmn2:extensionElements>
+    <bpmn2:source>_KzGeYMihEDqvPbH0FKFc7w</bpmn2:source>
+    <bpmn2:target>_KzGeYMihEDqvPbH0FKFc7w</bpmn2:target>
+  </bpmn2:relationship>
+</bpmn2:definitions>

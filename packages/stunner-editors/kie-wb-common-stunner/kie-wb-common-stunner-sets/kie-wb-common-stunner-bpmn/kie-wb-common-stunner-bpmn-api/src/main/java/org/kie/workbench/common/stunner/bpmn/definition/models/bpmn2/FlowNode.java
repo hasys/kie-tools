@@ -91,12 +91,20 @@ public abstract class FlowNode extends FlowElement {
         return elements;
     }
 
+    public ExtensionElements getFullExtensionElements() {
+        return extensionElements;
+    }
+
     /*
     Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
     Execution sets not removed due to how forms works now, should be refactored during the migration
     to the new forms.
      */
     public void setExtensionElements(ExtensionElements extensionElements) {
+        if (advancedData == null) {
+            advancedData = new AdvancedData();
+        }
+        getAdvancedData().setMetaDataAttributes(extensionElements.getMetaData());
         this.extensionElements = extensionElements;
     }
 

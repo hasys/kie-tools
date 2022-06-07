@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
@@ -41,6 +42,7 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @MorphBase(defaultType = StartNoneEvent.class)
+@XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public abstract class StartEvent extends FlowNode implements BPMNViewDefinition,
                                                              DataIOModel,
                                                              HasOutgoing {

@@ -25,7 +25,7 @@ public interface hasEscalationEventDefinition {
     String getEscalationId();
 
     default EscalationEventDefinition getEscalationEventDefinition() {
-        return new EscalationEventDefinition(getEscalationRefValue(), getEscalationId());
+        return new EscalationEventDefinition(getEscalationId(), getEscalationRefValue());
     }
 
     void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition);

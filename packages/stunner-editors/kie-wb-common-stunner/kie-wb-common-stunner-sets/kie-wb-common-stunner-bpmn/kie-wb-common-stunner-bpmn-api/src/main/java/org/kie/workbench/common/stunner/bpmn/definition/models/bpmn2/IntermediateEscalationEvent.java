@@ -124,6 +124,8 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
     }
 
     public void setEscalationEventDefinition(EscalationEventDefinition escalationEventDefinition) {
+        getExecutionSet().getEscalationRef().setValue(escalationEventDefinition.getEscalationRef());
+        escalationId = escalationEventDefinition.getEsccode();
         this.escalationEventDefinition = escalationEventDefinition;
     }
 
@@ -157,6 +159,11 @@ public class IntermediateEscalationEvent extends BaseCatchingIntermediateEvent i
 
     public String getSlaDueDateString() {
         return executionSet.getSlaDueDate().getValue();
+    }
+
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.getSlaDueDate().setValue(slaDueDate);
     }
 
     /*

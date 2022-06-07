@@ -116,6 +116,15 @@ public class ExtensionElements {
         this.globals = globals;
     }
 
+    public void setExtensionElements(ExtensionElements elements) {
+        bpSimData = elements.bpSimData;
+        metaData = elements.metaData;
+        imports = elements.imports;
+        globals = elements.globals;
+        onEntryScript = elements.onEntryScript;
+        onExitScript = elements.onExitScript;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

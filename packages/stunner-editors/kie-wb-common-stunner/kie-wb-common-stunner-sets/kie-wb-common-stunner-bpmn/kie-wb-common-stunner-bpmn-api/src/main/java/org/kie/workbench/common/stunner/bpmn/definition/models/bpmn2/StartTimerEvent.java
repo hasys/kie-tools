@@ -78,7 +78,8 @@ public class StartTimerEvent extends StartEvent implements hasCustomSLADueDate,
         this.executionSet = executionSet;
     }
 
-    public TimerSettingsValue getTimerSettingsValue() {
+    public TimerSettingsValue
+    getTimerSettingsValue() {
         return executionSet.getTimerSettings().getValue();
     }
 
@@ -87,6 +88,14 @@ public class StartTimerEvent extends StartEvent implements hasCustomSLADueDate,
     }
 
     public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
+        if (timerEventDefinition.getTimeDuration() != null) {
+            executionSet.getTimerSettings().getValue().setTimeDuration(timerEventDefinition.getTimeDuration().getValue());
+        } else if (timerEventDefinition.getTimeCycle() != null) {
+            executionSet.getTimerSettings().getValue().setTimeCycle(timerEventDefinition.getTimeCycle().getValue());
+            executionSet.getTimerSettings().getValue().setTimeCycleLanguage(timerEventDefinition.getTimeCycle().getLanguage());
+        } else if (timerEventDefinition.getTimeDate() != null) {
+            executionSet.getTimerSettings().getValue().setTimeDate(timerEventDefinition.getTimeDate().getValue());
+        }
         this.timerEventDefinition = timerEventDefinition;
     }
 
@@ -104,6 +113,11 @@ public class StartTimerEvent extends StartEvent implements hasCustomSLADueDate,
 
     public String getSlaDueDateString() {
         return executionSet.getSlaDueDate();
+    }
+
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        executionSet.setSlaDueDate(slaDueDate);
     }
 
     /*

@@ -29,6 +29,7 @@ import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
+import org.kie.workbench.common.stunner.bpmn.definition.hasCustomSLADueDate;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.event.BaseStartEventExecutionSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
@@ -50,7 +51,7 @@ import static org.kie.workbench.common.forms.adf.engine.shared.formGeneration.pr
         defaultFieldSettings = {@FieldParam(name = FIELD_CONTAINER_PARAM, value = COLLAPSIBLE_CONTAINER)}
 )
 @XmlRootElement(name = "startEvent", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
-public class StartCompensationEvent extends StartEvent {
+public class StartCompensationEvent extends StartEvent implements hasCustomSLADueDate {
 
     @Property
     @FormField(afterElement = "documentation")
@@ -88,19 +89,30 @@ public class StartCompensationEvent extends StartEvent {
         this.executionSet = executionSet;
     }
 
+    @Override
+    public ExtensionElements getSuperExtensionElements() {
+        return super.getExtensionElements();
+    }
+
+    @Override
+    public String getSlaDueDateString() {
+        return this.getExecutionSet().getSlaDueDate();
+    }
+
+    @Override
+    public void setSlaDueDateString(String slaDueDate) {
+        this.getExecutionSet().setSlaDueDate(slaDueDate);
+    }
+
     /*
-    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
-    Variable is not used and always null. Getters/setters redirect data from other execution sets.
-    Execution sets not removed due to how forms works now, should be refactored during the migration
-    to the new forms.
-     */
+        Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+        Variable is not used and always null. Getters/setters redirect data from other execution sets.
+        Execution sets not removed due to how forms works now, should be refactored during the migration
+        to the new forms.
+         */
     @Override
     public ExtensionElements getExtensionElements() {
-        ExtensionElements elements = super.getExtensionElements();
-        MetaData sla = new MetaData("customSLADueDate", this.getExecutionSet().getSlaDueDate());
-        elements.getMetaData().add(sla);
-
-        return elements;
+        return hasCustomSLADueDate.super.getExtensionElements();
     }
 
     /*
@@ -111,6 +123,11 @@ public class StartCompensationEvent extends StartEvent {
      */
     public void setExtensionElements(ExtensionElements extensionElements) {
         super.setExtensionElements(extensionElements);
+        for (MetaData data : extensionElements.getMetaData()) {
+            if (data.getName().equals("customSLADueDate")) {
+                this.getExecutionSet().setSlaDueDate(data.getMetaValue());
+            }
+        }
     }
 
     /*

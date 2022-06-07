@@ -31,7 +31,7 @@ import org.kie.workbench.common.stunner.bpmn.definition.property.event.timer.Tim
 import org.treblereel.gwt.xml.mapper.api.annotation.XMLMapper;
 
 @XMLMapper
-public class FallbackStartEvent extends StartEvent {
+public class FallbackIntermediateCatchEvent extends BaseCatchingIntermediateEvent {
 
     @XmlElementRefs({
             @XmlElementRef(name = "compensateEventDefinition", type = CompensateEventDefinition.class),
@@ -41,6 +41,7 @@ public class FallbackStartEvent extends StartEvent {
             @XmlElementRef(name = "escalationEventDefinition", type = EscalationEventDefinition.class),
             @XmlElementRef(name = "conditionalEventDefinition", type = ConditionalEventDefinition.class),
             @XmlElementRef(name = "timerEventDefinition", type = TimerEventDefinition.class),
+            @XmlElementRef(name = "linkEventDefinition", type = LinkEventDefinition.class),
     })
     private AbstractEventDefinition eventDefinition;
 
@@ -110,6 +111,12 @@ public class FallbackStartEvent extends StartEvent {
     }
 
     public static class FallbackStartEventExecutionSet {
+
+        // Link ID
+        private String id;
+
+        // LInk Name
+        private String name;
 
         private Boolean isInterrupting;
 
@@ -189,6 +196,22 @@ public class FallbackStartEvent extends StartEvent {
 
         public void setMessageRef(MessageRef messageRef) {
             this.messageRef = messageRef;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

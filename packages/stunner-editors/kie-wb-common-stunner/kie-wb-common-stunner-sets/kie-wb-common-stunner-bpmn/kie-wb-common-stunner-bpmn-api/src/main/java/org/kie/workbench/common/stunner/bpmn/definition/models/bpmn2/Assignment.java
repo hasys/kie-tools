@@ -15,9 +15,13 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2;
 
+import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 @XmlRootElement(name = "assignment", namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
 public class Assignment {
@@ -53,5 +57,26 @@ public class Assignment {
 
     public void setTo(To to) {
         this.to = to;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Assignment)) {
+            return false;
+        }
+
+        Assignment that = (Assignment) o;
+
+        return Objects.equals(getFrom(), that.getFrom())
+                && Objects.equals(getTo(), that.getTo());
+    }
+
+    @Override
+    public int hashCode() {
+        return HashUtil.combineHashCodes(Objects.hashCode(getFrom()),
+                                         Objects.hashCode(getTo()));
     }
 }
