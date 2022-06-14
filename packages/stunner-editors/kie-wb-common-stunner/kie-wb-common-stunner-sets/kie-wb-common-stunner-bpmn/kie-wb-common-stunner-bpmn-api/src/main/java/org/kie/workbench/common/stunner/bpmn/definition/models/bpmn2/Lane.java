@@ -24,35 +24,33 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlCData;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.jboss.errai.common.client.api.annotations.Portable;
 import org.jboss.errai.databinding.client.api.Bindable;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FieldParam;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormDefinition;
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
-import org.kie.workbench.common.forms.adf.definitions.annotations.metaModel.FieldValue;
 import org.kie.workbench.common.forms.adf.definitions.settings.FieldPolicy;
-import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.type.TextAreaFieldType;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNCategories;
 import org.kie.workbench.common.stunner.bpmn.definition.BPMNViewDefinition;
 import org.kie.workbench.common.stunner.bpmn.definition.models.drools.MetaData;
 import org.kie.workbench.common.stunner.bpmn.definition.property.background.BackgroundSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.dimensions.RectangleDimensionsSet;
 import org.kie.workbench.common.stunner.bpmn.definition.property.font.FontSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.BPMNGeneralSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.Documentation;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.Name;
 import org.kie.workbench.common.stunner.bpmn.definition.property.variables.AdvancedData;
 import org.kie.workbench.common.stunner.core.definition.annotation.Definition;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
 import org.kie.workbench.common.stunner.core.definition.annotation.definition.Category;
 import org.kie.workbench.common.stunner.core.definition.annotation.definition.Labels;
-import org.kie.workbench.common.stunner.core.definition.annotation.property.Value;
 import org.kie.workbench.common.stunner.core.rule.annotation.CanContain;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
 import org.kie.workbench.common.stunner.core.util.StringUtils;
@@ -76,26 +74,18 @@ public class Lane implements BPMNViewDefinition {
     @Category
     public static final transient String category = BPMNCategories.CONTAINERS;
 
-    @Valid
-    @Property
-    @Value
-    @FieldValue
-    @NotNull
-    @NotEmpty
     @XmlAttribute
-    @FormField(type = TextAreaFieldType.class)
+    // Value is stored and used from forms. This variable is a marker for XML library
     private String name;
 
     @Property
+    @FormField
     @Valid
-    @Value
-    @FieldValue
-    @FormField(
-            type = TextAreaFieldType.class,
-            afterElement = "name"
-    )
+    protected BPMNGeneralSet general = new BPMNGeneralSet();
+
     @XmlCData
     @XmlAttribute(namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
+    // Value is stored and used from forms. This variable is a marker for XML library
     private String documentation;
 
     @XmlAttribute
@@ -159,6 +149,8 @@ public class Lane implements BPMNViewDefinition {
                 final @MapsTo("dimensionsSet") RectangleDimensionsSet dimensionsSet,
                 final @MapsTo("advancedData") AdvancedData advancedData) {
         this.name = name;
+        this.general.setName(new Name(name));
+        this.general.setDocumentation(new Documentation(documentation));
         this.documentation = documentation;
         this.backgroundSet = backgroundSet;
         this.fontSet = fontSet;
@@ -188,20 +180,20 @@ public class Lane implements BPMNViewDefinition {
 
     @Override
     public String getName() {
-        return name;
+        return general.getName().getValue();
     }
 
     public void setName(String name) {
-        this.name = name;
+        general.setName(new Name(name));
     }
 
     @Override
     public String getDocumentation() {
-        return documentation;
+        return general.getDocumentation().getValue();
     }
 
     public void setDocumentation(String documentation) {
-        this.documentation = documentation;
+        this.general.setDocumentation(new Documentation(documentation));
     }
 
     public void setBackgroundSet(final BackgroundSet backgroundSet) {
@@ -233,11 +225,19 @@ public class Lane implements BPMNViewDefinition {
         return id;
     }
 
+    public BPMNGeneralSet getGeneral() {
+        return general;
+    }
+
+    public void setGeneral(BPMNGeneralSet general) {
+        this.general = general;
+    }
+
     /*
-Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
-Execution sets not removed due to how forms works now, should be refactored during the migration
-to the new forms.
- */
+    Used only for marshalling/unmarshalling purposes. Shouldn't be handled in Equals/HashCode.
+    Execution sets not removed due to how forms works now, should be refactored during the migration
+    to the new forms.
+     */
     public ExtensionElements getExtensionElements() {
         ExtensionElements elements = new ExtensionElements();
         List<MetaData> metaData = new ArrayList<>();
@@ -272,8 +272,7 @@ to the new forms.
 
     @Override
     public int hashCode() {
-        return HashUtil.combineHashCodes(name.hashCode(),
-                                         documentation.hashCode(),
+        return HashUtil.combineHashCodes(general.hashCode(),
                                          backgroundSet.hashCode(),
                                          fontSet.hashCode(),
                                          dimensionsSet.hashCode(),
@@ -284,8 +283,7 @@ to the new forms.
     public boolean equals(Object o) {
         if (o instanceof Lane) {
             Lane other = (Lane) o;
-            return Objects.equals(name, other.name) &&
-                    Objects.equals(documentation, other.documentation) &&
+            return Objects.equals(general, other.general) &&
                     Objects.equals(backgroundSet, other.backgroundSet) &&
                     Objects.equals(fontSet, other.fontSet) &&
                     Objects.equals(dimensionsSet, other.dimensionsSet) &&

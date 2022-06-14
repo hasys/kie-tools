@@ -22,27 +22,27 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class NormalDistribution {
 
     @XmlAttribute
-    private int mean = 0;
+    private float mean = 0;
 
     @XmlAttribute
-    private int standardDeviation = 0;
+    private float standardDeviation = 0;
 
     // All code behind this comment is auto generated.
     // Please regenerate it again if you added new property.
 
-    public int getMean() {
+    public float getMean() {
         return mean;
     }
 
-    public void setMean(int mean) {
+    public void setMean(float mean) {
         this.mean = mean;
     }
 
-    public int getStandardDeviation() {
+    public float getStandardDeviation() {
         return standardDeviation;
     }
 
-    public void setStandardDeviation(int standardDeviation) {
+    public void setStandardDeviation(float standardDeviation) {
         this.standardDeviation = standardDeviation;
     }
 

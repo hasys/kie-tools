@@ -15,6 +15,7 @@
  */
 package org.kie.workbench.common.stunner.bpmn.definition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.AdHocSubprocess;
@@ -104,6 +105,32 @@ public interface BpmnContainer {
         getDataObjectsReference().clear();
         getCallActivities().clear();
         getBusinessRuleTask().clear();
+    }
+
+    default List<BaseElement> getNodesAsBaseElements() {
+        List<BaseElement> nodes = new ArrayList();
+        nodes.addAll(getScriptTasks());
+        nodes.addAll(getUserTasks());
+        nodes.addAll(getTasks());
+        nodes.addAll(getStartEvents());
+        nodes.addAll(getEndEvents());
+        nodes.addAll(getSequenceFlows());
+        nodes.addAll(getSubProcesses());
+        nodes.addAll(getAdHocSubProcess());
+        nodes.addAll(getLanes());
+        nodes.addAll(getEventBasedGateways());
+        nodes.addAll(getInclusiveGateways());
+        nodes.addAll(getExclusiveGateways());
+        nodes.addAll(getParallelGateways());
+        nodes.addAll(getIntermediateThrowEvent());
+        nodes.addAll(getIntermediateCatchEvent());
+        nodes.addAll(getTextAnnotations());
+        nodes.addAll(getAssociations());
+        nodes.addAll(getDataObjectsReference());
+        nodes.addAll(getCallActivities());
+        nodes.addAll(getBusinessRuleTask());
+
+        return nodes;
     }
 
     default void addNode(BPMNViewDefinition node) {

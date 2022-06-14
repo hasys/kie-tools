@@ -26,7 +26,7 @@ import org.treblereel.gwt.xml.mapper.api.annotation.XMLMapper;
 import org.treblereel.gwt.xml.mapper.api.annotation.XmlUnwrappedCollection;
 
 @XMLMapper
-public class FallbackSubProcess extends BaseSubprocess {
+public class FallbackSubProcess extends BaseContainerSubprocess {
 
     @XmlAttribute(name = "triggeredByEvent")
     private Boolean triggeredByEvent;

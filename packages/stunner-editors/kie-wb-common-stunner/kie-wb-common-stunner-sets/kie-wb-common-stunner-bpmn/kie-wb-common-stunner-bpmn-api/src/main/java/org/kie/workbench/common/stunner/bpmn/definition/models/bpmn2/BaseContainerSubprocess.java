@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jboss.errai.common.client.api.annotations.MapsTo;
 import org.kie.workbench.common.stunner.bpmn.definition.BpmnContainer;
@@ -37,16 +38,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
 
     @XmlElement(name = "startEvent")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_StartNoneEvent", type = StartNoneEvent.class),
-            @XmlElement(name = "_StartCompensationEvent", type = StartCompensationEvent.class),
-            @XmlElement(name = "_StartMessageEvent", type = StartMessageEvent.class),
-            @XmlElement(name = "_StartSignalEvent", type = StartSignalEvent.class),
-            @XmlElement(name = "_StartTimerEvent", type = StartTimerEvent.class),
-            @XmlElement(name = "_StartEscalationEvent", type = StartEscalationEvent.class),
-            @XmlElement(name = "_StartErrorEvent", type = StartErrorEvent.class),
-            @XmlElement(name = "_StartConditionalEvent", type = StartConditionalEvent.class)
-    })
+    @XmlJavaTypeAdapter(FallbackStartEventAdapter.class)
     private List<StartEvent> startEvents = new ArrayList<>();
 
     @XmlElement(name = "laneSet")
@@ -60,39 +52,17 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
 
     @XmlElement(name = "endEvent")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_EndNoneEvent", type = EndNoneEvent.class),
-            @XmlElement(name = "_EndTerminateEvent", type = EndTerminateEvent.class),
-            @XmlElement(name = "_EndErrorEvent", type = EndErrorEvent.class),
-            @XmlElement(name = "_EndEscalationEvent", type = EndEscalationEvent.class),
-            @XmlElement(name = "_EndCompensationEvent", type = EndCompensationEvent.class),
-            @XmlElement(name = "_EndSignalEvent", type = EndSignalEvent.class),
-            @XmlElement(name = "_EndMessageEvent", type = EndMessageEvent.class)
-    })
+    @XmlJavaTypeAdapter(FallbackEndEventAdapter.class)
     private List<EndEvent> endEvents = new ArrayList<>();
 
     @XmlElement(name = "intermediateThrowEvent")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_LinkThrowEvent", type = IntermediateLinkEventThrowing.class),
-            @XmlElement(name = "_EscalationThrowEvent", type = IntermediateEscalationEventThrowing.class),
-            @XmlElement(name = "_CompensationThrowEvent", type = IntermediateCompensationEventThrowing.class),
-            @XmlElement(name = "_SignalThrowEvent", type = IntermediateSignalEventThrowing.class),
-            @XmlElement(name = "_MessageThrowEvent", type = IntermediateMessageEventThrowing.class)
-    })
+    @XmlJavaTypeAdapter(FallbackIntermediateThrowEventAdapter.class)
     private List<BaseThrowingIntermediateEvent> intermediateThrowEvent = new ArrayList<>();
 
     @XmlElement(name = "intermediateCatchEvent")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_TimerCatchEvent", type = IntermediateTimerEvent.class),
-            @XmlElement(name = "_LinkCatchEvent", type = IntermediateLinkEventCatching.class),
-            @XmlElement(name = "_ErrorCatchEvent", type = IntermediateErrorEventCatching.class),
-            @XmlElement(name = "_EscalationCatchEvent", type = IntermediateEscalationEvent.class),
-            @XmlElement(name = "_CompensationCatchEvent", type = IntermediateCompensationEvent.class),
-            @XmlElement(name = "_SignalCatchEvent", type = IntermediateSignalEventCatching.class),
-            @XmlElement(name = "_MessageCatchEvent", type = IntermediateMessageEventCatching.class)
-    })
+    @XmlJavaTypeAdapter(FallbackIntermediateCatchEventAdapter.class)
     private List<BaseCatchingIntermediateEvent> intermediateCatchEvent = new ArrayList<>();
 
     @XmlElement(name = "sequenceFlow")
@@ -101,10 +71,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
 
     @XmlElement(name = "task")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_NoneTask", type = NoneTask.class),
-            @XmlElement(name = "_CustomTask", type = CustomTask.class)
-    })
+    @XmlJavaTypeAdapter(FallbackTaskAdapter.class)
     private List<BaseTask> tasks = new ArrayList<>();
 
     @XmlElement(name = "scriptTask")
@@ -154,11 +121,7 @@ public abstract class BaseContainerSubprocess extends BaseSubprocess implements 
 
     @XmlElement(name = "subProcess")
     @XmlUnwrappedCollection
-    @XmlElements({
-            @XmlElement(name = "_EventSubProcess", type = EventSubprocess.class),
-            @XmlElement(name = "_EmbeddedSubProcess", type = EmbeddedSubprocess.class),
-            @XmlElement(name = "_MISubProcess", type = MultipleInstanceSubprocess.class)
-    })
+    @XmlJavaTypeAdapter(FallbackSubProcessAdapter.class)
     private List<BaseSubprocess> subProcesses = new ArrayList<>();
 
     @XmlElement(name = "adHocSubProcess")

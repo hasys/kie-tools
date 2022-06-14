@@ -45,14 +45,28 @@ public class Marshaller implements DiagramMarshaller {
 
     @Override
     public Graph unmarshall(Metadata metadata, InputStream input) {
-        String text = new BufferedReader(
-                new InputStreamReader(input, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n")
-                );
+        Definitions definitions = parseDefinitions(input);
 
-        Definitions definitions = bpmnClientMarshalling.unmarshall(text);
+        return createGraph(definitions);
+    }
 
+    @Override
+    public String marshall(Diagram diagram) {
+        BPMNClientMarshalling marsh = new BPMNClientMarshalling();
+        return marsh.marshall(diagram);
+    }
+
+    public String marshall(Definitions definitions) {
+        BPMNClientMarshalling marsh = new BPMNClientMarshalling();
+        return marsh.marshall(definitions);
+    }
+
+    @Override
+    public DiagramMetadataMarshaller getMetadataMarshaller() {
+        return null;
+    }
+
+    private Graph createGraph(Definitions definitions) {
         final GraphImpl graph = new GraphImpl<>(definitions.getId(),
                                                 new GraphNodeStoreImpl());
         final DefinitionSet content = new DefinitionSetImpl(definitions.getId());
@@ -93,7 +107,7 @@ public class Marshaller implements DiagramMarshaller {
 
             @Override
             public Node asNode() {
-                return null;
+                return this;
             }
 
             @Override
@@ -107,13 +121,17 @@ public class Marshaller implements DiagramMarshaller {
         return graph;
     }
 
-    @Override
-    public String marshall(Diagram diagram) {
-        return null;
+    public Definitions parseDefinitions(String text) {
+        return bpmnClientMarshalling.unmarshall(text);
     }
 
-    @Override
-    public DiagramMetadataMarshaller getMetadataMarshaller() {
-        return null;
+    public Definitions parseDefinitions(InputStream input) {
+        String text = new BufferedReader(
+                new InputStreamReader(input, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n")
+                );
+
+        return parseDefinitions(text);
     }
 }

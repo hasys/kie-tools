@@ -18,6 +18,7 @@ package org.kie.workbench.common.stunner.bpmn.marshaller;
 import java.io.InputStream;
 
 import org.kie.workbench.common.stunner.bpmn.BPMNDefinitionSet;
+import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.Definitions;
 import org.kie.workbench.common.stunner.core.definition.adapter.binding.BindableAdapterUtils;
 import org.kie.workbench.common.stunner.core.definition.service.DiagramMarshaller;
 import org.kie.workbench.common.stunner.core.diagram.Diagram;
@@ -47,7 +48,8 @@ public class Unmarshalling {
                         BindableAdapterUtils.getDefinitionSetId(BPMNDefinitionSet.class)).build();
         DiagramImpl diagram = new DiagramImpl("Definition_1", metadata);
 
-        diagram.setGraph(tested.unmarshall(metadata, is));
+        Graph graph = tested.unmarshall(metadata, is);
+        diagram.setGraph(graph);
 
         return diagram;
     }

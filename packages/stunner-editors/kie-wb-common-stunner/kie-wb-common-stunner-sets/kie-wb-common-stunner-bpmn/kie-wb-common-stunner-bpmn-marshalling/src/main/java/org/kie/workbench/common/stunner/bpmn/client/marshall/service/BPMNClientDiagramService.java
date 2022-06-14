@@ -147,8 +147,8 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
     }
 
     @SuppressWarnings({"rawtypes"})
-    private Diagram doTransform(final String fileName,
-                                final String xml) {
+    public Diagram<Graph, Metadata> doTransform(final String fileName,
+                                                final String xml) {
 
         if (Objects.isNull(xml) || xml.isEmpty()) {
             return createNewDiagram(fileName);
@@ -183,7 +183,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private Diagram createNewDiagram(String fileName) {
+    private Diagram<Graph, Metadata> createNewDiagram(String fileName) {
         final String title = createDiagramTitleFromFilePath(fileName);
         final String defSetId = BPMNClientMarshalling.getDefinitionSetId();
         final Metadata metadata = createMetadata();
@@ -200,7 +200,7 @@ public class BPMNClientDiagramService extends AbstractKogitoClientDiagramService
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private Diagram parse(final String fileName, final String raw) {
+    private Diagram<Graph, Metadata> parse(final String fileName, final String raw) {
         final Metadata metadata = createMetadata();
         final String title = createDiagramTitleFromFilePath(fileName);
         final String defSetId = BPMNClientMarshalling.getDefinitionSetId();

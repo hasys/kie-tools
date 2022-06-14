@@ -22,16 +22,16 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class FloatingParameter {
 
     @XmlAttribute
-    private int value;
+    private float value;
 
     // All code behind this comment is auto generated.
     // Please regenerate it again if you added new property.
 
-    public int getValue() {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(float value) {
         this.value = value;
     }
 

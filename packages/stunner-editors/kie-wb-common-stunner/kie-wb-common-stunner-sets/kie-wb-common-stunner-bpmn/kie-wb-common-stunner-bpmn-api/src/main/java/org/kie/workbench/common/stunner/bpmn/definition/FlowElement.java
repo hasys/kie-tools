@@ -23,12 +23,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlCData;
 
 import org.kie.workbench.common.forms.adf.definitions.annotations.FormField;
-import org.kie.workbench.common.forms.adf.definitions.annotations.metaModel.FieldValue;
-import org.kie.workbench.common.forms.fields.shared.fieldTypes.basic.textArea.type.TextAreaFieldType;
 import org.kie.workbench.common.stunner.bpmn.definition.models.bpmn2.FlowNode;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.BPMNGeneralSet;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.Documentation;
+import org.kie.workbench.common.stunner.bpmn.definition.property.general.Name;
 import org.kie.workbench.common.stunner.core.definition.annotation.Property;
-import org.kie.workbench.common.stunner.core.definition.annotation.property.Value;
-import org.kie.workbench.common.stunner.core.definition.property.PropertyMetaTypes;
 import org.kie.workbench.common.stunner.core.util.HashUtil;
 
 /**
@@ -36,23 +35,15 @@ import org.kie.workbench.common.stunner.core.util.HashUtil;
  */
 public abstract class FlowElement implements FlowElementInterface {
 
-    @Value
-    @FieldValue
+    @Property
+    @FormField
     @Valid
+    protected BPMNGeneralSet general = new BPMNGeneralSet();
+
     @XmlAttribute
-    @FormField(type = TextAreaFieldType.class)
-    @Property(meta = PropertyMetaTypes.NAME)
     protected String name;
 
-    @Property
-    @Value
-    @Valid
-    @FieldValue
     @XmlCData
-    @FormField(
-            type = TextAreaFieldType.class,
-            afterElement = "documentation"
-    )
     @XmlAttribute(namespace = "http://www.omg.org/spec/BPMN/20100524/MODEL")
     protected String documentation;
 
@@ -63,32 +54,32 @@ public abstract class FlowElement implements FlowElementInterface {
     }
 
     public FlowElement(final String name, final String documentation) {
-        this.name = name;
-        this.documentation = documentation;
+        general.setName(new Name(name));
+        general.setDocumentation(new Documentation(documentation));
     }
 
     public FlowElement(final String id, final String name, final String documentation) {
         this.id = id;
-        this.name = name;
-        this.documentation = documentation;
+        general.setName(new Name(name));
+        general.setDocumentation(new Documentation(documentation));
     }
 
     @Override
     public String getName() {
-        return name;
+        return general.getName().getValue();
     }
 
     public void setName(String name) {
-        this.name = name;
+        general.setName(new Name(name));
     }
 
     @Override
     public String getDocumentation() {
-        return documentation;
+        return general.getDocumentation().getValue();
     }
 
     public void setDocumentation(String documentation) {
-        this.documentation = documentation;
+        general.setDocumentation(new Documentation(documentation));
     }
 
     @Override
@@ -100,6 +91,14 @@ public abstract class FlowElement implements FlowElementInterface {
         this.id = id;
     }
 
+    public BPMNGeneralSet getGeneral() {
+        return general;
+    }
+
+    public void setGeneral(BPMNGeneralSet general) {
+        this.general = general;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,8 +108,7 @@ public abstract class FlowElement implements FlowElementInterface {
             return false;
         }
         FlowNode flowNode = (FlowNode) o;
-        return Objects.equals(getName(), flowNode.getName())
-                && Objects.equals(getDocumentation(), flowNode.getDocumentation())
+        return Objects.equals(getGeneral(), flowNode.getGeneral())
                 && Objects.equals(getId(), flowNode.getId());
     }
 
@@ -118,7 +116,6 @@ public abstract class FlowElement implements FlowElementInterface {
     public int hashCode() {
         return HashUtil.combineHashCodes(Objects.hashCode(getClass()),
                                          Objects.hashCode(getId()),
-                                         Objects.hashCode(getName()),
-                                         Objects.hashCode(getDocumentation()));
+                                         Objects.hashCode(getGeneral()));
     }
 }

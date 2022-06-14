@@ -125,6 +125,10 @@ public class BPMNClientMarshalling {
     @SuppressWarnings("unchecked")
     public String marshall(final Diagram diagram) {
         Definitions definitions = createDefinitions(diagram.getGraph());
+        return marshall(definitions);
+    }
+
+    public String marshall(final Definitions definitions) {
         try {
             return mapper.write(definitions);
         } catch (XMLStreamException e) {
