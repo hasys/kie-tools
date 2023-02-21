@@ -20,6 +20,7 @@
 <module>
 
   <inherits name='com.google.gwt.user.User'/>
+  <inherits name="com.google.gwt.i18n.I18N"/>
   <inherits name="org.kie.workbench.common.stunner.core.StunnerCoreCommon"/>
   <inherits name="org.kie.workbench.common.stunner.core.StunnerClientApi"/>
   <inherits name="com.google.gwt.resources.Resources" />

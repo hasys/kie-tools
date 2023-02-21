@@ -20,14 +20,14 @@ import org.kie.workbench.common.stunner.sw.definition.ActionNode;
 import org.kie.workbench.common.stunner.sw.definition.FunctionRef;
 import org.kie.workbench.common.stunner.sw.definition.SubFlowRef;
 
-public interface HasAction {
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTIONS_ARE_NULL;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_EVENT;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_FUNC;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_SUBFLOW;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_NAME;
+import static org.kie.workbench.common.stunner.sw.resources.i18n.SWConstants.Action_null;
 
-    String ACTION_IS_NULL = "Action is not defined";
-    String ACTIONS_ARE_NULL = "No actions provided";
-    String ACTION_NAME = "Action: ";
-    String ACTION_IS_FUNC = "Action functionRef: ";
-    String ACTION_IS_EVENT = "Action eventRef: ";
-    String ACTION_IS_SUBFLOW = "Action subFlowRef: ";
+public interface HasAction {
 
     static String getActionStringFromArray(ActionNode[] actions) {
         if (actions == null || actions.length == 0) {
@@ -45,7 +45,7 @@ public interface HasAction {
 
     static String getActionString(ActionNode action) {
         if (action == null) {
-            return ACTION_IS_NULL;
+            return Action_null;
         }
 
         if (StringUtils.nonEmpty(action.getName())) {
@@ -74,6 +74,6 @@ public interface HasAction {
             return ACTION_IS_SUBFLOW + subFlowRef.getWorkflowId();
         }
 
-        return ACTION_IS_NULL;
+        return Action_null;
     }
 }

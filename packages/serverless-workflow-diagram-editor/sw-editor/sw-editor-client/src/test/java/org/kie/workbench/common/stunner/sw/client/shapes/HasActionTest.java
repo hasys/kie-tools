@@ -22,12 +22,12 @@ import org.kie.workbench.common.stunner.sw.definition.FunctionRef;
 import org.kie.workbench.common.stunner.sw.definition.SubFlowRef;
 
 import static org.junit.Assert.assertEquals;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTIONS_ARE_NULL;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTION_IS_EVENT;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTION_IS_FUNC;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTION_IS_NULL;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTION_IS_SUBFLOW;
-import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.ACTION_NAME;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTIONS_ARE_NULL;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_EVENT;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_FUNC;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_NULL;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_IS_SUBFLOW;
+import static org.kie.workbench.common.stunner.sw.client.shapes.Constants.ACTION_NAME;
 import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.getActionString;
 import static org.kie.workbench.common.stunner.sw.client.shapes.HasAction.getActionStringFromArray;
 
