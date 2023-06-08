@@ -85,6 +85,8 @@ public class StateShape extends ServerlessWorkflowShape<StateShapeView> implemen
     public void applyProperties(Node<View<State>, Edge> element, MutationContext mutationContext) {
         super.applyProperties(element, mutationContext);
         State state = element.getContent().getDefinition();
+        // To work properly setUpTitle should be called before and after setTitle
+        getView().setUpTitle(state.getName());
         if (state.metadata == null) {
             shapeView.setSvgIcon(getIconColor(), getIconSvg());
             return;
@@ -257,7 +259,8 @@ public class StateShape extends ServerlessWorkflowShape<StateShapeView> implemen
      * of the not-square image as a reference. The longer side of the image is cut to fill
      * the entire icon circle with the source image. If the source image is smaller than
      * the icon circle, it is scaled to full size.
-     * @param width of the source image
+     *
+     * @param width  of the source image
      * @param height of the source image
      * @return scale rate to fit the icon in the icon circle
      */

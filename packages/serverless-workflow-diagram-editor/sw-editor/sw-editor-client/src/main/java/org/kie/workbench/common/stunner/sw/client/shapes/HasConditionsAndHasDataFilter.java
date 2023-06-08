@@ -16,6 +16,7 @@
 
 package org.kie.workbench.common.stunner.sw.client.shapes;
 
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.kie.workbench.common.stunner.sw.definition.DataConditionTransition;
 import org.kie.workbench.common.stunner.sw.definition.EventConditionTransition;
 
@@ -42,7 +43,7 @@ public interface HasConditionsAndHasDataFilter extends HasDataFilter {
                 if (d.getName() != null && !d.getName().isEmpty()) {
                     conditionString.append(getTranslation(DATA_CONDITION_TRANSITION_NAME) + ": " + d.getName() + "\r\n");
                 } else {
-                    conditionString.append(getTranslation(DATA_CONDITION_TRANSITION_VALUE) + ": " + truncate(d.getCondition()) + "\r\n");
+                    conditionString.append(getTranslation(DATA_CONDITION_TRANSITION_VALUE) + ": " + StringUtils.truncate(d.getCondition()) + "\r\n");
                 }
             }
             return conditionString.toString();

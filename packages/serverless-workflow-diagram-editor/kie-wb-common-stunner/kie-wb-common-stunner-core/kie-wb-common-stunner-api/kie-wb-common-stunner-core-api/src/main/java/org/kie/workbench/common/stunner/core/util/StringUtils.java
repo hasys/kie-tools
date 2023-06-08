@@ -19,6 +19,8 @@ import java.util.Arrays;
 
 public class StringUtils {
 
+    public static int DEFAULT_MAX_LENGTH_SIZE = 30;
+
     private StringUtils() {
     }
 
@@ -248,5 +250,22 @@ public class StringUtils {
                                 str.length() - 1);
         }
         return str;
+    }
+
+    public static String truncate(String value) {
+        return truncate(value, DEFAULT_MAX_LENGTH_SIZE);
+    }
+
+    public static String truncate(String value, int size) {
+        if (value == null) {
+            return value;
+        }
+
+        String result = value.trim();
+        if (result.length() <= size) {
+            return result;
+        }
+
+        return result.substring(0, size) + "...";
     }
 }

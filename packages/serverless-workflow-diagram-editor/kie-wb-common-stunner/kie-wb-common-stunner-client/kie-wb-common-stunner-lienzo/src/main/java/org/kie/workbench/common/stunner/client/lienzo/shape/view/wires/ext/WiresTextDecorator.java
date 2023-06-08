@@ -192,7 +192,6 @@ public class WiresTextDecorator implements HasTitle<WiresTextDecorator> {
                                                           registration);
     }
 
-    @SuppressWarnings("unchecked")
     public WiresTextDecorator setTitle(final String title) {
         if (null == title) {
             text.setText(null);
@@ -333,7 +332,7 @@ public class WiresTextDecorator implements HasTitle<WiresTextDecorator> {
 
     @Override
     public void setTitleBoundaries(final double width, final double height) {
-        setTextBoundaries(BoundingBox.fromDoubles(0, 0, width, height));
+        setTextBoundaries(BoundingBox.fromDoubles(text.getX(), text.getY(), width, height));
     }
 
     ITextWrapper getTextWrapper(final TextWrapperStrategy strategy) {

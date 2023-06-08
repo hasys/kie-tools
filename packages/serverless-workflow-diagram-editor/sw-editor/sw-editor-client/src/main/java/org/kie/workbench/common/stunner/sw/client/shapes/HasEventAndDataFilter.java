@@ -15,6 +15,7 @@
  */
 package org.kie.workbench.common.stunner.sw.client.shapes;
 
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.kie.workbench.common.stunner.sw.definition.EventDataFilter;
 
 import static org.kie.workbench.common.stunner.sw.resources.i18n.SWConstants.EVENT_FILTER_DATA;
@@ -31,8 +32,8 @@ public interface HasEventAndDataFilter extends HasDataFilter {
         }
 
         return getTranslation(EVENT_FILTER_PARAMETER) + ":\r\n"
-                + getTranslation(EVENT_FILTER_DATA) + ": " + truncate(filter.getData()) + "\r\n"
-                + getTranslation(EVENT_FILTER_TO_STATE_DATA) + ": " + truncate(filter.getToStateData()) + "\r\n"
+                + getTranslation(EVENT_FILTER_DATA) + ": " + StringUtils.truncate(filter.getData()) + "\r\n"
+                + getTranslation(EVENT_FILTER_TO_STATE_DATA) + ": " + StringUtils.truncate(filter.getToStateData()) + "\r\n"
                 + getTranslation(EVENT_FILTER_USE_DATA) + ": " + (filter.getUseData() == null ? "true" : filter.getUseData());
     }
 }

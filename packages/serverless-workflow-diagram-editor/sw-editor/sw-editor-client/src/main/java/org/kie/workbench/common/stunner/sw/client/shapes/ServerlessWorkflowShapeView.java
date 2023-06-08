@@ -30,6 +30,7 @@ import org.kie.workbench.common.stunner.core.client.shape.ShapeState;
 import org.kie.workbench.common.stunner.core.client.shape.impl.AbstractShape;
 import org.kie.workbench.common.stunner.core.client.shape.impl.ShapeStateHandler;
 import org.kie.workbench.common.stunner.core.client.shape.view.event.ShapeViewSupportedEvents;
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 
 public abstract class ServerlessWorkflowShapeView<VIEW extends ServerlessWorkflowShapeView<VIEW>> extends WiresShapeViewExt<VIEW> {
 
@@ -52,13 +53,17 @@ public abstract class ServerlessWorkflowShapeView<VIEW extends ServerlessWorkflo
     public ServerlessWorkflowShapeView(MultiPath path, String title) {
         this(path);
         setTitle(title);
-        setTitlePosition(VerticalAlignment.MIDDLE, HorizontalAlignment.CENTER, ReferencePosition.INSIDE, Orientation.HORIZONTAL);
         setTitleFontColor(SHAPE_TITLE_FONT_COLOR);
         setTitleFontFamily(SHAPE_TITLE_FONT_FAMILY);
         setTitleFontSize(SHAPE_TITLE_FONT_SIZE);
         setTitleStrokeWidth(0);
         setTitleStrokeAlpha(0);
         isTitleListening(false);
+    }
+
+    @Override
+    public VIEW setTitle(final String title) {
+        return super.setTitle(StringUtils.truncate(title, 60));
     }
 
     public ServerlessWorkflowShapeView(MultiPath path) {

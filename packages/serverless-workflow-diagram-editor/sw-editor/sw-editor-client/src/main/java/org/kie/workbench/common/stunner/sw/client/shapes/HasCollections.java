@@ -16,6 +16,7 @@
 
 package org.kie.workbench.common.stunner.sw.client.shapes;
 
+import org.kie.workbench.common.stunner.core.util.StringUtils;
 import org.kie.workbench.common.stunner.sw.definition.ForEachState;
 
 import static org.kie.workbench.common.stunner.sw.resources.i18n.SWConstants.FOR_EACH_BATCH_SIZE;
@@ -27,14 +28,14 @@ public interface HasCollections extends HasDataFilter {
 
     default String getCollections(ForEachState state) {
         StringBuilder result = new StringBuilder();
-        result.append(getTranslation(INPUT_COLLECTION) + ": " + truncate(state.inputCollection) + "\r\n");
+        result.append(getTranslation(INPUT_COLLECTION) + ": " + StringUtils.truncate(state.inputCollection) + "\r\n");
 
         if (state.outputCollection != null && !state.outputCollection.isEmpty()) {
-            result.append(getTranslation(OUTPUT_COLLECTION) + ": " + truncate(state.outputCollection) + "\r\n");
+            result.append(getTranslation(OUTPUT_COLLECTION) + ": " + StringUtils.truncate(state.outputCollection) + "\r\n");
         }
 
         if (state.iterationParam != null && !state.iterationParam.isEmpty()) {
-            result.append(getTranslation(ITERATION_PARAMETER) + ": " + truncate(state.iterationParam) + "\r\n");
+            result.append(getTranslation(ITERATION_PARAMETER) + ": " + StringUtils.truncate(state.iterationParam) + "\r\n");
         }
 
         if (isDefaultMode(state.getMode())) {

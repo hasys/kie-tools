@@ -27,6 +27,7 @@ public class StartShapeView extends ServerlessWorkflowShapeView<StartShapeView> 
                       .circle(START_SHAPE_RADIUS)
                       .setID("start"),
               title);
+        setTitlePosition(VerticalAlignment.MIDDLE, HorizontalAlignment.CENTER, ReferencePosition.INSIDE, Orientation.HORIZONTAL);
         setTitleXOffsetPosition(2.0);
         setTitleYOffsetPosition(17.0);
     }

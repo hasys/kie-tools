@@ -27,7 +27,9 @@ public class EndShapeView extends ServerlessWorkflowShapeView<EndShapeView> {
                       .rect(0, 0, END_SHAPE_SIZE, END_SHAPE_SIZE)
                       .setID("end"),
               title);
+        setTitleXOffsetPosition(0d);
         setTitleBoundaries(END_SHAPE_SIZE, END_SHAPE_SIZE);
-        setTitleXOffsetPosition(0.0); // Looks like a bug in horizontal aligning without OffsetPosition 0
+        setTitlePosition(VerticalAlignment.MIDDLE, HorizontalAlignment.LEFT, ReferencePosition.INSIDE, Orientation.HORIZONTAL);
+        setTitle(title);
     }
 }

@@ -16,18 +16,19 @@
 
 package org.kie.workbench.common.stunner.sw.client.shapes;
 
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.ait.lienzo.client.core.shape.Circle;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.IPathClipper;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.PathPartListPathClipper;
 import com.ait.lienzo.client.core.shape.Picture;
-import com.ait.lienzo.client.core.shape.Text;
-import com.ait.lienzo.client.core.shape.TextLineBreakTruncateWrapper;
-import com.ait.lienzo.client.core.types.BoundingBox;
-
-import static com.ait.lienzo.shared.core.types.TextAlign.CENTER;
-import static com.ait.lienzo.shared.core.types.TextBaseLine.MIDDLE;
+import org.kie.workbench.common.stunner.core.client.shape.TextWrapperStrategy;
+import org.kie.workbench.common.stunner.core.client.shape.view.HasTitle;
 
 public class StateShapeView extends ServerlessWorkflowShapeView<StateShapeView> {
 
@@ -41,27 +42,10 @@ public class StateShapeView extends ServerlessWorkflowShapeView<StateShapeView> 
     public StateShapeView(String name) {
         super(new MultiPath()
                       .rect(0, 0, STATE_SHAPE_WIDTH, STATE_SHAPE_HEIGHT)
-                      .setCornerRadius(STATE_CORNER_RADIUS));
-        initialize(name);
-    }
+                      .setCornerRadius(STATE_CORNER_RADIUS), name);
 
-    private void initialize(String name) {
-        Text title = new Text(name)
-                .setX(90)
-                .setY(35)
-                .setStrokeWidth(0)
-                .setFillColor("#383B3D")
-                .setFontFamily("Open Sans")
-                .setTextAlign(CENTER)
-                .setTextBaseLine(MIDDLE)
-                .setFontSize(12)
-                .setListening(false);
-        TextLineBreakTruncateWrapper textWrapper = new TextLineBreakTruncateWrapper(title, BoundingBox.fromDoubles(0, 0, 140, 44));
-
-        title.setWrapper(textWrapper);
-        addChild(title);
         Group icon = newGroup()
-                .setX(45.00)
+                .setX(40.00)
                 .setY(46.00);
         addChild(icon);
 
@@ -71,6 +55,16 @@ public class StateShapeView extends ServerlessWorkflowShapeView<StateShapeView> 
 
         iconImage = newGroup();
         icon.add(iconImage);
+    }
+
+    public void setUpTitle(String title) {
+        setMargins(Stream.of(new AbstractMap.SimpleEntry<>(HasTitle.HorizontalAlignment.LEFT, 90d))
+                           .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        setTitlePosition(VerticalAlignment.MIDDLE, HorizontalAlignment.LEFT, ReferencePosition.INSIDE, Orientation.HORIZONTAL);
+        setTitle(title);
+        setTitleWrapper(TextWrapperStrategy.BOUNDS_AND_LINE_BREAKS);
+        setTitleXOffsetPosition(70d);
+        setTitleSizeConstraints(new Size(240d, 30d, Size.SizeType.RAW));
     }
 
     public void setIconPicture(Picture picture) {
