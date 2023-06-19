@@ -115,7 +115,7 @@ public class DiagramEditor {
 
     public void onStartup(final PlaceRequest place) {
         domainInitializer.initialize();
-        stunnerEditor.setReadOnly(true);
+        stunnerEditor.setReadOnly(false);
     }
 
     public IsWidget asWidget() {

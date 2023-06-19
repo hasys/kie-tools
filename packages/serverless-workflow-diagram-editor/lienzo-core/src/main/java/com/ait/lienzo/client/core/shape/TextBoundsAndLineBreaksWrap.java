@@ -24,6 +24,7 @@ import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
 import com.ait.lienzo.shared.core.types.TextUnit;
+import elemental2.dom.DomGlobal;
 
 /**
  * ITextWrapper implementation that wraps text when a line exceeds the width of the provided boundary.
@@ -121,5 +122,7 @@ public class TextBoundsAndLineBreaksWrap extends TextBoundsWrap {
                              xOffset,
                              i + yOffset);
         }
+
+        DomGlobal.console.log("During line creations: " + text.getBoundingBox());
     }
 }

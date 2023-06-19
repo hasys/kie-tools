@@ -58,7 +58,7 @@ public class StateShapeView extends ServerlessWorkflowShapeView<StateShapeView> 
     }
 
     public void setUpTitle(String title) {
-        setMargins(Stream.of(new AbstractMap.SimpleEntry<>(HasTitle.HorizontalAlignment.LEFT, 90d))
+        setMargins(Stream.of(new AbstractMap.SimpleEntry<>(HasTitle.HorizontalAlignment.LEFT, 105d))
                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
         setTitlePosition(VerticalAlignment.MIDDLE, HorizontalAlignment.LEFT, ReferencePosition.INSIDE, Orientation.HORIZONTAL);
         setTitle(title);

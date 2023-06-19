@@ -80,11 +80,6 @@ public final class BoundingBox {
         return box;
     }
 
-//    public BoundingBox(final BoundingBoxJSO jso)
-//    {
-//        m_jso = Objects.requireNonNull(jso);
-//    }
-
     public final boolean isValid() {
         final double minx = getMinX();
 

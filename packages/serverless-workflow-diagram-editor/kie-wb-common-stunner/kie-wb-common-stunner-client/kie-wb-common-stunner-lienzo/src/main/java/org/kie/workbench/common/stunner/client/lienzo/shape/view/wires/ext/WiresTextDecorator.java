@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.ITextWrapper;
 import com.ait.lienzo.client.core.shape.ITextWrapperWithBoundaries;
+import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.shape.TextBoundsWrap;
 import com.ait.lienzo.client.core.shape.wires.WiresShape;
@@ -39,6 +40,7 @@ import com.ait.lienzo.client.core.shape.wires.layout.size.SizeConstraints.Type;
 import com.ait.lienzo.client.core.types.BoundingBox;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.tools.client.event.HandlerRegistration;
+import elemental2.dom.DomGlobal;
 import org.kie.workbench.common.stunner.client.lienzo.shape.view.ViewEventHandlerManager;
 import org.kie.workbench.common.stunner.core.client.shape.TextWrapperStrategy;
 import org.kie.workbench.common.stunner.core.client.shape.view.HasTitle;
@@ -366,7 +368,7 @@ public class WiresTextDecorator implements HasTitle<WiresTextDecorator> {
     public LabelLayout getLabelLayout() {
         return Optional.ofNullable(labelLayout)
                 .orElseGet(() -> new LabelLayout.Builder().horizontalAlignment(
-                        DirectionLayout.HorizontalAlignment.CENTER)
+                                DirectionLayout.HorizontalAlignment.CENTER)
                         .verticalAlignment(DirectionLayout.VerticalAlignment.MIDDLE)
                         .orientation(DirectionLayout.Orientation.HORIZONTAL)
                         .referencePosition(DirectionLayout.ReferencePosition.INSIDE)
@@ -445,6 +447,7 @@ public class WiresTextDecorator implements HasTitle<WiresTextDecorator> {
         return null != text && text.trim().length() > 0;
     }
 
+    MultiPath mPath;
     void setTextBoundaries(BoundingBox boundaries) {
         //update text wrapper boundaries
         Optional.ofNullable(textWrapper)
@@ -454,6 +457,27 @@ public class WiresTextDecorator implements HasTitle<WiresTextDecorator> {
                         .setWrapBoundaries(shape.getLabelContainerLayout()
                                                    .map(layout -> layout.getMaxSize(text))
                                                    .orElse(boundaries)));
+
+
+        DomGlobal.setTimeout((o) -> {
+            if (shape.getLabelContainerLayout().isPresent() && shape.getLabelContainerLayout().get().getParentBoundingBox() != null) {
+                if (mPath != null && shape.getGroup().getChildNodes().contains(mPath)) {
+                    shape.getGroup().remove(mPath);
+                }
+                mPath =new MultiPath().rect(
+                        text.getX(),
+                        text.getY(),
+                        text.getBoundingBox().getWidth(),
+                        text.getBoundingBox().getHeight()
+                ).setFillColor("RED");
+                shape.getGroup().add(mPath);
+                mPath.moveToBottom();
+                mPath.moveUp();
+
+                DomGlobal.console.log("After second: " + text.getBoundingBox());
+            }
+            shape.batch();
+        }, 1000);
 
         //update position
         shape.getLabelContainerLayout().ifPresent(LabelContainerLayout::execute);
